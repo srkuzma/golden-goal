@@ -4,7 +4,7 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
 <span class="container">
     <span class="row">
         <span class="col-1">
-            <a href="index.html">
+            <a href="index_user.html">
                 <img src="images/football.png" id="homepage">
             </a>
         </span>
@@ -92,21 +92,21 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
             </span>
             <div class="row">
                 <span class="col-9" style="margin-left: 0px;">
-                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played.html" role="button">Odigrani mečevi</a>
+                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played_user.html" role="button">Odigrani mečevi</a>
 
-                    <a class="btn btn-outline-warning view" href="schedule.html" role="button">Raspored mečeva</a>
+                    <a class="btn btn-outline-warning view" href="schedule_user.html" role="button">Raspored mečeva</a>
 
-                    <a class="btn btn-outline-warning view" href="standings.html" role="button">Tabela</a>
+                    <a class="btn btn-outline-warning view" href="standings_user.html" role="button">Tabela</a>
 
-                    <a class="btn btn-outline-warning view" href="scorers.html" role="button">Lista strelaca</a>
+                    <a class="btn btn-outline-warning view" href="scorers_user.html" role="button">Lista strelaca</a>
 
-                    <a class="btn btn-outline-warning view" href="user_rang_list.html" role="button">Rang lista korisnika</a>
+                    <a class="btn btn-outline-warning view" href="user_rang_list_user.html" role="button">Rang lista korisnika</a>
                 </span>
 
                 <span class="col">
-                    <a class="btn btn-outline-warning" href="https://www.premierleague.com/home" role="button" style=" margin-left: 40px; font-size: 20px;">Uloguj se</a>
+                    <a class="btn btn-outline-warning" href="https://www.premierleague.com/home" role="button" style=" margin-left: 30px; font-size: 20px; border: 0px;"><img src="images/manchester-united.png" style="width: 40px; height: 40px; margin-top: 0;"> kovacd</a>
 
-                    <a class="btn btn-warning" href="https://www.premierleague.com/home" role="button" style=" margin-left: 10px; font-size: 20px;">Registruj se</a>
+                    <a class="btn btn-warning" href="index.html" role="button" style=" margin-left: 10px; font-size: 20px;">Izloguj se</a>
                 </span>
             </div>
         </span>
