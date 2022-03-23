@@ -104,9 +104,9 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
                 </span>
 
                 <span class="col">
-                    <a class="btn btn-outline-warning" href="https://www.premierleague.com/home" role="button" style=" margin-left: 40px; font-size: 20px;">Uloguj se</a>
+                    <a class="btn btn-outline-warning" href="sign_in.html" role="button" style=" margin-left: 40px; font-size: 20px;">Uloguj se</a>
 
-                    <a class="btn btn-warning" href="https://www.premierleague.com/home" role="button" style=" margin-left: 10px; font-size: 20px;">Registruj se</a>
+                    <a class="btn btn-warning" href="sign_up.html" role="button" style=" margin-left: 10px; font-size: 20px;">Registruj se</a>
                 </span>
             </div>
         </span>
