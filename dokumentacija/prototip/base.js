@@ -1,6 +1,6 @@
 let template = document.getElementById("my_header")
 
-template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid" style="padding: 0px; margin-bottom: 0px;"">
+template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
 <span class="container">
     <span class="row">
         <span class="col-1">
@@ -92,9 +92,9 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
             </span>
             <div class="row">
                 <span class="col-9" style="margin-left: 0px;">
-                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played.html" role="button">Odigrani mečevi</a>
+                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played.html" role="button">Rezultati mečeva</a>
 
-                    <a class="btn btn-outline-warning view" href="schedule.html" role="button">Raspored mečeva</a>
+                    <a class="btn btn-outline-warning view" href="schedule.html" role="button">Predviđanje ishoda</a>
 
                     <a class="btn btn-outline-warning view" href="standings.html" role="button">Tabela</a>
 
@@ -104,9 +104,9 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
                 </span>
 
                 <span class="col">
-                    <a class="btn btn-outline-warning" href="sign_in.html" role="button" style=" margin-left: 40px; font-size: 20px;">Uloguj se</a>
+                    <a class="btn btn-outline-warning" id="sign_in" href="sign_in.html" role="button">Uloguj se</a>
 
-                    <a class="btn btn-warning" href="sign_up.html" role="button" style=" margin-left: 10px; font-size: 20px;">Registruj se</a>
+                    <a class="btn btn-warning" id="sign_up" href="sign_up.html" role="button">Registruj se</a>
                 </span>
             </div>
         </span>

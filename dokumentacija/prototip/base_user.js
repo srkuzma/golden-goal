@@ -1,6 +1,6 @@
 let template = document.getElementById("my_header")
 
-template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid" style="padding: 0px; margin-bottom: 0px;"">
+template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
 <span class="container">
     <span class="row">
         <span class="col-1">
@@ -92,9 +92,9 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
             </span>
             <div class="row">
                 <span class="col-9" style="margin-left: 0px;">
-                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played_user.html" role="button">Odigrani mečevi</a>
+                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played_user.html" role="button">Rezultati mečeva</a>
 
-                    <a class="btn btn-outline-warning view" href="schedule_user.html" role="button">Raspored mečeva</a>
+                    <a class="btn btn-outline-warning view" href="schedule_user.html" role="button">Predviđanje ishoda</a>
 
                     <a class="btn btn-outline-warning view" href="standings_user.html" role="button">Tabela</a>
 
@@ -104,9 +104,9 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
                 </span>
 
                 <span class="col">
-                    <a class="btn btn-outline-warning" href="https://www.premierleague.com/home" role="button" style=" margin-left: 30px; font-size: 20px; border: 0px;"><img src="images/manchester-united.png" style="width: 40px; height: 40px; margin-top: 0;"> kovacd</a>
+                    <a id="username" class="btn btn-outline-warning" href="user_profile.html" role="button"><img src="images/manchester-united.png" id="user_icon"> kovacd</a>
 
-                    <a class="btn btn-warning" href="index.html" role="button" style=" margin-left: 10px; font-size: 20px;">Izloguj se</a>
+                    <a class="btn btn-warning" href="index.html" id="log_out" role="button">Izloguj se</a>
                 </span>
             </div>
         </span>
