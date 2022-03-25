@@ -30,7 +30,6 @@
 }
 
 #username {
-    margin-left: 30px;
     font-size: 20px;
     border: 0px;
 }
@@ -47,7 +46,6 @@
 }
 
 #sign_in {
-    margin-left: 40px;
     font-size: 20px;
 }
 
@@ -63,4 +61,8 @@ body {
 .profile_img {
     width: 100px;
     height: 100px;
+}
+
+.row {
+    margin: auto;
 }

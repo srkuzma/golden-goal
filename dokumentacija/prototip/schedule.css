@@ -21,3 +21,11 @@ label {
     border-radius: 10%; 
     box-shadow: 2px;
 }
+
+input:checked + *:hover {
+    background-color: forestgreen;
+}
+
+input:not(:checked) + *:hover {
+    background-color: crimson;
+}

@@ -103,7 +103,7 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
                     <a class="btn btn-outline-warning view" href="user_rang_list_moderator.html" role="button">Rang lista korisnika</a>
                 </span>
 
-                <span class="col">
+                <span class="col-3 text-right">
                     <a id="username" class="btn btn-outline-warning" href="user_profile_moderator.html" role="button"><img src="images/manchester-united.png" id="user_icon"> kovacd</a>
 
                     <a class="btn btn-warning" href="index.html" id="log_out" role="button">Izloguj se</a>
