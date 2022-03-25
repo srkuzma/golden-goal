@@ -75,7 +75,7 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
                 </a>
                 
                 <a href="https://www.tottenhamhotspur.com/">
-                    <img src="images/tottenhamp.png" class="logo">
+                    <img src="images/tottenham.png" class="logo">
                 </a>
 
                 <a href="https://www.watfordfc.com/">
