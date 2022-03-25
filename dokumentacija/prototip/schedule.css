@@ -1,9 +1,5 @@
-/* :checked {
-    color:red;
-} */
-
 input:checked + * {
-    background-color: green;
+    background-color: #129416;
 }
 
 input:not(:checked) + * {
@@ -19,5 +15,17 @@ label {
     width: 30px;
     margin: 3px;
     border-radius: 10%; 
-    box-shadow: 2px;
+    /* box-shadow: 1px 1px #222222; */
+}
+
+input:checked + *:hover {
+    height: 31px;
+    background-color: #119b15;
+    transition: 100ms;
+}
+
+input:not(:checked) + *:hover {
+    height: 31px;
+    background-color: #c92c1a;
+    transition: 100ms;
 }
