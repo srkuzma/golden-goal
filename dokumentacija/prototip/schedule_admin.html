@@ -6,15 +6,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="schedule.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
-    <script src="base_admin.js" type="text/javascript" defer></script>
+    <script src="base.js" type="text/javascript" defer></script>
     <title>Zlatni gol</title>
     <link rel="shortcut icon" href="images/football.png" type="image/x-icon">
 </head>
 <body>
     <div id="my_header">
+    </div>
+
+    <div class="col-6 offset-3">
+        <br>
+        <h1 align="center">Uživo praćenje</h1>  
+        <table class="table table-striped table-dark text-center">
+            <tr class="text-warning">
+                <th>Domaćin</th>
+                <th>Rezultat</th>
+                <th>Gost</th>
+            </tr>
+            <tr>
+                <td align="right">&nbsp;&nbsp;&nbsp;&nbsp;Man Junajted <img src="images/manchester-united.png" width="40px"></td>
+                <td align="center">
+                    <div class="green-res">1:0</div>
+                </td>
+                <td align="left"><img src="images/liverpool.png" width="40px">Liverpul &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right">Aston Vila <img src="images/aston-vila.png" width="40px"></td>
+                <td align="center">
+                    <div class="red-res">1:2</div>
+                </td>
+                <td align="left"><img src="images/wolves.png" width="40px"> Vulverhempton</td>
+            </tr>
+            
+        </table>
+        
+    </div>
+
+    <div class="col-6 offset-3">
+        <br>
+        <h1 align="center">29. Kolo</h1>  
+        <table class="table table-striped table-dark text-center">
+            <tr class="text-warning">
+                <th>Domaćin</th>
+                <th>Predviđanje</th>
+                <th>Gost</th>
+                <th>Početak</th>
+            </tr>
+            <tr>
+                <td align="right">&nbsp;&nbsp;&nbsp;&nbsp;Brentford <img src="images/brentford.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio1" id="radio11"> <label for="radio11">1</label>
+                    <input type="radio" name="radio1" id="radio1X"> <label for="radio1X">X</label>
+                    <input type="radio" name="radio1" id="radio12"> <label for="radio12">2</label>
+                </td>
+                <td align="left"><img src="images/arsenal.png" width="40px">Arsenal &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Man Junajted <img src="images/manchester-united.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio2" id="radio21"> <label for="radio21">1</label>
+                    <input type="radio" name="radio2" id="radio2X"> <label for="radio2X">X</label>
+                    <input type="radio" name="radio2" id="radio22"> <label for="radio22">2</label>
+                </td>
+                <td align="left"><img src="images/leeds.png" width="40px"> Lids</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Lester <img src="images/leicester.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio3" id="radio31"> <label for="radio31">1</label>
+                    <input type="radio" name="radio3" id="radio3X"> <label for="radio3X">X</label>
+                    <input type="radio" name="radio3" id="radio32"> <label for="radio32">2</label>
+                </td>
+                <td align="left"><img src="images/wolves.png" width="40px"> Vulverhempton</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Barnli <img src="images/burnley.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio4" id="radio41"> <label for="radio41">1</label>
+                    <input type="radio" name="radio4" id="radio4X"> <label for="radio4X">X</label>
+                    <input type="radio" name="radio4" id="radio42"> <label for="radio42">2</label>
+                </td>
+                <td align="left"><img src="images/brighton.png" width="40px"> Brajton</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Čelsi <img src="images/chelsea.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio5" id="radio51"> <label for="radio51">1</label>
+                    <input type="radio" name="radio5" id="radio5X"> <label for="radio5X">X</label>
+                    <input type="radio" name="radio5" id="radio52"> <label for="radio52">2</label>
+                </td>
+                <td align="left"><img src="images/crystal-palace.png" width="40px"> Kristal Palas</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Everton <img src="images/everton.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio6" id="radio61"> <label for="radio61">1</label>
+                    <input type="radio" name="radio6" id="radio6X"> <label for="radio6X">X</label>
+                    <input type="radio" name="radio6" id="radio62"> <label for="radio62">2</label>
+                </td>
+                <td align="left"><img src="images/southampton.png" width="40px"> Sautempton</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Votford <img src="images/watford.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio7" id="radio71"> <label for="radio71">1</label>
+                    <input type="radio" name="radio7" id="radio7X"> <label for="radio7X">X</label>
+                    <input type="radio" name="radio7" id="radio72"> <label for="radio72">2</label>
+                </td>
+                <td align="left"><img src="images/aston-vila.png" width="40px"> Aston Vila</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Norič <img src="images/norwitch.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio8" id="radio81"> <label for="radio81">1</label>
+                    <input type="radio" name="radio8" id="radio8X"> <label for="radio8X">X</label>
+                    <input type="radio" name="radio8" id="radio82"> <label for="radio82">2</label>
+                </td>
+                <td align="left"><img src="images/liverpool.png" width="40px"> Liverpul</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">Njukasl <img src="images/newcastle.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio9" id="radio91"> <label for="radio91">1</label>
+                    <input type="radio" name="radio9" id="radio9X"> <label for="radio9X">X</label>
+                    <input type="radio" name="radio9" id="radio92"> <label for="radio92">2</label>
+                </td>
+                <td align="left"><img src="images/westham.png" width="40px"> Vest Hem</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+            <tr>
+                <td align="right">&nbsp;&nbsp;Totenhem <img src="images/tottenham.png" width="40px"></td>
+                <td>
+                    <input type="radio" name="radio10" id="radio101"> <label for="radio101">1</label>
+                    <input type="radio" name="radio10" id="radio10X"> <label for="radio10X">X</label>
+                    <input type="radio" name="radio10" id="radio102"> <label for="radio102">2</label>
+                </td>
+                <td align="left"><img src="images/manchester-city.png" width="40px"> Man Siti &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>25.04.2022. 16:00h</td>
+            </tr>
+        </table>
+        
     </div>
 </body>
 </html>
