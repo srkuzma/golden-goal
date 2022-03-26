@@ -29,6 +29,12 @@
     font-size: 20px;
 }
 
+.news_button {
+    border:0px;
+    margin-left: 30px;
+    font-size: 20px;
+}
+
 #username {
     font-size: 20px;
     border: 0px;
