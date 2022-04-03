@@ -1,6 +1,6 @@
-let template = document.getElementById("my_header")
+let header = document.getElementById("my_header")
 
-template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
+header.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
 <span class="container">
     <span class="row">
         <span class="col-1">
@@ -92,7 +92,7 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
             </span>
             <div class="row">
                 <span class="col-9" style="margin-left: 0px;">
-                    <a class="btn btn-outline-warning"style="font-size: 20px; border: 0px;" href="played_moderator.html" role="button">Rezultati mečeva</a>
+                    <a class="btn btn-outline-warning first-view" href="played_moderator.html" role="button">Rezultati mečeva</a>
 
                     <a class="btn btn-outline-warning view" href="schedule_moderator.html" role="button">Predviđanje ishoda</a>
 
@@ -114,4 +114,14 @@ template.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid
 </span>
 </div>`;
 
-document.body.appendChild(template.content);
+let footer = document.getElementById("footer");
+footer.innerHTML = `
+    <div class="row bg-dark">
+    <div class="col bg-dark text-center text-warning" style="margin: 10px;">
+        <h5>Gang of Four &copy; 2022</h5>
+    </div>
+    </div>
+`;
+
+document.body.appendChild(header.content);
+document.body.appendChild(footer.content);

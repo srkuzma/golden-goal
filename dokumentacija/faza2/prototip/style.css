@@ -2,6 +2,11 @@
     width: 100%;
     height: width;
     margin-left: 10px;
+    opacity: 90%;
+}
+
+#homepage:hover {
+    opacity: 100%;
 }
 
 .jumbotron {
@@ -18,15 +23,32 @@
 .logo {
     width: 40px;
     height: 40px;
-    margin-left: 30px;
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.logo:hover {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .view {
-    border:0px;
+    border: 0px;
     margin-left: 50px;
     font-size: 20px;
+    margin-top: 10px;
+}
+
+.first-view {
+    font-size: 20px;
+    border: 0px;
+    margin-top: 10px;
 }
 
 .news_button {
@@ -38,26 +60,30 @@
 #username {
     font-size: 20px;
     border: 0px;
+    margin-top: 10px;
 }
 
 #user_icon {
     width: 40px;
     height: 40px;
-    margin-top: 0;
+    margin-top: 0px;
 }
 
 #log_out {
     margin-left: 10px;
     font-size: 20px;
+    margin-top: 10px;
 }
 
 #sign_in {
     font-size: 20px;
+    margin-top: 10px;
 }
 
 #sign_up {
     margin-left: 10px;
     font-size: 20px;
+    margin-top: 10px;
 }
 
 body {
@@ -71,4 +97,22 @@ body {
 
 .row {
     margin: auto;
+}
+
+.border-zero {
+    border: 0px !important;
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+::-webkit-scrollbar-thumb {
+    background: gold;
+    border: 5px solid #343a40;
+    border-radius: 100vw;
 }
