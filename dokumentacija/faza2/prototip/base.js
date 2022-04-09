@@ -116,8 +116,8 @@ header.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
 
 let footer = document.getElementById("footer");
 footer.innerHTML = `
-    <div class="row bg-dark">
-    <div class="col bg-dark text-center text-warning" style="margin: 10px;">
+    <div class="row bg-dark" style="bottom:0; width:100%; position:relative">
+    <div class="col bg-dark text-center text-warning" style="margin: 10px; ">
         <h5>Gang of Four &copy; 2022</h5>
     </div>
     </div>

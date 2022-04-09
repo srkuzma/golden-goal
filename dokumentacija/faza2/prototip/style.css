@@ -87,7 +87,10 @@
 }
 
 body {
-    background-color: gold;
+    /* background-color: gold; */
+    background-image: url(images/bg_pitch3.jpg);
+    background-size: cover;
+    color: white;
 }
 
 .profile_img {
