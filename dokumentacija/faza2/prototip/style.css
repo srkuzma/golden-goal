@@ -119,3 +119,12 @@ body {
     border: 5px solid #343a40;
     border-radius: 100vw;
 }
+
+.content {
+    min-height: calc(100vh - 215px);
+}
+
+#footer {
+    position: relative;
+    height: 50px;
+}
