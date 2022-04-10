@@ -90,7 +90,7 @@ body {
     /* background-color: gold; */
     background-image: url(images/bg_pitch3.jpg);
     background-size: cover;
-    color: white;
+    color: goldenrod;
 }
 
 .profile_img {
@@ -120,11 +120,14 @@ body {
     border-radius: 100vw;
 }
 
-.content {
+.content-guest {
     min-height: calc(100vh - 215px);
+}
+
+.content {
+    min-height: calc(100vh - 222px);
 }
 
 #footer {
     position: relative;
-    height: 50px;
 }
