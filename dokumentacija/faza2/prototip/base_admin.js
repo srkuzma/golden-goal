@@ -94,8 +94,6 @@ header.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
                 <span class="col-9" style="margin-left: 0px;">
                     <a class="btn btn-outline-warning first-view" href="played_admin.html" role="button">Rezultati mečeva</a>
 
-                    <a class="btn btn-outline-warning view" href="schedule_admin.html" role="button">Predviđanje ishoda</a>
-
                     <a class="btn btn-outline-warning view" href="standings_admin.html" role="button">Tabela</a>
 
                     <a class="btn btn-outline-warning view" href="scorers_admin.html" role="button">Lista strelaca</a>
@@ -104,7 +102,7 @@ header.innerHTML = `<div class="jumbotron bg-dark text-warning jumbotron-fluid">
                 </span>
 
                 <span class="col-3 text-right">
-                    <a id="username" class="btn btn-outline-warning" href="user_profile_admin.html" role="button"><img src="images/manchester-united.png" id="user_icon"> kovacd</a>
+                    <a id="username" class="btn btn-outline-warning" href="admin_profile.html" role="button"><img src="images/manchester-united.png" id="user_icon"> kovacd</a>
 
                     <a class="btn btn-warning" href="index.html" id="log_out" role="button">Izloguj se</a>
                 </span>
