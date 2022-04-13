@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
     <script src="base.js" type="text/javascript" defer></script>
     <title>Zlatni gol</title>
@@ -16,35 +16,33 @@
 <body>
     <div id="my_header">
     </div>
+    <div class="container content" style="padding-top: 50px;">
+        <div class="row justify-content-center rounded" style="padding-bottom: 50px;">
+            <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 bg-dark rounded" style="padding-bottom: 20px;">
+                <div class="bg-dark rounded text-warning text-center" style="margin-top: 30px; margin-bottom: 10px; font-size: 40px;">
+                    Forma za logovanje 
+                </div>
 
-    <div class="content-guest" style="padding-top: 50px;">
-        <div class="col-6 offset-3 bg-dark rounded text-warning cont">
-            <table align="center">
-                <tr>
-                    <td colspan="2"><br><br><h1>Forma za logovanje</h1><br><br></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><b> Da biste se ulogovali neophodno je da popunite svako polje </b><br><br></h1></td>
-                </tr>
-                <tr>
-                    <td>Korisničko ime:</td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>Lozinka:</td>
-                    <td><input type="password"></td>
-                </tr>
-    
-                <tr><td><br></td></tr>
-                
-                <tr class="text-right">
-                    <td colspan="2"><a class="btn btn-warning view" href="index_user.html" role="button">Uloguj se</a></td>
-                </tr>
-    
-                <tr><td><br></td></tr>
-            </table>
+                <form class="bg-dark rounded" style="padding: 20px;">
+                    <div class="form-group">
+                        <label class="text-warning" for="exampleInputEmail1">Korisničko ime</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"Z>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-warning" for="exampleInputPassword1">Lozinka</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <div class="text-right" style="margin-top: 20px; font-size: 20px;">
+                        <a class="btn btn-warning" href="index_user.html" role="button">Uloguj se</a>
+                    </div>
+                </form>
+
+                <div class="bg-dark rounded text-warning text-center" style="margin-top: 0px; margin-bottom: 0px; font-size: 10px;">
+                    *Da biste se ulogovali neophodno je da popunite svako polje
+                </div>
+
+            </div>
         </div>
     </div>
-    <div id="footer"></div>
 </body>
 </html>
