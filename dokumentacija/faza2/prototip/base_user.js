@@ -92,7 +92,7 @@ header.innerHTML = `
                     </a>
                 </span>
                 <div class="row">
-                    <span class="col-9 d-none d-xl-block " style="margin-left: 0px;">
+                    <span class="col-9 d-none d-xl-block " style="margin-left: 0px; padding: 0px;">
                         <a class="btn btn-outline-warning first-view" href="played_user.html" role="button">Rezultati mečeva</a>
 
                         <a class="btn btn-outline-warning view" href="schedule_user.html" role="button">Predviđanje ishoda</a>
@@ -124,8 +124,8 @@ header.innerHTML = `
                         </div>
                     </span>
 
-                    <span class="col-xl-3 d-xl-block d-none text-right">
-                        <a id="username" class="btn btn-outline-warning" href="user_profile.html" role="button"><img src="images/manchester-united.png" id="user_icon"> kovacd <span class="badge bg-danger">0</span></a>
+                    <span class="col-xl-3 d-xl-block d-none text-right" style="padding-left: 0px; padding-right: 0px">
+                        <a id="username" class="btn btn-outline-warning" style="padding: 5px;" href="user_profile.html" role="button"><img src="images/manchester-united.png" id="user_icon"> kovacd <span class="badge bg-danger">0</span></a>
 
                         <a class="btn btn-warning" href="index.html" id="log_out" role="button">Izloguj se</a>
                     </span>
