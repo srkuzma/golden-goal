@@ -1,6 +1,5 @@
 import http.client
 import json
-
 from django.http import HttpRequest
 from django.shortcuts import render
 from .config import auth_token
