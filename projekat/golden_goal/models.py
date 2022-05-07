@@ -12,7 +12,7 @@
 #     class Meta:
 #         db_table = 'user'
 #
-# 
+#
 # class News(models.Model):
 #     title = models.CharField(max_length=100)
 #     content = models.TextField()
