@@ -1,8 +1,9 @@
+from django.contrib.auth import logout
+from django.http import HttpRequest
+from django.shortcuts import render, redirect
+from .config import auth_token
 import http.client
 import json
-from django.http import HttpRequest
-from django.shortcuts import render
-from .config import auth_token
 
 
 def index(request: HttpRequest):
@@ -211,3 +212,8 @@ def scorers(request: HttpRequest):
 
 def user_rang_list(request: HttpRequest):
     return render(request, 'golden_goal/user_rang_list.html')
+
+
+def log_out(request: HttpRequest):
+    logout(request)
+    return redirect('home')
