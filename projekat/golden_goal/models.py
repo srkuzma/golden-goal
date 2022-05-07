@@ -1,8 +1,8 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-import datetime
-
-
+# from django.contrib.auth.models import AbstractUser
+# from django.db import models
+# import datetime
+#
+#
 # class User(AbstractUser):
 #     type = models.CharField(max_length=20)
 #     score = models.IntegerField()
@@ -12,7 +12,7 @@ import datetime
 #     class Meta:
 #         db_table = 'user'
 #
-#
+# 
 # class News(models.Model):
 #     title = models.CharField(max_length=100)
 #     content = models.TextField()
