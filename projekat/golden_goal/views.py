@@ -83,11 +83,11 @@ def results(request: HttpRequest):
         else:
             matchdays[match['matchday'] - 1]['games'].append(game)
 
+    matchdays = matchdays[::-1]
+
     context = {
         'matchdays': matchdays
     }
-
-    print(matchdays)
 
     return render(request, 'golden_goal/results.html', context)
 
