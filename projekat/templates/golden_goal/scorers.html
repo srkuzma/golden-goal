@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="col-12 content-guest">
+        <br>
+        <table class="table table-striped table-dark rounded border-zero text-center">
+            <thead>
+                <tr class="text-warning rounded-top">
+                    <th class="border-zero rounded-left" style="border-bottom-left-radius: 0 !important;">Rank</th>
+                    <th class="border-zero">Player</th>
+                    <th class="border-zero">Team</th>
+                    <th class="border-zero">Position</th>
+                    <th class="border-zero rounded-right" style="border-bottom-right-radius: 0 !important;">Goals</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                    <tr>
+                        <td>{{ player.rank }}</td>
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.team }}</td>
+                        <td>{{ player.position }}</td>
+                        <td>{{ player.number_of_goals }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

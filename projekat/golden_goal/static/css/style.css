@@ -1,0 +1,136 @@
+#homepage {
+    width: 100px;
+    height: 100px;
+    opacity: 90%;
+    min-width: 100px !important;
+}
+
+#homepage:hover {
+    opacity: 100%;
+}
+
+.jumbotron {
+    left: 0;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.container {
+    left: 0;
+    margin-top: 0;
+}
+
+.logo {
+    width: 2.8%;
+    height: 2.8%;
+    margin: 0.9%;
+}
+
+.logo:hover {
+    width: 3.5%;
+    height: 3.5%;
+    margin: 0.5% 0.55%;
+}
+
+.view {
+    border: 0;
+    margin-left: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.first-view {
+    font-size: 20px;
+    border: 0;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.news_button {
+    border:0;
+    margin-left: 30px;
+    font-size: 20px;
+}
+
+#username {
+    font-size: 20px;
+    border: 0;
+    margin-top: 10px;
+}
+
+#user_icon {
+    width: 40px;
+    height: 40px;
+    margin-top: 0;
+}
+
+#log_out {
+    margin-left: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#sign_in {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#sign_up {
+    margin-left: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+body {
+    background-image: url(../images/bg_pitch3.jpg);
+    background-size: cover;
+    color: goldenrod;
+}
+
+.profile_img {
+    width: 100px;
+    height: 100px;
+}
+
+.row {
+    margin: auto;
+}
+
+.border-zero {
+    border: 0 !important;
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+::-webkit-scrollbar-thumb {
+    background: gold;
+    border: 5px solid #343a40;
+    border-radius: 100vw;
+}
+
+.content-guest {
+    min-height: calc(100vh - 215px);
+}
+
+.content {
+    min-height: calc(100vh - 222px);
+}
+
+#footer {
+    position: relative;
+}
+
+.dropdown-item {
+    font-size: x-large;
+}
+
+.dropdown-button {
+    font-size: 20px;
+}

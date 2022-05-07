@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="col-12 content-guest">
+        <br>
+        <table class="table table-striped rounded table-dark text-center col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1">
+            <thead>
+                <tr class="text-warning rounded-top">
+                    <th class="border-zero rounded-left" style="border-bottom-left-radius: 0 !important;">Position</th>
+                    <th class="border-zero text-left">Username</th>
+                    <th class="border-zero rounded-right" style="border-bottom-right-radius: 0 !important;">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td align="left"><img src="{% static 'images/manchester-united.png' %}" width="40px" alt="">kovacd</td>
+                    <td>257</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td align="left"><img src="{% static 'images/chelsea.png' %}" width="40px" alt="">Kuzminskas</td>
+                    <td>248</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td align="left"><img src="{% static 'images/liverpool.png' %}" alt="">Kostolomac</td>
+                    <td>243</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td align="left"><img src="{% static 'images/arsenal.png' %}" width="40px" alt="">Jodonik</td>
+                    <td>234</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td align="left"><img src="{% static 'images/tottenham.png' %}" width="40px" alt="">Parsers123</td>
+                    <td>200</td>
+                </tr>
+                <tr class="rounded"></tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

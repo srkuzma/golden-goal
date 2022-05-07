@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {% load static %}
+    <link rel = "stylesheet" href="{% static 'css/prediction.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content-guest justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8 col-md-10">
+                <br>
+                <h1 class="bg-dark text-warning rounded col-8 offset-2" align="center" style="padding: 10px;">Live results</h1>
+                {% if live_matchdays %}
+                    {% for live_matchday in live_matchdays %}
+                        <h1 class="text-center" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ live_matchday.matchday }}</h1>
+                        <table class="table table-striped table-dark rounded text-center">
+                            <thead>
+                                <tr class="text-warning rounded">
+                                    <th class="border-zero rounded-left col-5" style="border-bottom-left-radius: 0 !important;">Home team</th>
+                                    <th class="border-zero col-2">Result</th>
+                                    <th class="border-zero rounded-right col-5" style="border-bottom-right-radius: 0 !important;">Away team</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for game in live_matchday.games %}
+                                    <tr>
+                                        <td class="col-5" align="right">{{ game.home_team }} <img src="{% static 'images/arsenal.png' %}" style="width: 40px"></td>
+                                        <td class="col-2" align="center">
+                                            <div class="red-res">{{ game.home_team_score }} : {{ game.away_team_score }}</div>
+                                        </td>
+                                        <td class="col-5" align="left"><img src="{% static 'images/arsenal.png' %}" style="width: 40px">{{ game.away_team }}</td>
+                                    </tr>
+                                {% endfor %}
+                            <tr class="rounded"></tr>
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                {% else %}
+                    <h2 class="text-center" style="margin-top: 20px; margin-bottom: 20px;">There are currently no live games.</h2>
+                {% endif %}
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="row justify-content-center">
+            <div class="col-xl-11 col-lg-12 col-md-12 justify-content-center">
+                <br>
+                <h1 class="bg-dark text-warning rounded col-6 offset-3" align="center" style="padding: 10px;">Schedule</h1>
+                {% if scheduled_matchdays %}
+                    {% for scheduled_matchday in scheduled_matchdays %}
+                        <h1 class="text-center" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ scheduled_matchday.matchday }}</h1>
+                        <table class="table table-striped table-dark rounded text-center">
+                            <thead>
+                                <tr class="text-warning rounded">
+                                    <th class="border-zero rounded-left col-3" style="border-bottom-left-radius: 0 !important;">Home team</th>
+                                    <th class="border-zero col-3">Prediction</th>
+                                    <th class="border-zero col-3">Away team</th>
+                                    <th class="border-zero rounded-right col-3" style="border-bottom-right-radius: 0 !important;">Date and time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for game in scheduled_matchday.games %}
+                                    <tr>
+                                        <td align="right" class="col-3">{{ game.home_team }}<img src="{% static 'images/arsenal.png' %}" style="width: 40px"></td>
+                                        <td class="col-3">
+                                            <input type="radio" name="radio2" id="radio21"> <label for="radio21">1</label>
+                                            <input type="radio" name="radio2" id="radio2X"> <label for="radio2X">X</label>
+                                            <input type="radio" name="radio2" id="radio22"> <label for="radio22">2</label>
+                                        </td>
+                                        <td align="left" class="col-3"><img src="{% static 'images/arsenal.png' %}" style="width: 40px">{{ game.away_team }}</td>
+                                        <td class="col-3">{{ game.datetime }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr class="rounded"></tr>
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                {% else %}
+                    <h2 class="text-center" style="margin-top: 20px; margin-bottom: 20px;">There are currently no scheduled games.</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

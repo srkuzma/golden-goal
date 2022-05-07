@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    {% load static %}
+    <link rel = "stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
+    {% block head %}{% endblock %}
+    <title>Golden goal</title>
+    <link rel="shortcut icon" href="{% static 'images/football.png' %}" type="image/x-icon">
+</head>
+<body>
+    <div class="jumbotron bg-dark text-warning jumbotron-fluid">
+        <span class="container">
+            <span class="row">
+                <span class="col-xl-1 col-lg-2 col-md-2 col-sm-12 justify-content-center text-center">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'images/football.png' %}" id="homepage" alt="">
+                    </a>
+                </span>
+                <span class="col-md-10 col-lg-10 col-xl-11 col-sm-12">
+                    <span class="row d-none d-xl-block">
+                        <a href="https://www.arsenal.com/">
+                            <img src="{% static 'images/arsenal.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.avfc.co.uk/">
+                            <img src="{% static 'images/aston-vila.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.brentfordfc.com/">
+                            <img src="{% static 'images/brentford.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.brightonandhovealbion.com/">
+                            <img src="{% static 'images/brighton.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.burnleyfootballclub.com/">
+                            <img src="{% static 'images/burnley.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.chelseafc.com/en">
+                            <img src="{% static 'images/chelsea.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.cpfc.co.uk/">
+                            <img src="{% static 'images/crystal-palace.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.evertonfc.com/home">
+                            <img src="{% static 'images/everton.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.leedsunited.com/">
+                            <img src="{% static 'images/leeds.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.lcfc.com/">
+                            <img src="{% static 'images/leicester.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.liverpoolfc.com/">
+                            <img src="{% static 'images/liverpool.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.mancity.com/">
+                            <img src="{% static 'images/manchester-city.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.manutd.com/">
+                            <img src="{% static 'images/manchester-united.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.nufc.co.uk/">
+                            <img src="{% static 'images/newcastle.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.canaries.co.uk/">
+                            <img src="{% static 'images/norwitch.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.southamptonfc.com/">
+                            <img src="{% static 'images/southampton.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.tottenhamhotspur.com/">
+                            <img src="{% static 'images/tottenham.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.watfordfc.com/">
+                            <img src="{% static 'images/watford.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.whufc.com/">
+                            <img src="{% static 'images/westham.png' %}" class="logo" alt="">
+                        </a>
+
+                        <a href="https://www.wolves.co.uk/">
+                            <img src="{% static 'images/wolves.png' %}" class="logo" alt="">
+                        </a>
+{#                        {% for team in teams %}#}
+{#                            <a href="{{ team.website }}">#}
+{#                                <img src="{{ team.crest }}" class="logo">#}
+{#                            </a>#}
+{#                        {% endfor %}#}
+                    </span>
+                    <div class="row">
+                        <div class="col-9 d-none d-xl-block " style="margin-left: 0; padding: 0;">
+                            <a class="btn btn-outline-warning first-view" href='{% url 'results' %}' role="button">Results</a>
+
+                            <a class="btn btn-outline-warning view" href='{% url 'prediction' %}' role="button">Prediction</a>
+
+                            <a class="btn btn-outline-warning view" href='{% url 'standings' %}' role="button">Standings</a>
+
+                            <a class="btn btn-outline-warning view" href='{% url 'scorers' %}' role="button">Scorers</a>
+
+                            <a class="btn btn-outline-warning view" href='{% url 'user_rang_list' %}' role="button">User rang list</a>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-4 col-4 d-xl-none" style="margin-top: 30px;">
+                            <div class="dropdown">
+                                <button class="btn btn-warning dropdown-toggle dropdown-button" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Menu
+                                </button>
+
+                                <div class="dropdown-menu bg-dark text-warning justify-content-begin" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item text-warning bg-dark" href='{% url 'results' %}' role="button">Results</a>
+
+                                    <a class="dropdown-item text-warning bg-dark" href='{% url 'prediction' %}' role="button">Prediction</a>
+
+                                    <a class="dropdown-item text-warning bg-dark" href='{% url 'standings' %}' role="button">Standings</a>
+
+                                    <a class="dropdown-item text-warning bg-dark" href='{% url 'scorers' %}' role="button">Scorers</a>
+
+                                    <a class="dropdown-item text-warning bg-dark" href='{% url 'user_rang_list' %}' role="button">User rang list</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 d-xl-block d-none text-right" style="padding-left: 0; padding-right:0;">
+                            <a class="btn btn-outline-warning" id="sign_in" href="sign_in.html" role="button">Sign in</a>
+
+                            <a class="btn btn-warning" id="sign_up" href="sign_up.html" role="button">Sign up</a>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-8 col-8 d-xl-none text-right" style="margin-top: 20px;">
+                            <a class="btn btn-outline-warning" id="sign_in" href="sign_in.html" role="button">Sign in</a>
+
+                            <a class="btn btn-warning" id="sign_up" href="sign_up.html" role="button">Sign up</a>
+                        </div>
+                    </div>
+                </span>
+            </span>
+        </span>
+    </div>
+
+    {% block content %}
+        Base content
+    {% endblock %}
+
+    <div class="row bg-dark" style="bottom:0; width:100%; position:relative">
+        <div class="col bg-dark text-center text-warning" style="margin: 10px; ">
+            <h5>Gang of Four &copy; 2022</h5>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="col-12">
+        <br>
+        <table class="table table-striped rounded table-dark text-center">
+            <thead>
+                <tr class="text-warning rounded-top">
+                    <th class="border-zero rounded-left" style="border-bottom-left-radius: 0 !important;">Position</th>
+                    <th class="border-zero text-left">Team</th>
+                    <th class="border-zero">Played</th>
+                    <th class="border-zero">Won</th>
+                    <th class="border-zero">Drawn</th>
+                    <th class="border-zero">Lost</th>
+                    <th class="border-zero">Goals for</th>
+                    <th class="border-zero">Goals against</th>
+                    <th class="border-zero">Goal difference</th>
+                    <th class="border-zero rounded-right" style="border-bottom-right-radius: 0 !important;">Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                    <tr>
+                    <td>{{ team.position }}</td>
+                    <td class="text-left"><img src="{{ team.crest }}" width="40px">&nbsp;{{ team.name }}</td>
+                    <td>{{ team.played_games }}</td>
+                    <td>{{ team.won }}</td>
+                    <td>{{ team.draw }}</td>
+                    <td>{{ team.lost }}</td>
+                    <td>{{ team.goals_for }}</td>
+                    <td>{{ team.goals_against }}</td>
+                    <td>{{ team.goal_difference }}</td>
+                    <td>{{ team.points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
