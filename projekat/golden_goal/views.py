@@ -86,6 +86,9 @@ def results(request: HttpRequest):
 
     matchdays = matchdays[::-1]
 
+    for i in range(len(matchdays)):
+        matchdays[i]['id'] = i
+
     context = {
         'matchdays': matchdays
     }

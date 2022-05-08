@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <script src="{% static 'javascript/results.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10 col-md-11 col-sm-12 content-guest justify-content-center">
             {% for matchday in matchdays %}
-                <h1 class="text-center" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ matchday.matchday }}</h1>
-                <table class="table table-striped rounded table-dark text-center" id="matchday{{ matchday.matchday }}">
+                <h1 class="text-center id{{ matchday.id }}" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ matchday.matchday }}</h1>
+                <table class="table table-striped rounded table-dark text-center id{{ matchday.id }}" id="{{ matchday.id }}">
                     <thead>
                         <tr class="text-warning rounded-top">
                             <th class="border-zero rounded-left col-5" style="border-bottom-left-radius: 0 !important;">Home team</th>
@@ -22,11 +26,16 @@
                                 <td class="col-5" align="left"><img src="{% static 'images/arsenal.png' %}" style="width: 40px">{{ game.away_team }}</td>
                             </tr>
                         {% endfor %}
-
                         <tr class="rounded"></tr>
                     </tbody>
                 </table>
             {% endfor %}
+
+            <div class="row" style="margin-bottom: 30px; margin-top: 10px">
+                <div class="col text-center" style="padding-right: 0;">
+                    <a class="btn btn-dark text-warning view" id="load-more" role="button">Load more</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
