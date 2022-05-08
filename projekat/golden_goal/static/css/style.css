@@ -111,7 +111,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     background: gold;
-    border: 5px solid #343a40;
+    border: 6px solid #343a40;
     border-radius: 100vw;
 }
 

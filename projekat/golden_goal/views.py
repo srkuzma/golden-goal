@@ -217,3 +217,7 @@ def user_rang_list(request: HttpRequest):
 def log_out(request: HttpRequest):
     logout(request)
     return redirect('home')
+
+
+def user_profile(request: HttpRequest):
+    return render(request, 'golden_goal/user_profile.html')

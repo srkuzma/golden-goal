@@ -7,6 +7,7 @@ class User(AbstractUser):
     type = models.CharField(max_length=20, default='administrator')
     score = models.IntegerField(default=0)
     double_prediction_counter = models.IntegerField(default=0)
+    presents = models.IntegerField(default=0)
     image = models.IntegerField(default=0)
 
     class Meta:
