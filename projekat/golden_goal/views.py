@@ -212,7 +212,24 @@ def scorers(request: HttpRequest):
 
 
 def user_rang_list(request: HttpRequest):
-    return render(request, 'golden_goal/user_rang_list.html')
+    users = User.objects.order_by('score')
+    ranked_users = []
+    rank = 1
+
+    for user in users:
+        ranked_users.append({
+            'username': user.username,
+            'rank': rank,
+            'score': user.score
+        })
+
+        rank += 1
+
+    context = {
+        'ranked_users': ranked_users
+    }
+
+    return render(request, 'golden_goal/user_rang_list.html', context)
 
 
 def log_out(request: HttpRequest):
