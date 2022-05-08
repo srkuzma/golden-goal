@@ -2,6 +2,7 @@ from django.contrib.auth import logout
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from .config import auth_token
+from .models import *
 import http.client
 import json
 
@@ -220,4 +221,34 @@ def log_out(request: HttpRequest):
 
 
 def user_profile(request: HttpRequest):
-    return render(request, 'golden_goal/user_profile.html')
+    users = User.objects.order_by('score')
+    rank = 1
+
+    for user in users:
+        if request.user.username == user.username:
+            break
+        else:
+            rank += 1
+
+    context = {
+        'rank': rank
+    }
+
+    return render(request, 'golden_goal/user_profile.html', context)
+
+
+def user_images(request: HttpRequest):
+    users = User.objects.order_by('score')
+    rank = 1
+
+    for user in users:
+        if request.user.username == user.username:
+            break
+        else:
+            rank += 1
+
+    context = {
+        'rank': rank
+    }
+
+    return render(request, 'golden_goal/user_images.html', context)

@@ -14,19 +14,15 @@
                 </div>
 
                 <div class="text-center text-warning" style="margin-top: 20px; margin-bottom: 30px; font-size: 20px;">
-                    Rank: 1
+                    Rank: {{ rank }}
                 </div>
 
                 <div class="text-center text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
-                    Points: {{ user.score }}
+                    Score: {{ user.score }}
                 </div>
 
                 <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">
-                    <a class="btn btn-warning" href="user_images.html" role="button">Change profile image</a>
-                </div>
-
-                <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">
-                    <a class="btn btn-warning" href="user_profile.html" role="button">Unopened presents</a>
+                    <a class="btn btn-warning" href="{% url 'user_images' %}" role="button">Change profile image</a>
                 </div>
             </div>
 
