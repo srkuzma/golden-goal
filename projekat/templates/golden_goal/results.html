@@ -9,8 +9,8 @@
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10 col-md-11 col-sm-12 content-guest justify-content-center">
             {% for matchday in matchdays %}
-                <h1 class="text-center id{{ matchday.id }}" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ matchday.matchday }}</h1>
-                <table class="table table-striped rounded table-dark text-center id{{ matchday.id }}" id="{{ matchday.id }}">
+                <h1 class="text-center id-{{ matchday.id }}" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ matchday.matchday }}</h1>
+                <table class="table table-striped rounded table-dark text-center id-{{ matchday.id }}">
                     <thead>
                         <tr class="text-warning rounded-top">
                             <th class="border-zero rounded-left col-5" style="border-bottom-left-radius: 0 !important;">Home team</th>

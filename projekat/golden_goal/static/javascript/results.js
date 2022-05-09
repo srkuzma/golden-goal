@@ -7,7 +7,7 @@ $(document).ready(function() {
 
         for(let i = 0; i < 5; i++) {
             let matchday = matchday_counter + i
-            let id = ".id" + matchday
+            let id = ".id-" + matchday
             $(id).show()
         }
 
@@ -19,12 +19,13 @@ $(document).ready(function() {
     $("#load-more").click(function() {
         for(let i = 0; i < 5; i++) {
             let matchday = matchday_counter + i
-            let id = ".id" + matchday
+            let id = ".id-" + matchday
             $(id).show(2000)
         }
 
         matchday_counter += 5
-        let last_id = parseInt($(".table").last().attr("id"))
+        let classes = $(".table").last().attr("class").split(" ")
+        let last_id = parseInt(classes[classes.length - 1].split("-")[1])
 
         if(matchday_counter > last_id) {
             $(this).hide()
