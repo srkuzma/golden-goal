@@ -134,3 +134,7 @@ body {
 .dropdown-button {
     font-size: 20px;
 }
+
+td {
+    vertical-align: middle !important;
+}
