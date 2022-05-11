@@ -101,20 +101,6 @@ body {
     border: 0 !important;
 }
 
-::-webkit-scrollbar {
-    width: 20px;
-}
-
-::-webkit-scrollbar-track {
-    background: #343a40;
-}
-
-::-webkit-scrollbar-thumb {
-    background: gold;
-    border: 6px solid #343a40;
-    border-radius: 100vw;
-}
-
 .content-guest {
     min-height: calc(100vh - 215px);
 }
