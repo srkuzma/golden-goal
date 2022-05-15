@@ -84,7 +84,7 @@
 
 body {
     background-image: url(../images/bg_pitch3.jpg);
-    background-size: cover;
+    background-size: contain;
     color: goldenrod;
 }
 

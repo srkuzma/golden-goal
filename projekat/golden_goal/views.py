@@ -201,7 +201,7 @@ def scorers(request: HttpRequest):
             'rank': count,
             'name': player['player']['name'],
             'team': player['team']['name'],
-            'position': player['player']['name'],
+            'position': player['player']['position'],
             'number_of_goals': player['numberOfGoals']
         })
 
