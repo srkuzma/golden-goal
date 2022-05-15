@@ -58,11 +58,11 @@
                                 </tr>
                             {% endfor %}
 
-                        <tr class="rounded">
-                            <td colspan="5" class="text-center justify-content-center rounded-bottom" style="padding-top: 5px; padding-bottom: 5px;">
-                                <a class="btn btn-outline-warning" href="{% url 'standings' %}" role="button" style="font-size: 30px; font-weight: bold; padding-top: 0; padding-bottom: 0; border: 0;">+</a>
-                            </td>
-                        </tr>
+                            <tr class="rounded border-zero">
+                                <td colspan="5" class="text-center justify-content-center rounded-left border-zero" style="padding-top: 5px; padding-bottom: 5px;">
+                                    <a class="btn btn-outline-warning" href="{% url 'standings' %}" role="button" style="font-size: 30px; font-weight: bold; padding-top: 0; padding-bottom: 0; border: 0;">+</a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -85,7 +85,7 @@
                                 {% if user.type == 'moderator' %}
                                     <a class="btn btn-warning news_button" href="update_news.html" role="button">Update</a>
                                     <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% else %}
+                                {% elif user.type == 'administrator' %}
                                     <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
                                 {% endif %}
                             {% endif %}
@@ -111,7 +111,7 @@
                                 {% if user.type == 'moderator' %}
                                     <a class="btn btn-warning news_button" href="update_news.html" role="button">Update</a>
                                     <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% else %}
+                                {% elif user.type == 'administrator' %}
                                     <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
                                 {% endif %}
                             {% endif %}
@@ -137,7 +137,7 @@
                                 {% if user.type == 'moderator' %}
                                     <a class="btn btn-warning news_button" href="update_news.html" role="button">Update</a>
                                     <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% else %}
+                                {% elif user.type == 'administrator' %}
                                     <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
                                 {% endif %}
                             {% endif %}

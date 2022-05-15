@@ -272,3 +272,7 @@ def user_images(request: HttpRequest):
     }
 
     return render(request, 'golden_goal/user_images.html', context)
+
+
+def user_administration(request: HttpRequest):
+    return render(request, 'golden_goal/user_administration.html')

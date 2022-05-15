@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container bg-dark rounded" style="margin-top: 50px; padding-bottom: 5px;">
+        <div class="bg-dark rounded text-warning text-center" style="margin-bottom: 10px; font-size: 50px;">
+            Moderator list
+        </div>
+
+        <div class="bg-dark rounded-bottom">
+            <table class="table table-striped table-dark text-center" style="border: solid gold 0.1em !important;">
+                <tr class="text-warning">
+                    <th class="col-3">#</th>
+                    <th class="col-3">Username</th>
+                    <th class="col-3"></th>
+                    <th class="col-3"></th>
+                </tr>
+                <tr>
+                    <td class="col-3">1</td>
+                    <td class="col-3">Kuzminskas</td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Unmake moderator</a></td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete moderator</a></td>
+                </tr>
+                <tr>
+                    <td class="col-3">2</td>
+                    <td class="col-3">Kostolomac</td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Unmake moderator</a></td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete moderator</a></td>
+                </tr>
+                <tr>
+                    <td class="col-3">3</td>
+                    <td class="col-3">Jodonik</td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Unmake moderator</a></td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete moderator</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="container bg-dark rounded" style="margin-top: 50px; margin-bottom: 50px; padding-bottom: 5px;">
+        <div class="bg-dark rounded text-warning text-center" style="margin-bottom: 10px; font-size: 50px;">
+            User list
+        </div>
+
+        <div class="bg-dark rounded-bottom">
+            <table class="table table-striped table-dark text-center" style="border: solid gold 0.1em !important;">
+                <tr class="text-warning">
+                    <th class="col-3">#</th>
+                    <th class="col-3">Username</th>
+                    <th class="col-3"></th>
+                    <th class="col-3"></th>
+                </tr>
+                <tr>
+                    <td class="col-3">1</td>
+                    <td class="col-3">Kuzminskas</td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Make moderator</a></td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete user</a></td>
+                </tr>
+                <tr>
+                    <td class="col-3">2</td>
+                    <td class="col-3">Kostolomac</td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Make moderator</a></td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete user</a></td>
+                </tr>
+                <tr>
+                    <td class="col-3">3</td>
+                    <td class="col-3">Jodonik</td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Make moderator</a></td>
+                    <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete user</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
