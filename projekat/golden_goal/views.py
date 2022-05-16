@@ -222,6 +222,8 @@ def scorers(request: HttpRequest):
 
 def user_rang_list(request: HttpRequest):
     users = User.objects.order_by('score')
+    users = [user for user in users if user.type != 'administrator']
+
     ranked_users = []
     rank = 1
 
@@ -281,4 +283,12 @@ def user_images(request: HttpRequest):
 
 
 def user_administration(request: HttpRequest):
-    return render(request, 'golden_goal/user_administration.html')
+    users = User.objects.filter(type='user')
+    moderators = User.objects.filter(type='moderator')
+
+    context = {
+        'users': users,
+        'moderators': moderators
+    }
+
+    return render(request, 'golden_goal/user_administration.html', context)

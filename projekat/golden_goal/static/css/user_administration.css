@@ -1,0 +1,14 @@
+.container-div {
+    margin-top: 50px;
+    padding-bottom: 5px;
+    margin-bottom: 50px;
+}
+
+.title {
+    margin-bottom: 10px;
+    font-size: 50px;
+}
+
+.gold-border {
+    border: solid gold 0.1em !important;
+}

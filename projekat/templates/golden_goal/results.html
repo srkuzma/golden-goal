@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block head %}
+    <link rel = "stylesheet" href="{% static 'css/results.css' %}">
     <script src="{% static 'javascript/results.js' %}"></script>
 {% endblock %}
 
@@ -9,21 +10,21 @@
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10 col-md-11 col-sm-12 content-guest justify-content-center">
             {% for matchday in matchdays %}
-                <h1 class="text-center id-{{ matchday.id }}" style="margin-top: 20px; margin-bottom: 20px;">Matchday {{ matchday.matchday }}</h1>
+                <h1 class="text-center id-{{ matchday.id }} title">Matchday {{ matchday.matchday }}</h1>
                 <table class="table table-striped rounded table-dark text-center id-{{ matchday.id }}">
                     <thead>
                         <tr class="text-warning rounded-top">
-                            <th class="border-zero rounded-left col-5" style="border-bottom-left-radius: 0 !important;">Home team</th>
+                            <th class="border-zero rounded-left col-5 bottom-left-zero-radius">Home team</th>
                             <th class="border-zero">Result</th>
-                            <th class="border-zero rounded-right col-5" style="border-bottom-right-radius: 0 !important;">Away team</th>
+                            <th class="border-zero rounded-right col-5 bottom-right-zero-radius">Away team</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for game in matchday.games %}
                             <tr>
-                                <td class="col-5" align="right">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" style="width: 40px" alt=""></td>
+                                <td class="col-5" align="right">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" class="crest" alt=""></td>
                                 <td>{{ game.home_team_score }} : {{ game.away_team_score }}</td>
-                                <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" style="width: 40px" alt="">&nbsp;{{ game.away_team }}</td>
+                                <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" class="crest" alt="">&nbsp;{{ game.away_team }}</td>
                             </tr>
                         {% endfor %}
                         <tr class="rounded"></tr>
@@ -31,8 +32,8 @@
                 </table>
             {% endfor %}
 
-            <div class="row" style="margin-bottom: 30px; margin-top: 10px">
-                <div class="col text-center" style="padding-right: 0;">
+            <div class="row load-more-row">
+                <div class="col text-center load-more-div">
                     <a class="btn btn-dark text-warning view" id="load-more" role="button">Load more</a>
                 </div>
             </div>

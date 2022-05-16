@@ -11,5 +11,5 @@ urlpatterns = [
     path('log_out/', log_out, name='log_out'),
     path('user_profile/', user_profile, name='user_profile'),
     path('user_images/', user_images, name='user_images'),
-    path('user_administration/', user_administration, name='user_admninistration'),
+    path('user_administration/', user_administration, name='user_administration'),
 ]

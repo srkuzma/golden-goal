@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <link rel = "stylesheet" href="{% static 'css/standings.css' %}">
+{% endblock %}
+
 {% block content %}
     <div class="col-12">
         <br>
         <table class="table table-striped rounded table-dark text-center">
             <thead>
                 <tr class="text-warning rounded-top">
-                    <th class="border-zero rounded-left" style="border-bottom-left-radius: 0 !important;">Position</th>
+                    <th class="border-zero rounded-left bottom-left-zero-radius">Position</th>
                     <th class="border-zero text-left">Team</th>
                     <th class="border-zero">Played</th>
                     <th class="border-zero">Won</th>
@@ -16,14 +20,14 @@
                     <th class="border-zero">Goals for</th>
                     <th class="border-zero">Goals against</th>
                     <th class="border-zero">Goal difference</th>
-                    <th class="border-zero rounded-right" style="border-bottom-right-radius: 0 !important;">Points</th>
+                    <th class="border-zero rounded-right bottom-right-zero-radius">Points</th>
                 </tr>
             </thead>
             <tbody>
                 {% for team in teams %}
                     <tr>
                     <td>{{ team.position }}</td>
-                    <td class="text-left"><img src="{% static team.crest %}" style="width: 40px; height: 40px;" alt="">&nbsp;{{ team.name }}</td>
+                    <td class="text-left"><img src="{% static team.crest %}" class="crest" alt="">&nbsp;{{ team.name }}</td>
                     <td>{{ team.played_games }}</td>
                     <td>{{ team.won }}</td>
                     <td>{{ team.draw }}</td>

@@ -1,11 +1,11 @@
-#homepage {
+.homepage {
     width: 100px;
     height: 100px;
     opacity: 90%;
     min-width: 100px !important;
 }
 
-#homepage:hover {
+.homepage:hover {
     opacity: 100%;
 }
 
@@ -53,30 +53,30 @@
     font-size: 20px;
 }
 
-#username {
+.username {
     font-size: 20px;
     border: 0;
     margin-top: 10px;
 }
 
-#user_icon {
+.user_icon {
     width: 40px;
     height: 40px;
     margin-top: 0;
 }
 
-#log_out {
+.log_out {
     margin-left: 10px;
     font-size: 20px;
     margin-top: 10px;
 }
 
-#sign_in {
+.sign_in {
     font-size: 20px;
     margin-top: 10px;
 }
 
-#sign_up {
+.sign_up {
     margin-left: 10px;
     font-size: 20px;
     margin-top: 10px;
@@ -109,8 +109,10 @@ body {
     min-height: calc(100vh - 222px);
 }
 
-#footer {
-    position: relative;
+.footer {
+    bottom:0;
+    width:100%;
+    position:relative
 }
 
 .dropdown-item {
@@ -123,4 +125,26 @@ body {
 
 td {
     vertical-align: middle !important;
+}
+
+.tabs {
+    margin-left: 0;
+    padding: 0;
+}
+
+.menu-div {
+    margin-top: 30px;
+}
+
+.user-div-xl {
+    padding-left: 0;
+    padding-right:0;
+}
+
+.user-div {
+    margin-top: 20px;
+}
+
+.footer-text {
+    margin: 10px;
 }

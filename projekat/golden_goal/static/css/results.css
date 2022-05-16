@@ -1,0 +1,25 @@
+.title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.bottom-left-zero-radius {
+    border-bottom-left-radius: 0 !important;
+}
+
+.bottom-right-zero-radius {
+    border-bottom-right-radius: 0 !important;
+}
+
+.crest {
+    width: 40px;
+}
+
+.load-more-row {
+    margin-bottom: 30px;
+    margin-top: 10px
+}
+
+.load-more-div {
+    padding-right: 0;
+}

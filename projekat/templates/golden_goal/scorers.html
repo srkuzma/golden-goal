@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel = "stylesheet" href="{% static 'css/scorers.css' %}">
+{% endblock %}
 
 {% block content %}
     <div class="col-12 content-guest">
@@ -6,11 +11,11 @@
         <table class="table table-striped table-dark rounded border-zero text-center">
             <thead>
                 <tr class="text-warning rounded-top">
-                    <th class="border-zero rounded-left" style="border-bottom-left-radius: 0 !important;">Rank</th>
+                    <th class="border-zero rounded-left bottom-left-zero-radius">Rank</th>
                     <th class="border-zero">Player</th>
                     <th class="border-zero">Team</th>
                     <th class="border-zero">Position</th>
-                    <th class="border-zero rounded-right" style="border-bottom-right-radius: 0 !important;">Goals</th>
+                    <th class="border-zero rounded-right bottom-right-zero-radius">Goals</th>
                 </tr>
             </thead>
             <tbody>

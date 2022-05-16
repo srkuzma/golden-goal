@@ -1,0 +1,45 @@
+.bottom-left-zero-radius {
+    border-bottom-left-radius: 0 !important;
+}
+
+.bottom-right-zero-radius {
+    border-bottom-right-radius: 0 !important;
+}
+
+.plus-td {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.plus {
+    font-size: 30px;
+    font-weight: bold;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+}
+
+.no-games {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.news-title {
+    font-size: 40px;
+    width: 100%;
+}
+
+.news-shortly {
+    width: 100%;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.buttons-div {
+    margin-bottom: 10px;
+    margin-top: 10px
+}
+
+.buttons {
+    padding-right: 0;
+}
