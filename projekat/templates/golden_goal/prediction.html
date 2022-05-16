@@ -25,11 +25,11 @@
                             <tbody>
                                 {% for game in live_matchday.games %}
                                     <tr>
-                                        <td class="col-5" align="right">{{ game.home_team }} <img src="{% static game.home_team_crest %}" style="width: 40px" alt=""></td>
+                                        <td class="col-5" align="right">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" style="width: 40px" alt=""></td>
                                         <td class="col-2" align="center">
                                             <div class="red-res">{{ game.home_team_score }} : {{ game.away_team_score }}</div>
                                         </td>
-                                        <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" style="width: 40px" alt="">{{ game.away_team }}</td>
+                                        <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" style="width: 40px" alt="">&nbsp;{{ game.away_team }}</td>
                                     </tr>
                                 {% endfor %}
                             <tr class="rounded"></tr>
@@ -64,13 +64,13 @@
                             <tbody>
                                 {% for game in scheduled_matchday.games %}
                                     <tr>
-                                        <td align="right" class="col-3">{{ game.home_team }}<img src="{% static game.home_team_crest %}" style="width: 40px" alt=""></td>
+                                        <td align="right" class="col-3">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" style="width: 40px" alt=""></td>
                                         <td class="col-3">
                                             <input type="radio" name="radio2" id="radio21"> <label for="radio21">1</label>
                                             <input type="radio" name="radio2" id="radio2X"> <label for="radio2X">X</label>
                                             <input type="radio" name="radio2" id="radio22"> <label for="radio22">2</label>
                                         </td>
-                                        <td align="left" class="col-3"><img src="{% static game.away_team_crest %}" style="width: 40px" alt="">{{ game.away_team }}</td>
+                                        <td align="left" class="col-3"><img src="{% static game.away_team_crest %}" style="width: 40px" alt="">&nbsp;{{ game.away_team }}</td>
                                         <td class="col-3">{{ game.datetime }}</td>
                                     </tr>
                                 {% endfor %}
