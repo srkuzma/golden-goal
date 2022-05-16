@@ -21,9 +21,9 @@
                     <tbody>
                         {% for game in matchday.games %}
                             <tr>
-                                <td class="col-5" align="right">{{ game.home_team }} <img src="{% static 'images/arsenal.png' %}" style="width: 40px"></td>
+                                <td class="col-5" align="right">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" style="width: 40px" alt=""></td>
                                 <td>{{ game.home_team_score }} : {{ game.away_team_score }}</td>
-                                <td class="col-5" align="left"><img src="{% static 'images/arsenal.png' %}" style="width: 40px">{{ game.away_team }}</td>
+                                <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" style="width: 40px" alt="">&nbsp;{{ game.away_team }}</td>
                             </tr>
                         {% endfor %}
                         <tr class="rounded"></tr>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="col-12">
@@ -22,7 +23,7 @@
                 {% for team in teams %}
                     <tr>
                     <td>{{ team.position }}</td>
-                    <td class="text-left"><img src="{{ team.crest }}" width="40px">&nbsp;{{ team.name }}</td>
+                    <td class="text-left"><img src="{% static team.crest %}" style="width: 40px; height: 40px;" alt="">&nbsp;{{ team.name }}</td>
                     <td>{{ team.played_games }}</td>
                     <td>{{ team.won }}</td>
                     <td>{{ team.draw }}</td>

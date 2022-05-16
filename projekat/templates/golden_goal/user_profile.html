@@ -2,38 +2,38 @@
 {% load static %}
 
 {% block content %}
-    {% if user.type == 'administrator' %}
+{#    {% if user.type == 'administrator' %}#}
+{#        <div class="container content" style="padding-top: 50px;">#}
+{#            <div class="row justify-content-center" style="margin-bottom: 50px;">#}
+{#                <div class="col-8 bg-dark rounded justify-content-center">#}
+{#                    <div class="text-center" style="margin-top: 50px;">#}
+{#                        <img class="rounded profile_img" src="{% static 'images/team_57.png' %}" alt="">#}
+{#                    </div>#}
+{##}
+{#                    <div class="text-center text-warning" style="font-size: 30px;">#}
+{#                        {{ user.username }}#}
+{#                    </div>#}
+{##}
+{#                    <div class="text-center text-warning" style="margin-top: 20px; margin-bottom: 30px; font-size: 20px;">#}
+{#                        administrator#}
+{#                    </div>#}
+{##}
+{#                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">#}
+{#                        <a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">User administration</a>#}
+{#                    </div>#}
+{##}
+{#                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">#}
+{#                        <a class="btn btn-warning" href="{% url 'user_profile' %}" role="button">Change profile image</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    {% if user.type == 'moderator' %}
         <div class="container content" style="padding-top: 50px;">
             <div class="row justify-content-center" style="margin-bottom: 50px;">
                 <div class="col-8 bg-dark rounded justify-content-center">
                     <div class="text-center" style="margin-top: 50px;">
-                        <img class="rounded profile_img" src="{% static 'images/Manchester_United_FC.svg.png' %}" alt="">
-                    </div>
-
-                    <div class="text-center text-warning" style="font-size: 30px;">
-                        {{ user.username }}
-                    </div>
-
-                    <div class="text-center text-warning" style="margin-top: 20px; margin-bottom: 30px; font-size: 20px;">
-                        administrator
-                    </div>
-
-                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">
-                        <a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">User administration</a>
-                    </div>
-
-                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">
-                        <a class="btn btn-warning" href="{% url 'user_profile' %}" role="button">Change profile image</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% elif user.type == 'moderator' %}
-        <div class="container content" style="padding-top: 50px;">
-            <div class="row justify-content-center" style="margin-bottom: 50px;">
-                <div class="col-8 bg-dark rounded justify-content-center">
-                    <div class="text-center" style="margin-top: 50px;">
-                        <img class="rounded profile_img" src="{% static 'images/Manchester_United_FC.svg.png' %}" alt="">
+                        <img class="rounded profile_img" src="{% static 'images/team_66.png' %}" alt="">
                     </div>
 
                     <div class="text-center text-warning" style="font-size: 30px;">
@@ -55,7 +55,7 @@
             <div class="row bg-dark rounded" style="margin-bottom: 50px;">
                 <div class="col-4 bg-dark rounded">
                     <div class="text-center" style="margin-top: 50px;">
-                        <img class="rounded profile_img" src="{% static 'images/Manchester_United_FC.svg.png' %}" alt="">
+                        <img class="rounded profile_img" src="{% static 'images/team_66.png' %}" alt="">
                     </div>
 
                     <div class="text-center text-warning" style="font-size: 30px;">
@@ -83,7 +83,7 @@
                     <div class="row text-left">
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
                             <div>
-                                <img class="rounded profile_img" src="{% static 'images/Liverpool_FC_logo.png' %}" alt="">
+                                <img class="rounded profile_img" src="{% static 'images/team_64.png' %}" alt="">
                             </div>
 
                             <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
@@ -93,7 +93,7 @@
 
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
                             <div>
-                                <img class="rounded profile_img" src="{% static 'images/Chelsea_crest.png' %}" alt="">
+                                <img class="rounded profile_img" src="{% static 'images/team_61.png' %}" alt="">
                             </div>
 
                             <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
@@ -133,7 +133,7 @@
 
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
                             <div>
-                                <img class="rounded profile_img" src="{% static 'images/Arsenal_FC.svg.png' %}" alt="">
+                                <img class="rounded profile_img" src="{% static 'images/team_57.png' %}" alt="">
                             </div>
 
                             <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">

@@ -68,8 +68,10 @@ def results(request: HttpRequest):
     for match in matches:
         game = {
             'home_team': match['homeTeam']['name'],
-            'away_team': match['awayTeam']['name'],
+            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
+            'away_team': match['awayTeam']['name'],
+            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
             'away_team_score': match['score']['fullTime']['awayTeam']
         }
 
@@ -118,8 +120,10 @@ def prediction(request: HttpRequest):
     for match in matches:
         live_matchdays[match['matchday'] - 1]['games'].append({
             'home_team': match['homeTeam']['name'],
-            'away_team': match['awayTeam']['name'],
+            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
+            'away_team': match['awayTeam']['name'],
+            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
             'away_team_score': match['score']['fullTime']['awayTeam']
         })
 
@@ -145,7 +149,9 @@ def prediction(request: HttpRequest):
 
         scheduled_matchdays[match['matchday'] - 1]['games'].append({
             'home_team': match['homeTeam']['name'],
+            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
             'away_team': match['awayTeam']['name'],
+            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
             'datetime': match['utcDate'][:10] + " " + match['utcDate'][11:16] + "h"
         })
 
@@ -169,7 +175,7 @@ def standings(request: HttpRequest):
     for team in response['standings'][0]['table']:
         teams.append({
             'position': team['position'],
-            'crest': team['team']['crestUrl'],
+            'crest': 'images/team_' + str(team['team']['id']) + ".png",
             'name': team['team']['name'],
             'played_games': team['playedGames'],
             'won': team['won'],
