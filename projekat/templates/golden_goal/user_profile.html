@@ -2,33 +2,33 @@
 {% load static %}
 
 {% block content %}
-{#    {% if user.type == 'administrator' %}#}
-{#        <div class="container content" style="padding-top: 50px;">#}
-{#            <div class="row justify-content-center" style="margin-bottom: 50px;">#}
-{#                <div class="col-8 bg-dark rounded justify-content-center">#}
-{#                    <div class="text-center" style="margin-top: 50px;">#}
-{#                        <img class="rounded profile_img" src="{% static 'images/team_57.png' %}" alt="">#}
-{#                    </div>#}
-{##}
-{#                    <div class="text-center text-warning" style="font-size: 30px;">#}
-{#                        {{ user.username }}#}
-{#                    </div>#}
-{##}
-{#                    <div class="text-center text-warning" style="margin-top: 20px; margin-bottom: 30px; font-size: 20px;">#}
-{#                        administrator#}
-{#                    </div>#}
-{##}
-{#                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">#}
-{#                        <a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">User administration</a>#}
-{#                    </div>#}
-{##}
-{#                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">#}
-{#                        <a class="btn btn-warning" href="{% url 'user_profile' %}" role="button">Change profile image</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-    {% if user.type == 'moderator' %}
+    {% if user.type == 'administrator' %}
+        <div class="container content" style="padding-top: 50px;">
+            <div class="row justify-content-center" style="margin-bottom: 50px;">
+                <div class="col-8 bg-dark rounded justify-content-center">
+                    <div class="text-center" style="margin-top: 50px;">
+                        <img class="rounded profile_img" src="{% static 'images/team_66.png' %}" alt="">
+                    </div>
+
+                    <div class="text-center text-warning" style="font-size: 30px;">
+                        {{ user.username }}
+                    </div>
+
+                    <div class="text-center text-warning" style="margin-top: 20px; margin-bottom: 30px; font-size: 20px;">
+                        administrator
+                    </div>
+
+                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">
+                        <a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">User administration</a>
+                    </div>
+
+                    <div class="text-center" style="margin-top: 20px; margin-bottom: 30px;">
+                        <a class="btn btn-warning" href="{% url 'user_profile' %}" role="button">Change profile image</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elif user.type == 'moderator' %}
         <div class="container content" style="padding-top: 50px;">
             <div class="row justify-content-center" style="margin-bottom: 50px;">
                 <div class="col-8 bg-dark rounded justify-content-center">
