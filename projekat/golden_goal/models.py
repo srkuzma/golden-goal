@@ -16,6 +16,7 @@ class User(AbstractUser):
 
 class News(models.Model):
     title = models.CharField(max_length=100)
+    summary = models.TextField(default='')
     content = models.TextField()
     date_time = datetime.datetime.now()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
