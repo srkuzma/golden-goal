@@ -2,3 +2,4 @@ projekat/golden_goal/config.py
 projekat/.env
 projekat/golden_goal/__pycache__
 projekat/projekat/__pycache__
+projekat/golden_goal/migrations/__pycache__
