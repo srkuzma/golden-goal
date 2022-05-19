@@ -12,5 +12,4 @@ urlpatterns = [
     path('user_profile/', user_profile, name='user_profile'),
     path('user_images/', user_images, name='user_images'),
     path('user_administration/', user_administration, name='user_administration'),
-    path('sign_up/', sign_up, name='sign_up')
 ]
