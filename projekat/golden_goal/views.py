@@ -5,9 +5,10 @@ from .config import auth_token
 from .models import *
 import http.client
 import json
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import Usercreationform
+from .forms import RegistrationForm
+from .forms import UserSignInform
 from django.contrib import messages
+
 
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
@@ -295,16 +296,39 @@ def user_administration(request: HttpRequest):
 
     return render(request, 'golden_goal/user_administration.html', context)
 
+
 def sign_up(request: HttpRequest):
-    form = Usercreationform(data=request.POST or None)
-    if form.is_valid():
-        user = form.save()
+    registration_form = RegistrationForm(data=request.POST or None)
+
+    if registration_form.is_valid():
+        user = registration_form.save(commit=False)
+        user.type = 'user'
+        user.save()
         login(request, user)
         messages.info(request, 'Successful registration')
         return redirect('sign_up')
 
     context = {
-        'registrationform': form
+        'registration_form': registration_form
     }
 
-    return render(request, 'golden_goal/sign_up.html',context)
+    return render(request, 'golden_goal/sign_up.html', context)
+
+
+def sign_in(request: HttpRequest):
+    sign_in_form = UserSignInform(data=request.POST or None)
+
+    if sign_in_form.is_valid():
+        username = sign_in_form.cleaned_data["username"]
+        password = sign_in_form.cleaned_data["password"]
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+
+    context = {
+        'sign_in_form': sign_in_form,
+    }
+
+    return render(request, 'golden_goal/sign_in.html', context)
