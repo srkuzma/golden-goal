@@ -1,11 +1,13 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login, authenticate
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from .config import auth_token
 from .models import *
 import http.client
 import json
-
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import Usercreationform
+from django.contrib import messages
 
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
@@ -292,3 +294,17 @@ def user_administration(request: HttpRequest):
     }
 
     return render(request, 'golden_goal/user_administration.html', context)
+
+def sign_up(request: HttpRequest):
+    form = Usercreationform(data=request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        login(request, user)
+        messages.info(request, 'Successful registration')
+        return redirect('sign_up')
+
+    context = {
+        'registrationform': form
+    }
+
+    return render(request, 'golden_goal/sign_up.html',context)
