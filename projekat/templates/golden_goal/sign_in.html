@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <link rel = "stylesheet" href="{% static 'css/sign_in.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container content" style="padding-top: 50px;">
+        <div class="row justify-content-center rounded" style="padding-bottom: 50px;">
+            <div class="col-xl-7 col-lg-7 col-md-8 col-sm-12 bg-dark rounded" style="padding-bottom: 20px;">
+
+                <div class="bg-dark rounded text-warning text-center" style="margin-top: 30px; margin-bottom: 20px; font-size: 40px;">
+                        Sign in form
+                </div>
+
+                <div class="bg-dark rounded text-warning text-center">
+                    <b> Don't have account? </b>
+                    <a href="{% url 'sign_up' %}" class="sign-up-link">Sign up</a>
+                </div>
+
+                <form class="bg-dark rounded" style="padding: 20px;" method="post">
+
+                    <div class="form-group text-left">
+                        {{ sign_in_form.username|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group text-left">
+                        {{ sign_in_form.password|as_crispy_field }}
+                    </div>
+
+                    <div class="text-right" style="margin-top: 20px;">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-warning" style="font-size: 20px;" value="Sign in">
+                    </div>
+
+                    <div class="bg-dark rounded text-warning text-center" style="margin-top: 30px; margin-bottom: 10px; font-size: 40px;">
+                        {% if form.non_fill_errors %}
+                            {{ form.non_fill_errors }}
+                        {% endif %}
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
