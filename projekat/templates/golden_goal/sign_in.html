@@ -8,13 +8,11 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="container content" style="padding-top: 50px;">
         <div class="row justify-content-center rounded" style="padding-bottom: 50px;">
             <div class="col-xl-7 col-lg-7 col-md-8 col-sm-12 bg-dark rounded" style="padding-bottom: 20px;">
-
                 <div class="bg-dark rounded text-warning text-center" style="margin-top: 30px; margin-bottom: 20px; font-size: 40px;">
-                        Sign in form
+                    Sign in form
                 </div>
 
                 <div class="bg-dark rounded text-warning text-center">
@@ -23,6 +21,7 @@
                 </div>
 
                 <form class="bg-dark rounded" style="padding: 20px;" method="post">
+                    {% csrf_token %}
 
                     <div class="form-group text-left">
                         {{ sign_in_form.username|as_crispy_field }}
@@ -33,21 +32,19 @@
                     </div>
 
                     <div class="text-right" style="margin-top: 20px;">
-                        {% csrf_token %}
+
                         <input type="submit" class="btn btn-warning" style="font-size: 20px;" value="Sign in">
                     </div>
-
-                    <div class="bg-dark rounded text-warning text-center" style="margin-top: 30px; margin-bottom: 10px; font-size: 40px;">
-                        {% if form.non_fill_errors %}
-                            {{ form.non_fill_errors }}
-                        {% endif %}
-                    </div>
-
                 </form>
 
+                <div class="bg-dark rounded text-warning text-center" style="font-size: 20px;">
+                    {% if sign_in_form.non_field_errors %}
+                        {% for error in sign_in_form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-
-
 {% endblock %}
