@@ -8,7 +8,8 @@ import json
 from .forms import RegistrationForm
 from .forms import UserSignInform
 from django.contrib import messages
-
+from .forms import NewsForm
+from django.contrib.auth.decorators import login_required
 
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
@@ -332,3 +333,24 @@ def sign_in(request: HttpRequest):
     }
 
     return render(request, 'golden_goal/sign_in.html', context)
+
+def add_news(request: HttpRequest):
+    news_form=NewsForm(request.POST or None)
+    if news_form.is_valid():
+        if request.user.is_authenticated:
+            if User.objects.get(username=request.user.get_username()).type == "moderator":
+                vest = news_form.save(commit=False)
+                vest.author = User.objects.get(username=request.user.get_username())
+                vest.save()
+                messages.info(request, 'News added successfully')
+            else:
+                messages.info(request, 'You have no permission to add news')
+        else:
+            messages.info(request, 'You have no permission to add news')
+        return redirect('add_news')
+
+    context = {
+        'news_form': news_form
+    }
+
+    return render(request, 'golden_goal/add_news.html', context)

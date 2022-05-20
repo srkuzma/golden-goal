@@ -155,7 +155,7 @@
                         <a class="btn btn-dark text-warning view" href="add_news.html" role="button">More news</a>
 
                         {% if user.is_authenticated and user.type == 'moderator' %}
-                            <a class="btn btn-dark text-warning view" href="add_news.html" role="button">Add news</a>
+                            <a class="btn btn-dark text-warning view" href="{% url 'add_news' %}" role="button">Add news</a>
                         {% endif %}
                     </div>
                 </div>

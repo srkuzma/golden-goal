@@ -2,10 +2,10 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from .models import User
+from .models import User, News
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
-
+from django.forms.models import ModelForm
 
 class RegistrationForm(UserCreationForm):
 
@@ -27,3 +27,9 @@ class UserSignInform(AuthenticationForm):
             raise ValidationError("Fail login")
 
         return self.cleaned_data
+
+class NewsForm(ModelForm):
+
+    class Meta:
+        model = News
+        fields = ['title', 'summary', 'content']

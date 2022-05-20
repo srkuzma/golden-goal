@@ -49,8 +49,8 @@
                     <tr>
                         <td class="col-3">{{ user.id }}</td>
                         <td class="col-3">{{ user.username }}</td>
-                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Make moderator</a></td>
-                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_admninistration' %}" role="button">Delete user</a></td>
+                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_administration' %}" role="button">Make moderator</a></td>
+                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_administration' %}" role="button">Delete user</a></td>
                     </tr>
                 {% endfor %}
             </table>
