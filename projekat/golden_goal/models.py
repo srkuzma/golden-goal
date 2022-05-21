@@ -18,7 +18,7 @@ class News(models.Model):
     title = models.CharField(max_length=100)
     summary = models.TextField(default='')
     content = models.TextField()
-    date_time = datetime.datetime.now()
+    date_time = models.DateTimeField(default=datetime.datetime.now())
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:

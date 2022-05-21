@@ -3,6 +3,7 @@
 
 {% block head %}
     <link rel = "stylesheet" href="{% static 'css/prediction.css' %}">
+    <script src="{% static 'javascript/prediction.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -43,7 +44,6 @@
         </div>
 
         <br>
-        <br>
 
         <div class="row justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 justify-content-center">
@@ -51,8 +51,8 @@
                 <h1 class="bg-dark text-warning rounded col-6 offset-3 title" align="center">Schedule</h1>
                 {% if scheduled_matchdays %}
                     {% for scheduled_matchday in scheduled_matchdays %}
-                        <h1 class="text-center title">Matchday {{ scheduled_matchday.matchday }}</h1>
-                        <table class="table table-striped table-dark rounded text-center">
+                        <h1 class="text-center id-{{ scheduled_matchday.id }} title schedule-title">Matchday {{ scheduled_matchday.matchday }}</h1>
+                        <table class="table table-striped table-dark rounded text-center id-{{ scheduled_matchday.id }} schedule-table">
                             <thead>
                                 <tr class="text-warning rounded">
                                     <th class="border-zero rounded-left col-3 bottom-left-zero-radius">Home team</th>
@@ -78,6 +78,12 @@
                             </tbody>
                         </table>
                     {% endfor %}
+
+                    <div class="row load-more-row">
+                        <div class="col text-center load-more-div">
+                            <a class="btn btn-dark text-warning view" id="load-more" role="button">Load more</a>
+                        </div>
+                    </div>
                 {% else %}
                     <h2 class="text-center no-games" >There are currently no scheduled games.</h2>
                 {% endif %}

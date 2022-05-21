@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel = "stylesheet" href="{% static 'css/news.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container content justify-content-center news-container">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center">
+            <div class="row bg-dark rounded">
+                <div class="row bg-dark text-warning rounded-top news-title">
+                    <h1 class="col-12">{{ news.title }}</h1>
+                </div>
+
+                <div class="row bg-dark text-warning rounded-top news-author-date">
+                    <h5 class="col-12">{{ author.username }} | {{ news.date_time }}</h5>
+                </div>
+
+                <div class="row bg-dark text-white rounded-bottom news">
+                    <p class="col-12">{{ news.content }}</p>
+                </div>
+
+                <div class="col-12 justify-content-end text-right">
+                    {% if user.is_authenticated %}
+                        {% if user.type == 'moderator' %}
+                            <a class="btn btn-warning news-button" href="update_news.html" role="button">Update</a>
+                            <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
+                        {% elif user.type == 'administrator' %}
+                            <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

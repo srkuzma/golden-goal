@@ -1,20 +1,20 @@
 from django.contrib.auth import logout, login, authenticate
-from django.http import HttpRequest
+from django.http import HttpRequest, Http404
 from django.shortcuts import render, redirect
 from .config import auth_token
 from .models import *
 import http.client
 import json
 from .forms import RegistrationForm
-from .forms import UserSignInform
+from .forms import UserSignInForm
 from django.contrib import messages
-from .forms import NewsForm
-from django.contrib.auth.decorators import login_required
+from .forms import AddNewsForm
+
 
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches?status=LIVE', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     live_games = []
 
@@ -28,7 +28,7 @@ def index(request: HttpRequest):
 
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
     count = 0
@@ -47,9 +47,15 @@ def index(request: HttpRequest):
         if count == 10:
             break
 
+    latest_news = News.objects.order_by('-date_time')
+
+    if len(latest_news) > 5:
+        latest_news = latest_news[:5]
+
     context = {
         'live_games': live_games,
-        'teams': teams
+        'teams': teams,
+        'latest_news': latest_news
     }
 
     return render(request, 'golden_goal/index.html', context)
@@ -58,7 +64,7 @@ def index(request: HttpRequest):
 def results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches?status=FINISHED', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches?status=FINISHED', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
 
@@ -105,7 +111,7 @@ def results(request: HttpRequest):
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches?status=LIVE', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
 
@@ -135,7 +141,7 @@ def prediction(request: HttpRequest):
 
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
     matches.sort(key=my_func)
@@ -161,6 +167,9 @@ def prediction(request: HttpRequest):
 
     scheduled_matchdays = [matchday for matchday in scheduled_matchdays if len(matchday['games']) != 0]
 
+    for i in range(len(scheduled_matchdays)):
+        scheduled_matchdays[i]['id'] = i
+
     context = {
         'live_matchdays': live_matchdays,
         'scheduled_matchdays': scheduled_matchdays
@@ -172,7 +181,7 @@ def prediction(request: HttpRequest):
 def standings(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
 
@@ -201,7 +210,7 @@ def standings(request: HttpRequest):
 def scorers(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/scorers', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/scorers', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     players = []
     count = 1
@@ -226,7 +235,7 @@ def scorers(request: HttpRequest):
 
 def user_rang_list(request: HttpRequest):
     users = User.objects.order_by('score')
-    users = [user for user in users if user.type != 'administrator']
+    users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
 
     ranked_users = []
     rank = 1
@@ -317,7 +326,7 @@ def sign_up(request: HttpRequest):
 
 
 def sign_in(request: HttpRequest):
-    sign_in_form = UserSignInform(data=request.POST or None)
+    sign_in_form = UserSignInForm(data=request.POST or None)
 
     if sign_in_form.is_valid():
         username = sign_in_form.cleaned_data["username"]
@@ -334,23 +343,35 @@ def sign_in(request: HttpRequest):
 
     return render(request, 'golden_goal/sign_in.html', context)
 
+
 def add_news(request: HttpRequest):
-    news_form=NewsForm(request.POST or None)
+    news_form = AddNewsForm(request.POST or None)
+
     if news_form.is_valid():
-        if request.user.is_authenticated:
-            if User.objects.get(username=request.user.get_username()).type == "moderator":
-                vest = news_form.save(commit=False)
-                vest.author = User.objects.get(username=request.user.get_username())
-                vest.save()
-                messages.info(request, 'News added successfully')
-            else:
-                messages.info(request, 'You have no permission to add news')
-        else:
-            messages.info(request, 'You have no permission to add news')
-        return redirect('add_news')
+        vest = news_form.save(commit=False)
+        vest.author = User.objects.get(username=request.user.get_username())
+        vest.save()
+        return redirect('home')
 
     context = {
         'news_form': news_form
     }
 
     return render(request, 'golden_goal/add_news.html', context)
+
+
+def news(request: HttpRequest, news_id):
+    try:
+        curr_news = News.objects.get(pk=news_id)
+        author = User.objects.get(pk=curr_news.author.id)
+        comments = Comment.objects.filter(news_id=news_id)
+
+        context = {
+            'news': curr_news,
+            'author': author,
+            'comments': comments
+        }
+
+        return render(request, 'golden_goal/news.html', context)
+    except News.DoesNotExist:
+        raise Http404("News not found!")

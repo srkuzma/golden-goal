@@ -1,0 +1,31 @@
+.news-title {
+    font-size: 40px;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.news-author-date {
+    font-size: 40px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.news {
+    width: 100%;
+    font-size: 20px;
+    padding-bottom: 10px;
+    white-space: pre-wrap;
+}
+
+.news-button {
+    border:0;
+    margin-left: 30px;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.news-container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
