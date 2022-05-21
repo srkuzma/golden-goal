@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-
 from .models import User, News
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.forms.models import ModelForm
+
 
 class RegistrationForm(UserCreationForm):
 
@@ -14,7 +14,7 @@ class RegistrationForm(UserCreationForm):
         fields = ['username', 'password1', 'password2']
 
 
-class UserSignInform(AuthenticationForm):
+class UserSignInForm(AuthenticationForm):
     username = forms.CharField(max_length=50)
     password = forms.CharField(widget=forms.PasswordInput, max_length=50)
 
@@ -28,7 +28,8 @@ class UserSignInform(AuthenticationForm):
 
         return self.cleaned_data
 
-class NewsForm(ModelForm):
+
+class AddNewsForm(ModelForm):
 
     class Meta:
         model = News

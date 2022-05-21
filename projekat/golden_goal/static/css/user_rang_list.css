@@ -5,3 +5,7 @@
 .bottom-right-zero-radius {
     border-bottom-right-radius: 0 !important;
 }
+
+.crest {
+    width: 40px;
+}

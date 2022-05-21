@@ -142,7 +142,7 @@
                                 <a class="btn btn-outline-warning username" style="padding: 5px;" href="{% url 'user_profile' %}" role="button">
                                     <img src="{% static 'images/team_66.png' %}" class="user_icon" alt="">
                                     {{ user.username }}
-                                    {% if user.type != 'administrator' %}
+                                    {% if user.type == 'user' %}
                                         {% if user.presents == 0 %}
                                             <span class="badge bg-success">{{ user.presents }}</span>
                                         {% else %}

@@ -74,83 +74,31 @@
             </div>
 
             <div class="col-xl-8 col-lg-12 justify-content-center">
-                <div class="row bg-dark rounded">
-                    <div class="row bg-dark text-warning rounded-top news-title">
-                        <h1 class="col-12">Liverpool reach UEFA Champions League final</h1>
-                        <br>
-                    </div>
+                {% for news in latest_news %}
+                    <div class="row bg-dark rounded">
+                        <div class="row bg-dark text-warning rounded-top news-title">
+                            <h1 class="col-12">{{ news.title }}</h1>
+                        </div>
 
-                    <div class="row bg-dark text-white rounded-bottom news-shortly">
-                        <p class="col-12">
-                            Liverpool are into the UEFA Champions League final after a dramatic 3-2 comeback win over Villarreal at the Estadio de la Ceramica to set up a meeting with Real Madrid in Paris. Jurgen Klopp's side held a 2-0 advantage going into the second leg, but trailed 2-0 at half-time before goals from Fabinho, Luis Diaz and Sadio Mane sealed a 5-2 victory on aggregate.
-                        </p>
-                        <div class="col-12 justify-content-end text-right">
-                            <a class="btn btn-warning news_button" href="see_news.html" role="button">Read more</a>
-                            {% if user.is_authenticated %}
-                                {% if user.type == 'moderator' %}
-                                    <a class="btn btn-warning news_button" href="update_news.html" role="button">Update</a>
-                                    <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% elif user.type == 'administrator' %}
-                                    <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
+                        <div class="row bg-dark text-white rounded-bottom news-shortly">
+                            <p class="col-12">{{ news.summary }}</p>
+                            <div class="col-12 justify-content-end text-right">
+                                <a class="btn btn-warning news-button" href="{% url 'news' news.id %}" role="button">Read more</a>
+                                {% if user.is_authenticated %}
+                                    {% if user.type == 'moderator' %}
+                                        <a class="btn btn-warning news-button" href="update_news.html" role="button">Update</a>
+                                        <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
+                                    {% elif user.type == 'administrator' %}
+                                        <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <br>
+                {% endfor %}
 
-                <br>
-
-                <div class="row bg-dark rounded">
-                    <div class="row bg-dark text-warning rounded-top news-title">
-                        <h1 class="col-12">Liverpool reach UEFA Champions League final</h1>
-                        <br>
-                    </div>
-
-                    <div class="row bg-dark text-white rounded-bottom news-shortly">
-                        <p class="col-12">
-                            Liverpool are into the UEFA Champions League final after a dramatic 3-2 comeback win over Villarreal at the Estadio de la Ceramica to set up a meeting with Real Madrid in Paris. Jurgen Klopp's side held a 2-0 advantage going into the second leg, but trailed 2-0 at half-time before goals from Fabinho, Luis Diaz and Sadio Mane sealed a 5-2 victory on aggregate.
-                        </p>
-                        <div class="col-12 justify-content-end text-right">
-                            <a class="btn btn-warning news_button" href="see_news.html" role="button">Read more</a>
-                            {% if user.is_authenticated %}
-                                {% if user.type == 'moderator' %}
-                                    <a class="btn btn-warning news_button" href="update_news.html" role="button">Update</a>
-                                    <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% elif user.type == 'administrator' %}
-                                    <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row bg-dark rounded">
-                    <div class="row bg-dark text-warning rounded-top news-title">
-                        <h1 class="col-12">Liverpool reach UEFA Champions League final</h1>
-                        <br>
-                    </div>
-
-                    <div class="row bg-dark text-white rounded-bottom news-shortly">
-                        <p class="col-12">
-                            Liverpool are into the UEFA Champions League final after a dramatic 3-2 comeback win over Villarreal at the Estadio de la Ceramica to set up a meeting with Real Madrid in Paris. Jurgen Klopp's side held a 2-0 advantage going into the second leg, but trailed 2-0 at half-time before goals from Fabinho, Luis Diaz and Sadio Mane sealed a 5-2 victory on aggregate.
-                        </p>
-                        <div class="col-12 justify-content-end text-right">
-                            <a class="btn btn-warning news_button" href="see_news.html" role="button">Read more</a>
-                            {% if user.is_authenticated %}
-                                {% if user.type == 'moderator' %}
-                                    <a class="btn btn-warning news_button" href="update_news.html" role="button">Update</a>
-                                    <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% elif user.type == 'administrator' %}
-                                    <a class="btn btn-warning news_button" href="deleted_news.html" role="button">Delete</a>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row buttons-div">
+                <div class="row">
                     <div class="col text-right buttons">
                         <a class="btn btn-dark text-warning view" href="add_news.html" role="button">More news</a>
 
