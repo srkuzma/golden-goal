@@ -7,8 +7,8 @@
 
 {% block content %}
     <div class="container bg-dark rounded container-div">
-        <div class="bg-dark rounded text-warning text-center title">
-            Moderator list
+        <div class="bg-dark rounded text-warning text-center">
+            <h1>Moderator list</h1>
         </div>
 
         <div class="bg-dark rounded-bottom">
@@ -22,10 +22,20 @@
 
                 {% for moderator in moderators %}
                     <tr>
-                        <td class="col-3">{{ user.id }}</td>
-                        <td class="col-3">{{ user.username }}</td>
-                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_administration' %}" role="button">Unmake moderator</a></td>
-                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_administration' %}" role="button">Delete moderator</a></td>
+                        <td class="col-3">{{ moderator.id }}</td>
+                        <td class="col-3">{{ moderator.username }}</td>
+                        <td class="col-3">
+                            <form method="post" action="{% url 'unmake_moderator' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-warning btn-bold" type="submit" value="{{ moderator.id }}" name="moderator_id">Unmake moderator</button>
+                            </form>
+                        </td>
+                        <td class="col-3">
+                            <form method="post" action="{% url 'delete_moderator' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-warning btn-bold" type="submit" value="{{ moderator.id }}" name="moderator_id">Delete moderator</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -33,8 +43,8 @@
     </div>
 
     <div class="container bg-dark rounded container-div">
-        <div class="bg-dark rounded text-warning text-center title">
-            User list
+        <div class="bg-dark rounded text-warning text-center">
+            <h1>Moderator list</h1>
         </div>
 
         <div class="bg-dark rounded-bottom">
@@ -49,8 +59,18 @@
                     <tr>
                         <td class="col-3">{{ user.id }}</td>
                         <td class="col-3">{{ user.username }}</td>
-                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_administration' %}" role="button">Make moderator</a></td>
-                        <td class="col-3"><a class="btn btn-warning" href="{% url 'user_administration' %}" role="button">Delete user</a></td>
+                        <td class="col-3">
+                            <form method="post" action="{% url 'make_moderator' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-warning btn-bold" type="submit" value="{{ user.id }}" name="user_id">Make moderator</button>
+                            </form>
+                        </td>
+                        <td class="col-3">
+                            <form method="post" action="{% url 'delete_user' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-warning btn-bold" type="submit" value="{{ user.id }}" name="user_id">Delete user</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

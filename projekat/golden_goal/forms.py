@@ -34,3 +34,10 @@ class AddNewsForm(ModelForm):
     class Meta:
         model = News
         fields = ['title', 'summary', 'content']
+
+
+class SearchNewsForm(forms.Form):
+    keyword = forms.CharField(max_length=50, widget=forms.TextInput(attrs={
+        'class': "form-control",
+        'style': 'width: 100%'
+    }))

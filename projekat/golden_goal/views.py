@@ -1,20 +1,18 @@
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, Http404
 from django.shortcuts import render, redirect
 from .config import auth_token
 from .models import *
 import http.client
 import json
-from .forms import RegistrationForm
-from .forms import UserSignInForm
-from django.contrib import messages
-from .forms import AddNewsForm
+from .forms import *
 
 
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
+    connection.request('GET', '/v2/competitions/PL/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     live_games = []
 
@@ -28,7 +26,7 @@ def index(request: HttpRequest):
 
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
+    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
     count = 0
@@ -49,8 +47,8 @@ def index(request: HttpRequest):
 
     latest_news = News.objects.order_by('-date_time')
 
-    if len(latest_news) > 5:
-        latest_news = latest_news[:5]
+    if len(latest_news) > 3:
+        latest_news = latest_news[:3]
 
     context = {
         'live_games': live_games,
@@ -64,7 +62,7 @@ def index(request: HttpRequest):
 def results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/matches?status=FINISHED', None, headers)
+    connection.request('GET', '/v2/competitions/PL/matches?status=FINISHED', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
 
@@ -111,7 +109,7 @@ def results(request: HttpRequest):
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
+    connection.request('GET', '/v2/competitions/PL/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
 
@@ -141,7 +139,7 @@ def prediction(request: HttpRequest):
 
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/matches', None, headers)
+    connection.request('GET', '/v2/competitions/PL/matches', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
     matches.sort(key=my_func)
@@ -181,7 +179,7 @@ def prediction(request: HttpRequest):
 def standings(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
+    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
 
@@ -210,7 +208,7 @@ def standings(request: HttpRequest):
 def scorers(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/BSA/scorers', None, headers)
+    connection.request('GET', '/v2/competitions/PL/scorers', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     players = []
     count = 1
@@ -256,11 +254,13 @@ def user_rang_list(request: HttpRequest):
     return render(request, 'golden_goal/user_rang_list.html', context)
 
 
+@login_required(login_url='sign_in')
 def log_out(request: HttpRequest):
     logout(request)
     return redirect('home')
 
 
+@login_required(login_url='sign_in')
 def user_profile(request: HttpRequest):
     users = User.objects.order_by('score')
     rank = 1
@@ -278,6 +278,7 @@ def user_profile(request: HttpRequest):
     return render(request, 'golden_goal/user_profile.html', context)
 
 
+@login_required(login_url='sign_in')
 def user_images(request: HttpRequest):
     users = User.objects.order_by('score')
     rank = 1
@@ -295,6 +296,7 @@ def user_images(request: HttpRequest):
     return render(request, 'golden_goal/user_images.html', context)
 
 
+@login_required(login_url='sign_in')
 def user_administration(request: HttpRequest):
     users = User.objects.filter(type='user')
     moderators = User.objects.filter(type='moderator')
@@ -315,8 +317,7 @@ def sign_up(request: HttpRequest):
         user.type = 'user'
         user.save()
         login(request, user)
-        messages.info(request, 'Successful registration')
-        return redirect('sign_up')
+        return redirect('home')
 
     context = {
         'registration_form': registration_form
@@ -344,6 +345,7 @@ def sign_in(request: HttpRequest):
     return render(request, 'golden_goal/sign_in.html', context)
 
 
+@login_required(login_url='sign_in')
 def add_news(request: HttpRequest):
     news_form = AddNewsForm(request.POST or None)
 
@@ -375,3 +377,77 @@ def news(request: HttpRequest, news_id):
         return render(request, 'golden_goal/news.html', context)
     except News.DoesNotExist:
         raise Http404("News not found!")
+
+
+def search_news(request: HttpRequest):
+    all_news = []
+    query_news = []
+    search_form = SearchNewsForm()
+
+    if request.method == 'POST':
+        search_form = SearchNewsForm(request.POST)
+
+        if search_form.is_valid():
+            keyword = search_form.cleaned_data['keyword']
+            query_news = News.objects.filter(title__icontains=keyword)
+    elif request.method == 'GET':
+        query_news = News.objects.order_by('-date_time')
+
+    for i in range(len(query_news)):
+        all_news.append({
+            'news': query_news[i],
+            'id': i
+        })
+
+    context = {
+        'all_news': all_news,
+        'search_form': search_form
+    }
+
+    return render(request, 'golden_goal/search_news.html', context)
+
+
+@login_required(login_url='sign_in')
+def make_moderator(request: HttpRequest):
+    user_id = request.POST['user_id']
+
+    if user_id:
+        user = User.objects.get(pk=user_id)
+        user.type = 'moderator'
+        user.save()
+
+    return redirect('user_administration')
+
+
+@login_required(login_url='sign_in')
+def delete_user(request: HttpRequest):
+    user_id = request.POST['user_id']
+
+    if user_id:
+        user = User.objects.get(pk=user_id)
+        user.delete()
+
+    return redirect('user_administration')
+
+
+@login_required(login_url='sign_in')
+def unmake_moderator(request: HttpRequest):
+    moderator_id = request.POST['moderator_id']
+
+    if moderator_id:
+        user = User.objects.get(pk=moderator_id)
+        user.type = 'user'
+        user.save()
+
+    return redirect('user_administration')
+
+
+@login_required(login_url='sign_in')
+def delete_moderator(request: HttpRequest):
+    moderator_id = request.POST['moderator_id']
+
+    if moderator_id:
+        user = User.objects.get(pk=moderator_id)
+        user.delete()
+
+    return redirect('user_administration')
