@@ -4,11 +4,15 @@
     margin-bottom: 50px;
 }
 
-.title {
-    margin-bottom: 10px;
-    font-size: 50px;
+h1 {
+    margin-bottom: 20px;
+    padding-top: 15px;
 }
 
 .gold-border {
     border: solid gold 0.1em !important;
+}
+
+.btn-bold {
+    font-weight: bold;
 }

@@ -1,0 +1,58 @@
+.active-gold-4 input[type=text]:focus:not([readonly]) {
+  border: 1px solid gold;
+  box-shadow: 0 0 0 1px gold;
+}
+.active-gold-3 input[type=text] {
+  border: 1px solid gold;
+  box-shadow: 0 0 0 1px gold;
+}
+
+.news-title {
+    font-size: 40px;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.news-shortly {
+    width: 100%;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.buttons {
+    padding-right: 0;
+}
+
+.news-button {
+    border: 0;
+    margin-left: 30px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.search-form {
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.search-news-container {
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.search-news-row {
+    padding: 0;
+}
+
+.search-button {
+    font-weight: bold;
+}
+
+.load-more-row {
+    margin-top: -25px;
+}
+
+.load-more-div {
+    padding-right: 0;
+}

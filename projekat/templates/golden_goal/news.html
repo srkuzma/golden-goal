@@ -23,11 +23,85 @@
 
                 <div class="col-12 justify-content-end text-right">
                     {% if user.is_authenticated %}
-                        {% if user.type == 'moderator' %}
+                        {% if user.type == 'moderator' and news.author == user %}
                             <a class="btn btn-warning news-button" href="update_news.html" role="button">Update</a>
                             <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
                         {% elif user.type == 'administrator' %}
                             <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row comments-title">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 offset-xl-4 offset-lg-4 offset-md-3 offset-sm-3 offset-3 text-warning bg-dark rounded text-center">
+                    <h1>Comments</h1>
+                </div>
+            </div>
+
+            <div class="row bg-dark rounded comment">
+                <div class="row bg-dark text-white rounded-top comment-text">
+                    <p class="col-12">You forgot that he also said “oh and congratulations to Everton for staying in the league” - delivered with a straight face.</p>
+                </div>
+
+                <div class="row bg-dark text-warning rounded-top comment-author-date">
+                    <h5 class="col-12">frank | May 21, 2022, 9:46 p.m.</h5>
+                </div>
+
+                <div class="col-12 justify-content-end text-right">
+                    {% if user.is_authenticated and user.type == 'administrator' %}
+                        <a class="btn btn-warning comment-button" href="{% url 'news' news.id %}" role="button">Delete</a>
+                    {% elif user.is_authenticated and user.type == 'moderator' %}
+                    {% else %}
+                        <a class="btn btn-success comment-button" href="{% url 'news' news.id %}" role="button">
+                            <img src="{% static 'images/like.png' %}" class="icon" alt="">
+                            123
+                        </a>
+
+                        <a class="btn btn-danger comment-button" href="{% url 'news' news.id %}" role="button">
+                            <img src="{% static 'images/dislike.png' %}" class="icon" alt="">
+                            56
+                        </a>
+
+                        {% if user.is_authenticated and user.type != 'moderator' %}
+                            <a class="btn btn-warning comment-button" href="{% url 'news' news.id %}" role="button">Reply</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row bg-dark rounded comment">
+                <div class="row bg-dark text-white rounded-top comment-text">
+                    <p class="col-12 comment-text-reply">You forgot that he also said “oh and congratulations to Everton for staying in the league” - delivered with a straight face.</p>
+
+                    <h5 class="col-12 bg-dark text-warning">(frank | May 21, 2022, 9:46 p.m.)</h5>
+                </div>
+
+                <div class="row bg-dark text-white rounded-top comment-text">
+                    <p class="col-12">I actually don’t think Klopp has a malicious bone in his body. I think he truly was just congratulating the Ev because he went on to say that you can celebrate whatever you want and even if people talk it does not matter. We will be celebrating 2 cups at least and we don’t care about anything the bitters are going to say.</p>
+                </div>
+
+                <div class="row bg-dark text-warning rounded-top comment-author-date">
+                    <h5 class="col-12">michael | May 21, 2022, 9:46 p.m.</h5>
+                </div>
+
+                <div class="col-12 justify-content-end text-right">
+                    {% if user.is_authenticated and user.type == 'administrator' %}
+                        <a class="btn btn-warning comment-button" href="{% url 'news' news.id %}" role="button">Delete</a>
+                    {% elif user.is_authenticated and user.type == 'moderator' %}
+                    {% else %}
+                        <a class="btn btn-success comment-button" href="{% url 'news' news.id %}" role="button">
+                            <img src="{% static 'images/like.png' %}" class="icon" alt="">
+                            123
+                        </a>
+
+                        <a class="btn btn-danger comment-button" href="{% url 'news' news.id %}" role="button">
+                            <img src="{% static 'images/dislike.png' %}" class="icon" alt="">
+                            56
+                        </a>
+
+                        {% if user.is_authenticated and user.type != 'moderator' %}
+                            <a class="btn btn-warning comment-button" href="{% url 'news' news.id %}" role="button">Reply</a>
                         {% endif %}
                     {% endif %}
                 </div>

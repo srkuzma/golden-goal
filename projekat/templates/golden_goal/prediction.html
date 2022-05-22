@@ -51,8 +51,8 @@
                 <h1 class="bg-dark text-warning rounded col-6 offset-3 title" align="center">Schedule</h1>
                 {% if scheduled_matchdays %}
                     {% for scheduled_matchday in scheduled_matchdays %}
-                        <h1 class="text-center id-{{ scheduled_matchday.id }} title schedule-title">Matchday {{ scheduled_matchday.matchday }}</h1>
-                        <table class="table table-striped table-dark rounded text-center id-{{ scheduled_matchday.id }} schedule-table">
+                        <h1 class="text-center title schedule-title id-{{ scheduled_matchday.id }}">Matchday {{ scheduled_matchday.matchday }}</h1>
+                        <table class="table table-striped table-dark rounded text-center schedule-table id-{{ scheduled_matchday.id }}">
                             <thead>
                                 <tr class="text-warning rounded">
                                     <th class="border-zero rounded-left col-3 bottom-left-zero-radius">Home team</th>

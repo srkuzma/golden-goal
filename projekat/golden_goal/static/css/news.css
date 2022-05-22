@@ -29,3 +29,46 @@
     padding-top: 50px;
     padding-bottom: 50px;
 }
+
+.comments-title {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.comment-author-date {
+    font-size: 40px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.comment-text {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 20px;
+    padding-bottom: 10px;
+    white-space: pre-wrap;
+}
+
+.comment {
+    margin-bottom: 20px;
+}
+
+.comment-text-reply {
+    margin-bottom: 0;
+}
+
+.comment-button {
+    border:0;
+    margin-left: 30px;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+}
+
+.comments-title h1 {
+    padding: 10px !important;
+}
