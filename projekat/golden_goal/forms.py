@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from .models import User, News
+from .models import *
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.forms.models import ModelForm
@@ -36,8 +36,22 @@ class AddNewsForm(ModelForm):
         fields = ['title', 'summary', 'content']
 
 
+class UpdateNewsForm(ModelForm):
+
+    class Meta:
+        model = News
+        fields = ['title', 'summary', 'content']
+
+
 class SearchNewsForm(forms.Form):
     keyword = forms.CharField(max_length=50, widget=forms.TextInput(attrs={
         'class': "form-control",
         'style': 'width: 100%'
     }))
+
+
+class CommentNews(ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['text']

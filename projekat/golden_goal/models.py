@@ -27,7 +27,7 @@ class News(models.Model):
 
 class Comment(models.Model):
     text = models.TextField()
-    date_time = datetime.datetime.now()
+    date_time = models.DateTimeField(default=datetime.datetime.now())
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     news = models.ForeignKey(News, on_delete=models.CASCADE)
     comment_reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True)

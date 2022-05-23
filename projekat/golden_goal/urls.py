@@ -21,5 +21,8 @@ urlpatterns = [
     path('delete_user', delete_user, name='delete_user'),
     path('unmake_moderator', unmake_moderator, name='unmake_moderator'),
     path('delete_moderator', delete_moderator, name='delete_moderator'),
-    path('live_games_index', live_games_index, name='live_games_index')
+    path('live_games_index', live_games_index, name='live_games_index'),
+    path('update_news/<int:news_id>', update_news, name='update_news'),
+    path('comment_news/<int:news_id>', comment_news, name='comment_news'),
+    path('reply_comment/<int:comment_id>', reply_comment, name='reply_comment'),
 ]
