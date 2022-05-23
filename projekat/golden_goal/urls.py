@@ -20,5 +20,6 @@ urlpatterns = [
     path('make_moderator', make_moderator, name='make_moderator'),
     path('delete_user', delete_user, name='delete_user'),
     path('unmake_moderator', unmake_moderator, name='unmake_moderator'),
-    path('delete_moderator', delete_moderator, name='delete_moderator')
+    path('delete_moderator', delete_moderator, name='delete_moderator'),
+    path('live_games_index', live_games_index, name='live_games_index')
 ]
