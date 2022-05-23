@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from .config import auth_token
-from .models import *
 import http.client
 import json
 from .forms import *
@@ -351,8 +350,8 @@ def sign_in(request: HttpRequest):
     sign_in_form = UserSignInForm(data=request.POST or None)
 
     if sign_in_form.is_valid():
-        username = sign_in_form.cleaned_data["username"]
-        password = sign_in_form.cleaned_data["password"]
+        username = sign_in_form.cleaned_data['username']
+        password = sign_in_form.cleaned_data['password']
         user = authenticate(username=username, password=password)
 
         if user is not None:
@@ -387,15 +386,42 @@ def news(request: HttpRequest, news_id):
     try:
         curr_news = News.objects.get(pk=news_id)
         author = User.objects.get(pk=curr_news.author.id)
-        comments = Comment.objects.filter(news_id=news_id)
+        comments = Comment.objects.filter(news_id=news_id).order_by("-date_time")
+
+        if len(comments) > 0:
+            comments_with_reply = [{'comment': comment, 'comment_reply': Comment.objects.get(pk=comment.comment_reply.id) if comment.comment_reply is not None else None} for comment in comments]
+        else:
+            comments_with_reply = []
 
         context = {
             'news': curr_news,
             'author': author,
-            'comments': comments
+            'comments': comments_with_reply,
         }
 
         return render(request, 'golden_goal/news.html', context)
+    except News.DoesNotExist:
+        raise Http404("News not found!")
+
+
+@login_required(login_url='sign_in')
+def update_news(request: HttpRequest, news_id):
+    try:
+        curr_news = News.objects.get(pk=news_id)
+        news_form = UpdateNewsForm(instance=curr_news, data=request.POST or None)
+
+        if news_form.is_valid():
+            curr_news.title = news_form.cleaned_data['title']
+            curr_news.summary = news_form.cleaned_data['summary']
+            curr_news.content = news_form.cleaned_data['content']
+            curr_news.save()
+            return redirect('../news/' + str(news_id))
+
+        context = {
+            'news_form': news_form
+        }
+
+        return render(request, 'golden_goal/update_news.html', context)
     except News.DoesNotExist:
         raise Http404("News not found!")
 
@@ -426,6 +452,60 @@ def search_news(request: HttpRequest):
     }
 
     return render(request, 'golden_goal/search_news.html', context)
+
+
+def comment_news(request: HttpRequest, news_id):
+    try:
+        curr_news = News.objects.get(pk=news_id)
+        author = User.objects.get(username=request.user.get_username())
+
+        form = CommentNews(data=request.POST or None)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.text = form.cleaned_data['text']
+            comment.news_id = news_id
+            comment.author_id = author.id
+            comment.save()
+            return redirect('../news/' + str(news_id))
+
+        context = {
+            'news': curr_news,
+            'author': author,
+            'form': form
+        }
+
+        return render(request, 'golden_goal/comment_news.html', context)
+    except News.DoesNotExist:
+        raise Http404("News not found!")
+
+
+def reply_comment(request: HttpRequest, comment_id):
+    try:
+        curr_comm = Comment.objects.get(pk=comment_id)
+        curr_news = News.objects.get(pk=curr_comm.news_id)
+        author = User.objects.get(username=request.user.get_username())
+
+        form = CommentNews(data=request.POST or None)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.text = form.cleaned_data['text']
+            comment.comment_reply_id = comment_id
+            comment.news_id = curr_news.id
+            comment.author_id = author.id
+            comment.save()
+            return redirect('../news/' + str(curr_news.id))
+
+        context = {
+            'news': curr_news,
+            'author': author,
+            'form': form
+        }
+
+        return render(request, 'golden_goal/reply_comment.html', context)
+    except News.DoesNotExist:
+        raise Http404("News not found!")
 
 
 @login_required(login_url='sign_in')

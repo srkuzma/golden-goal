@@ -43,7 +43,7 @@
                                     <a class="btn btn-warning news-button" href="{% url 'news' news.news.id %}" role="button">Read more</a>
                                     {% if user.is_authenticated %}
                                         {% if user.type == 'moderator' and news.news.author == user %}
-                                            <a class="btn btn-warning news-button" href="update_news.html" role="button">Update</a>
+                                            <a class="btn btn-warning news-button" href="{% url 'update_news' news.news.id %}" role="button">Update</a>
                                             <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
                                         {% elif user.type == 'administrator' %}
                                             <a class="btn btn-warning news-button" href="deleted_news.html" role="button">Delete</a>
