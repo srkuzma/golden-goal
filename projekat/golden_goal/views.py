@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, Http404
+from django.http import HttpRequest, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from .config import auth_token
 from .models import *
@@ -12,7 +12,7 @@ from .forms import *
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches?status=LIVE', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     live_games = []
 
@@ -21,12 +21,12 @@ def index(request: HttpRequest):
             'home_team': match['homeTeam']['name'],
             'away_team': match['awayTeam']['name'],
             'home_team_score': match['score']['fullTime']['homeTeam'],
-            'away_team_score': match['score']['fullTime']['awayTeam']
+            'away_team_score': match['score']['fullTime']['awayTeam'],
         })
 
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
     count = 0
@@ -34,6 +34,7 @@ def index(request: HttpRequest):
     for team in response['standings'][0]['table']:
         teams.append({
             'position': team['position'],
+            'crest': 'images/team_' + str(team['team']['id']) + ".png",
             'name': team['team']['name'],
             'played_games': team['playedGames'],
             'goal_difference': team['goalDifference'],
@@ -47,8 +48,8 @@ def index(request: HttpRequest):
 
     latest_news = News.objects.order_by('-date_time')
 
-    if len(latest_news) > 3:
-        latest_news = latest_news[:3]
+    if len(latest_news) > 5:
+        latest_news = latest_news[:5]
 
     context = {
         'live_games': live_games,
@@ -59,10 +60,28 @@ def index(request: HttpRequest):
     return render(request, 'golden_goal/index.html', context)
 
 
+def live_games_index(request: HttpRequest):
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': auth_token}
+    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    live_games = []
+
+    for match in response['matches']:
+        live_games.append({
+            'home_team': match['homeTeam']['name'],
+            'away_team': match['awayTeam']['name'],
+            'home_team_score': match['score']['fullTime']['homeTeam'],
+            'away_team_score': match['score']['fullTime']['awayTeam'],
+        })
+
+    return JsonResponse(json.dumps(live_games), safe=False)
+
+
 def results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches?status=FINISHED', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches?status=FINISHED', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
 
@@ -78,9 +97,11 @@ def results(request: HttpRequest):
             'home_team': match['homeTeam']['name'],
             'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
+            'home_team_score_halftime': match['score']['halfTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
             'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
-            'away_team_score': match['score']['fullTime']['awayTeam']
+            'away_team_score': match['score']['fullTime']['awayTeam'],
+            'away_team_score_halftime': match['score']['halfTime']['awayTeam']
         }
 
         if match['matchday'] > curr_matchday:
@@ -109,7 +130,7 @@ def results(request: HttpRequest):
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches?status=LIVE', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
 
@@ -139,7 +160,7 @@ def prediction(request: HttpRequest):
 
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/matches', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/matches', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
     matches.sort(key=my_func)
@@ -179,7 +200,7 @@ def prediction(request: HttpRequest):
 def standings(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/standings', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
 
@@ -208,7 +229,7 @@ def standings(request: HttpRequest):
 def scorers(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token}
-    connection.request('GET', '/v2/competitions/PL/scorers', None, headers)
+    connection.request('GET', '/v2/competitions/BSA/scorers', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     players = []
     count = 1

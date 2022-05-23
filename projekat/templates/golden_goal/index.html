@@ -3,6 +3,7 @@
 
 {% block head %}
     <link rel = "stylesheet" href="{% static 'css/index.css' %}">
+    <script src="{% static 'javascript/index.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +19,7 @@
                                 <th class="border-zero rounded-right col-5 bottom-right-zero-radius">Away team</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="live_games">
                             {% for live_game in live_games %}
                                 <tr>
                                     <td class="col-5">{{ live_game.home_team }}</td>
