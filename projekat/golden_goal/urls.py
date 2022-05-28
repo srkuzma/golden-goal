@@ -25,4 +25,5 @@ urlpatterns = [
     path('update_news/<int:news_id>', update_news, name='update_news'),
     path('comment_news/<int:news_id>', comment_news, name='comment_news'),
     path('reply_comment/<int:comment_id>', reply_comment, name='reply_comment'),
+    path('delete_news', delete_news, name='delete_news'),
 ]

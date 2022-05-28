@@ -425,6 +425,17 @@ def update_news(request: HttpRequest, news_id):
     except News.DoesNotExist:
         raise Http404("News not found!")
 
+@login_required(login_url='sign_in')
+def delete_news(request: HttpRequest):
+    news_id = request.POST.get('news_id')
+    try:
+        # if request.user.has_perm('delete_news'):
+        curr_news = News.objects.get(pk=news_id)
+        curr_news.delete()
+
+        return redirect('home')
+    except News.DoesNotExist:
+        raise Http404("News not found!")
 
 def search_news(request: HttpRequest):
     all_news = []
