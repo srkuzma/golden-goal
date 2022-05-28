@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, Http404, JsonResponse
+from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from .config import auth_token
 import http.client
@@ -425,17 +425,18 @@ def update_news(request: HttpRequest, news_id):
     except News.DoesNotExist:
         raise Http404("News not found!")
 
+
 @login_required(login_url='sign_in')
 def delete_news(request: HttpRequest):
-    news_id = request.POST.get('news_id')
+    news_id = request.POST['news_id']
     try:
         # if request.user.has_perm('delete_news'):
         curr_news = News.objects.get(pk=news_id)
         curr_news.delete()
-
         return redirect('home')
     except News.DoesNotExist:
         raise Http404("News not found!")
+
 
 def search_news(request: HttpRequest):
     all_news = []
@@ -563,3 +564,21 @@ def delete_moderator(request: HttpRequest):
         user.delete()
 
     return redirect('user_administration')
+
+
+def like(request: HttpRequest):
+    if request.method == 'POST':
+        comment_id = request.POST['comment_id']
+        comment = Comment.objects.get(pk=comment_id)
+        comment.like_counter = comment.like_counter + 1
+        comment.save()
+        return HttpResponse("like")
+
+
+def dislike(request: HttpRequest):
+    if request.method == 'POST':
+        comment_id = request.POST['comment_id']
+        comment = Comment.objects.get(pk=comment_id)
+        comment.dislike_counter = comment.dislike_counter + 1
+        comment.save()
+        return HttpResponse("dislike")

@@ -8,7 +8,7 @@
 {% block content %}
     <div class="col-12">
         <br>
-        <table class="table table-striped rounded table-dark text-center">
+        <table class="table table-striped rounded-top table-dark text-center">
             <thead>
                 <tr class="text-warning rounded-top">
                     <th class="border-zero rounded-left bottom-left-zero-radius">Position</th>
@@ -25,18 +25,28 @@
             </thead>
             <tbody>
                 {% for team in teams %}
-                    <tr>
-                    <td>{{ team.position }}</td>
-                    <td class="text-left"><img src="{% static team.crest %}" class="crest" alt="">&nbsp;{{ team.name }}</td>
-                    <td>{{ team.played_games }}</td>
-                    <td>{{ team.won }}</td>
-                    <td>{{ team.draw }}</td>
-                    <td>{{ team.lost }}</td>
-                    <td>{{ team.goals_for }}</td>
-                    <td>{{ team.goals_against }}</td>
-                    <td>{{ team.goal_difference }}</td>
-                    <td>{{ team.points }}</td>
-                </tr>
+                    {% if team.position < 5 %}
+                        <tr style="border-left: 5px solid blue;">
+                    {% elif team.position >= 5 and team.position < 7 %}
+                        <tr style="border-left: 5px solid orange;">
+                    {% elif team.position >= 7 and team.position < 13 %}
+                        <tr style="border-left: 5px solid green;">
+                    {% elif team.position > 16%}
+                        <tr style="border-left: 5px solid red;">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                        <td>{{ team.position }}</td>
+                        <td class="text-left"><img src="{% static team.crest %}" class="crest" alt="">&nbsp;{{ team.name }}</td>
+                        <td>{{ team.played_games }}</td>
+                        <td>{{ team.won }}</td>
+                        <td>{{ team.draw }}</td>
+                        <td>{{ team.lost }}</td>
+                        <td>{{ team.goals_for }}</td>
+                        <td>{{ team.goals_against }}</td>
+                        <td>{{ team.goal_difference }}</td>
+                        <td>{{ team.points }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
