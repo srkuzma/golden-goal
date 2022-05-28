@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
@@ -478,6 +480,7 @@ def comment_news(request: HttpRequest, news_id):
             comment.text = form.cleaned_data['text']
             comment.news_id = news_id
             comment.author_id = author.id
+            comment.date_time = datetime.datetime.now()
             comment.save()
             return redirect('../news/' + str(news_id))
 
@@ -506,6 +509,7 @@ def reply_comment(request: HttpRequest, comment_id):
             comment.comment_reply_id = comment_id
             comment.news_id = curr_news.id
             comment.author_id = author.id
+            comment.date_time = datetime.datetime.now()
             comment.save()
             return redirect('../news/' + str(curr_news.id))
 
