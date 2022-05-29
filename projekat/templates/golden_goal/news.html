@@ -65,7 +65,7 @@
 
                         <div class="col-12 justify-content-end text-right">
                             {% if user.is_authenticated and user.type == 'administrator' %}
-                                <a class="btn btn-warning comment-button" href="{% url 'news' news.id %}" role="button">Delete</a>
+                                <a class="btn btn-warning comment-button" href="{% url 'delete_comment' comment.comment.id %}" role="button">Delete</a>
                             {% elif user.is_authenticated and user.type == 'moderator' %}
                             {% else %}
                                 <div class="row justify-content-end">
@@ -112,7 +112,7 @@
 
                         <div class="col-12 justify-content-end text-right">
                             {% if user.is_authenticated and user.type == 'administrator' %}
-                                <a class="btn btn-warning comment-button" href="{% url 'news' news.id %}" role="button">Delete</a>
+                                <a class="btn btn-warning comment-button" href="{% url 'delete_comment' comment.comment.id %}" role="button">Delete</a>
                             {% elif user.is_authenticated and user.type == 'moderator' %}
                             {% else %}
                                 <div class="row justify-content-end">

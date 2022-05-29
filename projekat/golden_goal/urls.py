@@ -27,5 +27,6 @@ urlpatterns = [
     path('reply_comment/<int:comment_id>', reply_comment, name='reply_comment'),
     path('delete_news', delete_news, name='delete_news'),
     path('like', like, name='like'),
-    path('dislike', dislike, name='dislike')
+    path('dislike', dislike, name='dislike'),
+    path('delete_comment/<int:comment_id>', delete_comment, name='delete_comment')
 ]

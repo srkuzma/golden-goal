@@ -586,3 +586,16 @@ def dislike(request: HttpRequest):
         comment.dislike_counter = comment.dislike_counter + 1
         comment.save()
         return HttpResponse("dislike")
+
+@login_required(login_url='sign_in')
+def delete_comment(request: HttpRequest, comment_id):
+    try:
+        curr_comm = Comment.objects.get(pk=comment_id)
+        curr_news = News.objects.get(pk=curr_comm.news_id)
+        author = User.objects.get(username=request.user.get_username())
+        if (author.type=="administrator"):
+            curr_comm.delete()
+        return redirect('../news/' + str(curr_news.id))
+    except News.DoesNotExist:
+        raise Http404("Comment not found!")
+
