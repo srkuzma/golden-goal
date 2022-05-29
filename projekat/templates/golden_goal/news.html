@@ -3,7 +3,6 @@
 
 {% block head %}
     <link rel = "stylesheet" href="{% static 'css/news.css' %}">
-    <script src="{% static 'javascript/news.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -50,97 +49,65 @@
                 </div>
             </div>
 
+            {% if comments %}
+                {% for comment in comments %}
+                    {% if comment.comment.comment_reply_id == None %}
+                        <div class="row bg-dark rounded comment">
+                            <div class="row bg-dark text-white rounded-top comment-text">
+                                <p class="col-12">{{ comment.comment.text }}</p>
+                            </div>
 
-            {% for comment in comments %}
-                {% if comment.comment.comment_reply_id == None %}
-                    <div class="row bg-dark rounded comment">
+                            <div class="row bg-dark text-warning rounded-top comment-author-date">
+                                <h5 class="col-12">{{ comment.comment.author }} | {{ comment.comment.date_time }}</h5>
+                            </div>
 
-                        <div class="row bg-dark text-white rounded-top comment-text">
-                            <p class="col-12">{{ comment.comment.text }}</p>
+                            <div class="col-12 justify-content-end text-right">
+                                {% if user.is_authenticated and user.type == 'administrator' %}
+                                    <a class="btn btn-warning comment-button" href="{% url 'delete_comment' comment.comment.id %}" role="button">Delete</a>
+                                {% elif user.is_authenticated and user.type == 'moderator' %}
+                                {% else %}
+                                    <div class="row justify-content-end">
+                                        {% if user.is_authenticated and user.type != 'moderator' %}
+                                            <a class="btn btn-warning comment-button" href="{% url 'reply_comment' comment.comment.id %}" role="button">Reply</a>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
+                    {% else %}
+                        <div class="row bg-dark rounded comment">
+                            <div class="row bg-dark text-white rounded-top comment-text">
+                                <p class="col-12 comment-text-reply">{{ comment.comment_reply.text }}</p>
 
-                        <div class="row bg-dark text-warning rounded-top comment-author-date">
-                            <h5 class="col-12">{{ comment.comment.author }} | {{ comment.comment.date_time }}</h5>
+                                <h5 class="col-12 bg-dark text-warning">({{ comment.comment_reply.author }} | {{ comment.comment_reply.date_time }})</h5>
+                            </div>
+
+                            <div class="row bg-dark text-white rounded-top comment-text">
+                                <p class="col-12">{{ comment.comment.text }}</p>
+                            </div>
+
+                            <div class="row bg-dark text-warning rounded-top comment-author-date">
+                                <h5 class="col-12">{{ comment.comment.author }} | {{ comment.comment.date_time }}</h5>
+                            </div>
+
+                            <div class="col-12 justify-content-end text-right">
+                                {% if user.is_authenticated and user.type == 'administrator' %}
+                                    <a class="btn btn-warning comment-button" href="{% url 'delete_comment' comment.comment.id %}" role="button">Delete</a>
+                                {% elif user.is_authenticated and user.type == 'moderator' %}
+                                {% else %}
+                                    <div class="row justify-content-end">
+                                        {% if user.is_authenticated and user.type != 'moderator' %}
+                                            <a class="btn btn-warning comment-button" href="{% url 'reply_comment' comment.comment.id %}" role="button">Reply</a>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-
-                        <div class="col-12 justify-content-end text-right">
-                            {% if user.is_authenticated and user.type == 'administrator' %}
-                                <a class="btn btn-warning comment-button" href="{% url 'delete_comment' comment.comment.id %}" role="button">Delete</a>
-                            {% elif user.is_authenticated and user.type == 'moderator' %}
-                            {% else %}
-                                <div class="row justify-content-end">
-                                    <form method="post" class="like-form">
-                                        {% csrf_token%}
-                                        <button class="btn btn-success comment-button" type="submit" id="like-{{ comment.comment.id }}">
-                                            <img src="{% static 'images/like.png' %}" class="icon" alt="">
-                                            <span>{{ comment.comment.like_counter }}</span>
-                                        </button>
-                                    </form>
-
-                                    <form method="post" class="dislike-form">
-                                        {% csrf_token%}
-                                        <button class="btn btn-danger comment-button" type="submit" id="dislike-{{ comment.comment.id }}">
-                                            <img src="{% static 'images/dislike.png' %}" class="icon" alt="">
-                                            <span>{{ comment.comment.dislike_counter }}</span>
-                                        </button>
-                                    </form>
-
-                                    {% if user.is_authenticated and user.type != 'moderator' %}
-                                        <a class="btn btn-warning comment-button" href="{% url 'reply_comment' comment.comment.id %}" role="button">Reply</a>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% else %}
-
-                    <div class="row bg-dark rounded comment">
-
-                        <div class="row bg-dark text-white rounded-top comment-text">
-                            <p class="col-12 comment-text-reply">{{ comment.comment_reply.text }}</p>
-
-                            <h5 class="col-12 bg-dark text-warning">({{ comment.comment_reply.author }} | {{ comment.comment_reply.date_time }})</h5>
-                        </div>
-
-                        <div class="row bg-dark text-white rounded-top comment-text">
-                            <p class="col-12">{{ comment.comment.text }}</p>
-                        </div>
-
-                        <div class="row bg-dark text-warning rounded-top comment-author-date">
-                            <h5 class="col-12">{{ comment.comment.author }} | {{ comment.comment.date_time }}</h5>
-                        </div>
-
-                        <div class="col-12 justify-content-end text-right">
-                            {% if user.is_authenticated and user.type == 'administrator' %}
-                                <a class="btn btn-warning comment-button" href="{% url 'delete_comment' comment.comment.id %}" role="button">Delete</a>
-                            {% elif user.is_authenticated and user.type == 'moderator' %}
-                            {% else %}
-                                <div class="row justify-content-end">
-                                    <form method="post" class="like-form">
-                                        {% csrf_token%}
-                                        <button class="btn btn-success comment-button" type="submit" id="like-{{ comment.comment.id }}">
-                                            <img src="{% static 'images/like.png' %}" class="icon" alt="">
-                                            <span>{{ comment.comment.like_counter }}</span>
-                                        </button>
-                                    </form>
-
-                                    <form method="post" class="dislike-form">
-                                        {% csrf_token%}
-                                        <button class="btn btn-danger comment-button" type="submit" id="dislike-{{ comment.comment.id }}">
-                                            <img src="{% static 'images/dislike.png' %}" class="icon" alt="">
-                                            <span>{{ comment.comment.dislike_counter }}</span>
-                                        </button>
-                                    </form>
-
-                                    {% if user.is_authenticated and user.type != 'moderator' %}
-                                        <a class="btn btn-warning comment-button" href="{% url 'reply_comment' comment.comment.id %}" role="button">Reply</a>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <h1 class="text-warning text-center">No comments.</h1>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

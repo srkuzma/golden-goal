@@ -1,10 +1,8 @@
-import datetime
-
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
+from django.http import HttpRequest, Http404, JsonResponse
 from django.shortcuts import render, redirect
-from .config import auth_token
+from .config import *
 import http.client
 import json
 from .forms import *
@@ -12,7 +10,7 @@ from .forms import *
 
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token2}
     connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     live_games = []
@@ -26,7 +24,7 @@ def index(request: HttpRequest):
         })
 
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token3}
     connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
@@ -63,7 +61,7 @@ def index(request: HttpRequest):
 
 def live_games_index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token1}
     connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     live_games = []
@@ -81,7 +79,7 @@ def live_games_index(request: HttpRequest):
 
 def results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token1}
     connection.request('GET', '/v2/competitions/BSA/matches?status=FINISHED', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
@@ -130,7 +128,7 @@ def results(request: HttpRequest):
 
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token2}
     connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
@@ -160,7 +158,7 @@ def prediction(request: HttpRequest):
     live_matchdays = [matchday for matchday in live_matchdays if len(matchday['games']) != 0]
 
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token3}
     connection.request('GET', '/v2/competitions/BSA/matches', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     matches = response['matches']
@@ -200,7 +198,7 @@ def prediction(request: HttpRequest):
 
 def standings(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token4}
     connection.request('GET', '/v2/competitions/BSA/standings', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     teams = []
@@ -229,7 +227,7 @@ def standings(request: HttpRequest):
 
 def scorers(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
-    headers = {'X-Auth-Token': auth_token}
+    headers = {'X-Auth-Token': auth_token4}
     connection.request('GET', '/v2/competitions/BSA/scorers', None, headers)
     response = json.loads(connection.getresponse().read().decode())
     players = []
@@ -570,32 +568,16 @@ def delete_moderator(request: HttpRequest):
     return redirect('user_administration')
 
 
-def like(request: HttpRequest):
-    if request.method == 'POST':
-        comment_id = request.POST['comment_id']
-        comment = Comment.objects.get(pk=comment_id)
-        comment.like_counter = comment.like_counter + 1
-        comment.save()
-        return HttpResponse("like")
-
-
-def dislike(request: HttpRequest):
-    if request.method == 'POST':
-        comment_id = request.POST['comment_id']
-        comment = Comment.objects.get(pk=comment_id)
-        comment.dislike_counter = comment.dislike_counter + 1
-        comment.save()
-        return HttpResponse("dislike")
-
 @login_required(login_url='sign_in')
 def delete_comment(request: HttpRequest, comment_id):
     try:
         curr_comm = Comment.objects.get(pk=comment_id)
         curr_news = News.objects.get(pk=curr_comm.news_id)
         author = User.objects.get(username=request.user.get_username())
-        if (author.type=="administrator"):
+
+        if author.type == "administrator":
             curr_comm.delete()
+
         return redirect('../news/' + str(curr_news.id))
     except News.DoesNotExist:
         raise Http404("Comment not found!")
-
