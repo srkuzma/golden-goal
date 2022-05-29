@@ -31,8 +31,6 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     news = models.ForeignKey(News, on_delete=models.CASCADE)
     comment_reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
-    like_counter = models.IntegerField(default=0)
-    dislike_counter = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'comment'
