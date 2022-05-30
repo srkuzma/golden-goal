@@ -26,5 +26,6 @@ urlpatterns = [
     path('comment_news/<int:news_id>', comment_news, name='comment_news'),
     path('reply_comment/<int:comment_id>', reply_comment, name='reply_comment'),
     path('delete_news', delete_news, name='delete_news'),
-    path('delete_comment/<int:comment_id>', delete_comment, name='delete_comment')
+    path('delete_comment/<int:comment_id>', delete_comment, name='delete_comment'),
+    path('prediction/predict_match/', predict_match, name='predict_match'),
 ]

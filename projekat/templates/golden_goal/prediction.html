@@ -48,7 +48,15 @@
         <div class="row justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 justify-content-center">
                 <br>
-                <h1 class="bg-dark text-warning rounded col-6 offset-3 title" align="center">Schedule</h1>
+                <div class="row">
+                    <h1 class="bg-dark text-warning rounded col-6 offset-3 title" align="center">Schedule</h1>
+                    <div class="col-2 text-center">
+                        <form id="predict-form" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-warning text-dark view predict" role="button" value="predict" type="submit">Predict</button>
+                        </form>
+                    </div>
+                </div>
                 {% if scheduled_matchdays %}
                     {% for scheduled_matchday in scheduled_matchdays %}
                         <h1 class="text-center title schedule-title id-{{ scheduled_matchday.id }}">Matchday {{ scheduled_matchday.matchday }}</h1>
@@ -65,10 +73,10 @@
                                 {% for game in scheduled_matchday.games %}
                                     <tr>
                                         <td align="right" class="col-3">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" class="crest" alt=""></td>
-                                        <td class="col-3">
-                                            <input type="radio" name="radio2" id="radio21"> <label for="radio21">1</label>
-                                            <input type="radio" name="radio2" id="radio2X"> <label for="radio2X">X</label>
-                                            <input type="radio" name="radio2" id="radio22"> <label for="radio22">2</label>
+                                        <td class="col-3 type-{{game.prediction}}">
+                                            <input type="radio" name="name-{{ game.id }}" id="id-1-{{ game.id }}"> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
+                                            <input type="radio" name="name-{{ game.id }}" id="id-X-{{ game.id }}"> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
+                                            <input type="radio" name="name-{{ game.id }}" id="id-2-{{ game.id }}"> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
                                         </td>
                                         <td align="left" class="col-3"><img src="{% static game.away_team_crest %}" class="crest" alt="">&nbsp;{{ game.away_team }}</td>
                                         <td class="col-3">{{ game.datetime }}</td>
