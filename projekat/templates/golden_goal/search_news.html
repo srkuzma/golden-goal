@@ -41,7 +41,7 @@
                                 <p class="col-12">{{ news.news.summary }}</p>
                                 <div class="col-12 justify-content-end text-right">
                                     <div class="row justify-content-end">
-                                        <a class="btn btn-warning news-button" href="{% url 'news' news.id %}" role="button">Read more</a>
+                                        <a class="btn btn-warning news-button" href="{% url 'news' news.news.id %}" role="button">Read more</a>
                                         {% if user.is_authenticated %}
                                             {% if user.type == 'moderator' and news.news.author == user %}
                                                 <a class="btn btn-warning news-button" href="{% url 'update_news' news.id %}" role="button">Update</a>

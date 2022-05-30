@@ -1,8 +1,8 @@
-input:checked + * {
+input[type="radio"]:checked + * {
     background-color: #119b15;
 }
 
-input:not(:checked) + * {
+input[type="radio"]:not(:checked) + * {
     background-color: #cf0e0e;
 }
 
@@ -10,21 +10,24 @@ input[type="radio"] {
     display: none;
 }
 
+.red-pred {
+    background-color: #cf0e0e !important;
+}
+
 label {
     height: 30px;
     width: 30px;
     margin: 3px;
     border-radius: 10%;
-    /* box-shadow: 1px 1px #222222; */
 }
 
-input:checked + *:hover {
-    background-color: #14a519;
+input[type="radio"]:not(:disabled):checked + *:hover {
+    background-color: #14a519 !important;
     transition: 100ms;
 }
 
-input:not(:checked) + *:hover {
-    background-color: #d3301e;
+input[type="radio"]:not(:disabled):not(:checked) + *:hover {
+    background-color: #d3301e !important;
     transition: 100ms;
 }
 

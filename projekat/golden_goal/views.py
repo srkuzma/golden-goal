@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, Http404, JsonResponse
+from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from .config import *
 import http.client
@@ -47,8 +47,8 @@ def index(request: HttpRequest):
 
     latest_news = News.objects.order_by('-date_time')
 
-    if len(latest_news) > 5:
-        latest_news = latest_news[:5]
+    if len(latest_news) > 3:
+        latest_news = latest_news[:3]
 
     context = {
         'live_games': live_games,
@@ -125,7 +125,6 @@ def results(request: HttpRequest):
 
     return render(request, 'golden_goal/results.html', context)
 
-
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token2}
@@ -135,6 +134,11 @@ def prediction(request: HttpRequest):
 
     def my_func(val):
         return val['matchday']
+
+    def get_prediction(match_id):
+        user = User.objects.get(username=request.user.get_username())
+        predictions = Prediction.objects.filter(user=request.user, game=match_id)
+        return predictions[0].type if len(predictions)>0 else ''
 
     matches.sort(key=my_func)
     live_matchdays = []
@@ -180,7 +184,9 @@ def prediction(request: HttpRequest):
             'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
             'away_team': match['awayTeam']['name'],
             'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
-            'datetime': match['utcDate'][:10] + " " + match['utcDate'][11:16] + "h"
+            'datetime': match['utcDate'][:10] + " " + match['utcDate'][11:16] + "h",
+            'id': match['id'],
+            'prediction': get_prediction(match['id'])
         })
 
     scheduled_matchdays = [matchday for matchday in scheduled_matchdays if len(matchday['games']) != 0]
@@ -581,3 +587,17 @@ def delete_comment(request: HttpRequest, comment_id):
         return redirect('../news/' + str(curr_news.id))
     except News.DoesNotExist:
         raise Http404("Comment not found!")
+
+@login_required(login_url='sign_in')
+def predict_match(request: HttpRequest):
+    buttons = json.loads(request.POST.get("buttons"))
+    for button in buttons:
+        info = button.split("-")
+        type = info[1]
+        game = info[2]
+        user_id = request.user.id
+        prediction = Prediction(game=game, type=type, user_id=user_id)
+        prediction.save()
+    response = HttpResponse('OK')
+    response.status_code = 200
+    return response
