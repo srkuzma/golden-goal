@@ -47,6 +47,14 @@ input[type="radio"]:not(:disabled):not(:checked) + *:hover {
     background-color: #119b15;
 }
 
+.gray-res {
+    width: 50px;
+    height: 30px;
+    margin: 3px;
+    border-radius: 10%;
+    background-color: #252a2e;
+}
+
 .title {
     padding: 10px; !important;
 }

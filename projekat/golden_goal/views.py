@@ -56,6 +56,37 @@ def index(request: HttpRequest):
         'latest_news': latest_news
     }
 
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': auth_token4}
+    connection.request('GET', '/v2/competitions/BSA/matches?status=FINISHED', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+
+    finished_games = []
+    match_ids = []
+
+    def get_result(home_team_score, away_team_score):
+        if (home_team_score > away_team_score):
+            return '1'
+        elif (home_team_score < away_team_score):
+            return '2'
+        else:
+            return 'X'
+
+    for match in response['matches']:
+        match_id = match['id']
+        home_team_score = match['score']['fullTime']['homeTeam']
+        away_team_score = match['score']['fullTime']['awayTeam']
+        predictions = Prediction.objects.filter(game=match_id)
+        if (predictions):
+            for prediction in predictions:
+                type = prediction.type
+                user = prediction.user
+                result = get_result(home_team_score, away_team_score)
+                if(type == result):
+                    user.score += 50
+                    user.save()
+                prediction.delete()
+
     return render(request, 'golden_goal/index.html', context)
 
 
@@ -125,6 +156,48 @@ def results(request: HttpRequest):
 
     return render(request, 'golden_goal/results.html', context)
 
+def live_results(request: HttpRequest):
+    connection = http.client.HTTPConnection('api.football-data.org')
+    headers = {'X-Auth-Token': auth_token2}
+    connection.request('GET', '/v2/competitions/BSA/matches?status=LIVE', None, headers)
+    response = json.loads(connection.getresponse().read().decode())
+    matches = response['matches']
+
+    def my_func(val):
+        return val['matchday']
+
+    def get_prediction(match_id):
+        if request.user.is_authenticated:
+            user = User.objects.get(username=request.user.get_username())
+            predictions = Prediction.objects.filter(user=user, game=match_id)
+            return predictions[0].type if len(predictions) > 0 else ''
+        else:
+            return ''
+
+    matches.sort(key=my_func)
+    live_matchdays = []
+
+    for i in range(38):
+        live_matchdays.append({
+            'matchday': i + 1,
+            'games': []
+        })
+
+    for match in matches:
+        live_matchdays[match['matchday'] - 1]['games'].append({
+            'home_team': match['homeTeam']['name'],
+            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
+            'home_team_score': match['score']['fullTime']['homeTeam'],
+            'away_team': match['awayTeam']['name'],
+            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
+            'away_team_score': match['score']['fullTime']['awayTeam'],
+            'id': match['id'],
+            'prediction': get_prediction(match['id'])
+        })
+
+    live_matchdays = [matchday for matchday in live_matchdays if len(matchday['games']) != 0]
+    return JsonResponse(json.dumps(live_matchdays), safe=False)
+
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token2}
@@ -136,9 +209,12 @@ def prediction(request: HttpRequest):
         return val['matchday']
 
     def get_prediction(match_id):
-        user = User.objects.get(username=request.user.get_username())
-        predictions = Prediction.objects.filter(user=request.user, game=match_id)
-        return predictions[0].type if len(predictions)>0 else ''
+        if request.user.is_authenticated:
+            user = User.objects.get(username=request.user.get_username())
+            predictions = Prediction.objects.filter(user=user, game=match_id)
+            return predictions[0].type if len(predictions) > 0 else ''
+        else:
+            return ''
 
     matches.sort(key=my_func)
     live_matchdays = []
