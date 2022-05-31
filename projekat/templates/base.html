@@ -25,83 +25,83 @@
                 <span class="col-md-10 col-lg-10 col-xl-11 col-sm-12">
                     <span class="row d-none d-xl-block">
                         <a href="https://www.americamineiro.com.br/">
-                            <img src="{% static 'images/team_1838.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1838.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.athletico.com.br/">
-                            <img src="{% static 'images/team_1768.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1768.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.atleticogoianiense.com.br/">
-                            <img src="{% static 'images/team_3988.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_3988.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://atletico.com.br/">
-                            <img src="{% static 'images/team_1766.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1766.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.avai.com.br/">
-                            <img src="{% static 'images/team_1775.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1775.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.botafogo.com.br/">
-                            <img src="{% static 'images/team_1770.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1770.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.cearasc.com/">
-                            <img src="{% static 'images/team_1837.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1837.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.corinthians.com.br/">
-                            <img src="{% static 'images/team_1779.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1779.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.coritiba.com.br/Portal">
-                            <img src="{% static 'images/team_4241.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_4241.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://cuiabaesporteclube.com.br/">
-                            <img src="{% static 'images/team_4289.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_4289.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://fortaleza1918.com.br/">
-                            <img src="{% static 'images/team_3984.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_3984.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.flamengo.com.br/">
-                            <img src="{% static 'images/team_1783.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1783.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.fluminense.com.br/site/">
-                            <img src="{% static 'images/team_1765.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1765.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.goiasec.com.br/">
-                            <img src="{% static 'images/team_4250.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_4250.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.internacional.com.br/">
-                            <img src="{% static 'images/team_6684.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_6684.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.juventude.com.br/">
-                            <img src="{% static 'images/team_4245.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_4245.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.palmeiras.com.br/">
-                            <img src="{% static 'images/team_1769.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1769.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.redbullbragantino.com.br/">
-                            <img src="{% static 'images/team_4286.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_4286.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.santosfc.com.br/en/">
-                            <img src="{% static 'images/team_6685.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_6685.png' %}" class="logo" alt="">
                         </a>
 
                         <a href="https://www.saopaulofc.net/">
-                            <img src="{% static 'images/team_1776.png' %}" class="logo" alt="">
+                            <img src="{% static 'images/teams/team_1776.png' %}" class="logo" alt="">
                         </a>
                     </span>
                     <div class="row">
@@ -140,7 +140,7 @@
                         <div class="col-xl-3 d-xl-block d-none text-right user-div-xl">
                             {% if user.is_authenticated %}
                                 <a class="btn btn-outline-warning username" style="padding: 5px;" href="{% url 'user_profile' %}" role="button">
-                                    <img src="{% static 'images/team_4241.png' %}" class="user_icon" alt="">
+                                    <img src="{% static user.image %}" class="user_icon" alt="">
                                     {{ user.username }}
                                     {% if user.type == 'user' %}
                                         {% if user.presents == 0 %}
@@ -162,7 +162,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-8 col-8 d-xl-none text-right user-div">
                             {% if user.is_authenticated %}
                                 <a class="btn btn-outline-warning username" href="{% url 'user_profile' %}" role="button">
-                                    <img src="{% static 'images/team_4241.png' %}" class="user_icon" alt="">
+                                    <img src="{% static user.image %}" class="user_icon" alt="">
                                     {{ user.username }}
                                     {% if user.type == 'user' %}
                                         {% if user.presents == 0 %}

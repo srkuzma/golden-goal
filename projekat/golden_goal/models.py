@@ -8,7 +8,7 @@ class User(AbstractUser):
     score = models.IntegerField(default=0)
     double_prediction_counter = models.IntegerField(default=0)
     presents = models.IntegerField(default=0)
-    image = models.IntegerField(default=0)
+    image = models.CharField(max_length=250, default='images/image_0.png')
 
     class Meta:
         db_table = 'user'

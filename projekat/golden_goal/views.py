@@ -1,3 +1,4 @@
+from random import randint
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
@@ -6,6 +7,7 @@ from .config import *
 import http.client
 import json
 from .forms import *
+import pytz
 
 
 def index(request: HttpRequest):
@@ -61,13 +63,10 @@ def index(request: HttpRequest):
     connection.request('GET', '/v2/competitions/BSA/matches?status=FINISHED', None, headers)
     response = json.loads(connection.getresponse().read().decode())
 
-    finished_games = []
-    match_ids = []
-
-    def get_result(home_team_score, away_team_score):
-        if (home_team_score > away_team_score):
+    def get_result(home_score, away_score):
+        if home_score > away_score:
             return '1'
-        elif (home_team_score < away_team_score):
+        elif home_score < away_score:
             return '2'
         else:
             return 'X'
@@ -77,15 +76,18 @@ def index(request: HttpRequest):
         home_team_score = match['score']['fullTime']['homeTeam']
         away_team_score = match['score']['fullTime']['awayTeam']
         predictions = Prediction.objects.filter(game=match_id)
-        if (predictions):
-            for prediction in predictions:
-                type = prediction.type
-                user = prediction.user
+
+        if predictions:
+            for curr_prediction in predictions:
+                curr_type = curr_prediction.type
+                user = curr_prediction.user
                 result = get_result(home_team_score, away_team_score)
-                if(type == result):
+
+                if curr_type == result:
                     user.score += 50
                     user.save()
-                prediction.delete()
+
+                curr_prediction.delete()
 
     return render(request, 'golden_goal/index.html', context)
 
@@ -129,7 +131,7 @@ def results(request: HttpRequest):
             'home_team_score': match['score']['fullTime']['homeTeam'],
             'home_team_score_halftime': match['score']['halfTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
-            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
+            'away_team_crest': 'images/teams/team_' + str(match['awayTeam']['id']) + ".png",
             'away_team_score': match['score']['fullTime']['awayTeam'],
             'away_team_score_halftime': match['score']['halfTime']['awayTeam']
         }
@@ -155,6 +157,7 @@ def results(request: HttpRequest):
     }
 
     return render(request, 'golden_goal/results.html', context)
+
 
 def live_results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
@@ -189,7 +192,7 @@ def live_results(request: HttpRequest):
             'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
-            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
+            'away_team_crest': 'images/teams/team_' + str(match['awayTeam']['id']) + ".png",
             'away_team_score': match['score']['fullTime']['awayTeam'],
             'id': match['id'],
             'prediction': get_prediction(match['id'])
@@ -197,6 +200,7 @@ def live_results(request: HttpRequest):
 
     live_matchdays = [matchday for matchday in live_matchdays if len(matchday['games']) != 0]
     return JsonResponse(json.dumps(live_matchdays), safe=False)
+
 
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
@@ -228,7 +232,7 @@ def prediction(request: HttpRequest):
     for match in matches:
         live_matchdays[match['matchday'] - 1]['games'].append({
             'home_team': match['homeTeam']['name'],
-            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
+            'home_team_crest': 'images/teams/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
             'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
@@ -257,7 +261,7 @@ def prediction(request: HttpRequest):
 
         scheduled_matchdays[match['matchday'] - 1]['games'].append({
             'home_team': match['homeTeam']['name'],
-            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
+            'home_team_crest': 'images/teams/team_' + str(match['homeTeam']['id']) + ".png",
             'away_team': match['awayTeam']['name'],
             'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
             'datetime': match['utcDate'][:10] + " " + match['utcDate'][11:16] + "h",
@@ -288,7 +292,7 @@ def standings(request: HttpRequest):
     for team in response['standings'][0]['table']:
         teams.append({
             'position': team['position'],
-            'crest': 'images/team_' + str(team['team']['id']) + ".png",
+            'crest': 'images/teams/team_' + str(team['team']['id']) + ".png",
             'name': team['team']['name'],
             'played_games': team['playedGames'],
             'won': team['won'],
@@ -365,16 +369,19 @@ def log_out(request: HttpRequest):
 @login_required(login_url='sign_in')
 def user_profile(request: HttpRequest):
     users = User.objects.order_by('score')
-    rank = 1
+    users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
+    user = User.objects.get(username=request.user.get_username())
 
-    for user in users:
-        if request.user.username == user.username:
-            break
-        else:
-            rank += 1
+    if user.type == 'user':
+        rank = users.index(user) + 1
+    else:
+        rank = -1
+
+    presents = Present.objects.filter(user=user) if user.type == 'user' else []
 
     context = {
-        'rank': rank
+        'rank': rank,
+        'presents': presents
     }
 
     return render(request, 'golden_goal/user_profile.html', context)
@@ -383,13 +390,13 @@ def user_profile(request: HttpRequest):
 @login_required(login_url='sign_in')
 def user_images(request: HttpRequest):
     users = User.objects.order_by('score')
-    rank = 1
+    users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
+    user = User.objects.get(username=request.user.get_username())
 
-    for user in users:
-        if request.user.username == user.username:
-            break
-        else:
-            rank += 1
+    if user.type == 'user':
+        rank = users.index(user) + 1
+    else:
+        rank = -1
 
     context = {
         'rank': rank
@@ -437,6 +444,45 @@ def sign_in(request: HttpRequest):
         user = authenticate(username=username, password=password)
 
         if user is not None:
+            last_login = user.last_login
+            current_datetime = datetime.datetime.now(pytz.timezone('UTC'))
+            difference = current_datetime - last_login
+
+            if user.type == 'user' and difference.total_seconds() > 24 * 60 * 60:
+                users = User.objects.order_by('score')
+                users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
+                position = users.index(user) + 1
+
+                if position > 3:
+                    present_type = 'points'
+                    points = randint(1, 5) * 50
+                    present = Present(type=present_type, points=points, user=user)
+                elif 1 < position <= 3:
+                    present_type = 'points' if randint(0, 1) == 0 else 'image'
+
+                    if present_type == 'points':
+                        points = randint(1, 5) * 100
+                        present = Present(type=present_type, points=points, user=user)
+                    else:
+                        image = randint(1, 25)
+                        present = Present(type=present_type, image=image, user=user)
+                else:
+                    r = randint(0, 2)
+                    present_type = 'points' if r == 0 else 'image' if r == 1 else 'double_prediction'
+
+                    if present_type == 'points':
+                        points = randint(1, 5) * 200
+                        present = Present(type=present_type, points=points, user=user)
+                    elif present_type == 'image':
+                        image = randint(21, 40)
+                        present = Present(type=present_type, image=image, user=user)
+                    else:
+                        present = Present(type=present_type, user=user)
+
+                present.save()
+                user.presents = user.presents + 1
+                user.save()
+
             login(request, user)
             return redirect('home')
 
@@ -664,16 +710,19 @@ def delete_comment(request: HttpRequest, comment_id):
     except News.DoesNotExist:
         raise Http404("Comment not found!")
 
+
 @login_required(login_url='sign_in')
 def predict_match(request: HttpRequest):
-    buttons = json.loads(request.POST.get("buttons"))
+    buttons = json.loads(str(request.POST['buttons']))
+
     for button in buttons:
         info = button.split("-")
-        type = info[1]
+        curr_type = info[1]
         game = info[2]
         user_id = request.user.id
-        prediction = Prediction(game=game, type=type, user_id=user_id)
-        prediction.save()
+        curr_prediction = Prediction(game=game, type=curr_type, user_id=user_id)
+        curr_prediction.save()
+
     response = HttpResponse('OK')
     response.status_code = 200
     return response

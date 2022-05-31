@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <script src="{% static 'javascript/user_profile.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     {% if user.type == 'administrator' %}
         <div class="container content" style="padding-top: 50px;">
             <div class="row justify-content-center" style="margin-bottom: 50px;">
                 <div class="col-8 bg-dark rounded justify-content-center">
                     <div class="text-center" style="margin-top: 50px;">
-                        <img class="rounded profile_img" src="{% static 'images/team_4241.png' %}" alt="">
+                        <img class="rounded profile_img" src="{% static user.image %}" alt="">
                     </div>
 
                     <div class="text-center text-warning" style="font-size: 30px;">
@@ -33,7 +37,7 @@
             <div class="row justify-content-center" style="margin-bottom: 50px;">
                 <div class="col-8 bg-dark rounded justify-content-center">
                     <div class="text-center" style="margin-top: 50px;">
-                        <img class="rounded profile_img" src="{% static 'images/team_4241.png' %}" alt="">
+                        <img class="rounded profile_img" src="{% static user.image %}" alt="">
                     </div>
 
                     <div class="text-center text-warning" style="font-size: 30px;">
@@ -55,7 +59,7 @@
             <div class="row bg-dark rounded" style="margin-bottom: 50px;">
                 <div class="col-4 bg-dark rounded">
                     <div class="text-center" style="margin-top: 50px; margin-bottom: 20px;">
-                        <img class="rounded profile_img" src="{% static 'images/team_4241.png' %}" alt="">
+                        <img class="rounded profile_img" src="{% static user.image %}" alt="">
                     </div>
 
                     <div class="text-center text-warning" style="font-size: 30px;">
@@ -77,72 +81,52 @@
 
                 <div class="col-8 bg-dark rounded">
                     <div class="text-left text-warning" style="font-size: 50px; margin-top: 40px; margin-bottom: 30px;">
-                        Unopened presents
+                        Presents
                     </div>
 
                     <div class="row text-left">
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
-                            <div>
-                                <img class="rounded profile_img" src="{% static 'images/team_4241.png' %}" alt="">
+                        {% for present in presents %}
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center unopened">
+                                <div>
+                                    <img class="rounded profile_img" style="margin-top: 8px; margin-bottom: 50px;" src="{% static 'images/present.png' %}" alt="">
+                                </div>
                             </div>
 
-                            <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
-                                New image
-                            </div>
-                        </div>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center opened">
+                                {% if present.type == 'points' %}
+                                    <div class="text-warning" style="font-size: 75px;">
+                                        {{ present.points }}
+                                    </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
-                            <div>
-                                <img class="rounded profile_img" src="{% static 'images/team_4241.png' %}" alt="">
-                            </div>
+                                    <div class="text-warning" style="margin-top: 8px; margin-bottom: 50px; font-size: 20px;">
+                                        More points
+                                    </div>
+                                {% elif present.type == 'image' %}
+                                    <div>
+                                        <img class="rounded profile_img" src="{% static 'images/image_' %}{{ present.image }}.png" alt="">
+                                    </div>
 
-                            <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
-                                New image
-                            </div>
-                        </div>
+                                    <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
+                                        New image
+                                    </div>
+                                {% else %}
+                                    <div class="text-warning" style="font-size: 75px;">
+                                        X2
+                                    </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
-                            <div class="text-warning" style="font-size: 75px;">
-                                50
+                                    <div class="text-warning" style="margin-top: 8px; margin-bottom: 50px; font-size: 20px;">
+                                        Double prediction
+                                    </div>
+                                {% endif %}
                             </div>
-
-                            <div class="text-warning" style="margin-top: 8px; margin-bottom: 50px; font-size: 20px;">
-                                More points
-                            </div>
-                        </div>
-
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
-                            <div class="text-warning" style="font-size: 75px;">
-                                X2
-                            </div>
-
-                            <div class="text-warning" style="margin-top: 8px; margin-bottom: 50px; font-size: 20px;">
-                                Double prediction
-                            </div>
-                        </div>
-
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
-                            <div class="text-warning" style="font-size: 75px;">
-                                100
-                            </div>
-
-                            <div class="text-warning" style="margin-top: 8px; margin-bottom: 50px; font-size: 20px;">
-                                More points
-                            </div>
-                        </div>
-
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center">
-                            <div>
-                                <img class="rounded profile_img" src="{% static 'images/team_4241.png' %}" alt="">
-                            </div>
-
-                            <div class="text-warning" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
-                                New image
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
 
-                    <div class="text-right" style="margin-bottom: 50px; margin-right: 40px;">
+                    <div class="text-right open-presents" style="margin-bottom: 50px; margin-right: 40px;">
+                        <button class="btn btn-warning" style="font-weight: bold;">Open presents</button>
+                    </div>
+
+                    <div class="text-right take-presents" style="margin-bottom: 50px; margin-right: 40px;">
                         <a class="btn btn-warning" style="font-weight: bold;" href="{% url 'user_profile' %}" role="button">Take presents</a>
                     </div>
                 </div>
