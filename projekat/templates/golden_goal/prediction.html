@@ -12,34 +12,38 @@
             <div class="col-xl-8 col-lg-8 col-md-10">
                 <br>
                 <h1 class="bg-dark text-warning rounded col-8 offset-2 title" align="center">Live results</h1>
-                {% if live_matchdays %}
-                    {% for live_matchday in live_matchdays %}
-                        <h1 class="text-center matchday">Matchday {{ live_matchday.matchday }}</h1>
-                        <table class="table table-striped table-dark rounded text-center">
-                            <thead>
-                                <tr class="text-warning rounded">
-                                    <th class="border-zero rounded-left col-5 bottom-left-zero-radius">Home team</th>
-                                    <th class="border-zero col-2">Result</th>
-                                    <th class="border-zero rounded-right col-5 bottom-right-zero-radius">Away team</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for game in live_matchday.games %}
-                                    <tr>
-                                        <td class="col-5" align="right">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" class="crest" alt=""></td>
-                                        <td class="col-2" align="center">
-                                            <div class="red-res">{{ game.home_team_score }} : {{ game.away_team_score }}</div>
-                                        </td>
-                                        <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" class="crest" alt="">&nbsp;{{ game.away_team }}</td>
+
+                <div id="live_matchdays">
+                    {% if live_matchdays %}
+                        {% for live_matchday in live_matchdays %}
+                            <h1 class="text-center matchday">Matchday {{ live_matchday.matchday }}</h1>
+                            <table class="table table-striped table-dark rounded text-center">
+                                <thead>
+                                    <tr class="text-warning rounded">
+                                        <th class="border-zero rounded-left col-5 bottom-left-zero-radius">Home team</th>
+                                        <th class="border-zero col-2">Result</th>
+                                        <th class="border-zero rounded-right col-5 bottom-right-zero-radius">Away team</th>
                                     </tr>
-                                {% endfor %}
-                            <tr class="rounded"></tr>
-                            </tbody>
-                        </table>
-                    {% endfor %}
-                {% else %}
-                    <h2 class="text-center no-games">There are currently no live games.</h2>
-                {% endif %}
+                                </thead>
+                                <tbody>
+                                    {% for game in live_matchday.games %}
+                                        <tr>
+                                            <td class="col-5" align="right">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" class="crest" alt=""></td>
+                                            <td class="col-2" align="center">
+                                                <div id="{{ game.id }}">{{ game.home_team_score }} : {{ game.away_team_score }}</div>
+                                            </td>
+                                            <td class="col-5" align="left"><img src="{% static game.away_team_crest %}" class="crest" alt="">&nbsp;{{ game.away_team }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                <tr class="rounded"></tr>
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    {% else %}
+                        <h2 class="text-center no-games">There are currently no live games.</h2>
+                    {% endif %}
+                </div>
+
             </div>
         </div>
 
@@ -52,8 +56,13 @@
                     <h1 class="bg-dark text-warning rounded col-6 offset-3 title" align="center">Schedule</h1>
                     <div class="col-2 text-center">
                         <form id="predict-form" method="post">
-                            {% csrf_token %}
-                            <button class="btn btn-warning text-dark view predict" role="button" value="predict" type="submit">Predict</button>
+                            {% if user.is_authenticated %}
+                                {% csrf_token %}
+                                <button class="btn btn-warning text-dark view predict" role="button" value="predict" type="submit">Predict</button>
+                            {% else %}
+                                <button class="btn btn-warning text-dark view predict" role="button" value="predict" disabled>Predict</button>
+                            {% endif %}
+
                         </form>
                     </div>
                 </div>
@@ -74,9 +83,15 @@
                                     <tr>
                                         <td align="right" class="col-3">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" class="crest" alt=""></td>
                                         <td class="col-3 type-{{game.prediction}}">
-                                            <input type="radio" name="name-{{ game.id }}" id="id-1-{{ game.id }}"> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
-                                            <input type="radio" name="name-{{ game.id }}" id="id-X-{{ game.id }}"> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
-                                            <input type="radio" name="name-{{ game.id }}" id="id-2-{{ game.id }}"> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
+                                            {% if user.is_authenticated %}
+                                                <input type="radio" name="name-{{ game.id }}" id="id-1-{{ game.id }}"> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
+                                                <input type="radio" name="name-{{ game.id }}" id="id-X-{{ game.id }}"> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
+                                                <input type="radio" name="name-{{ game.id }}" id="id-2-{{ game.id }}"> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
+                                            {% else %}
+                                                <input type="radio" name="name-{{ game.id }}" id="id-1-{{ game.id }}" disabled> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
+                                                <input type="radio" name="name-{{ game.id }}" id="id-X-{{ game.id }}" disabled> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
+                                                <input type="radio" name="name-{{ game.id }}" id="id-2-{{ game.id }}" disabled> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
+                                            {% endif %}
                                         </td>
                                         <td align="left" class="col-3"><img src="{% static game.away_team_crest %}" class="crest" alt="">&nbsp;{{ game.away_team }}</td>
                                         <td class="col-3">{{ game.datetime }}</td>
