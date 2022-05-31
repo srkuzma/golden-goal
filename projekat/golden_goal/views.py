@@ -127,7 +127,7 @@ def results(request: HttpRequest):
     for match in matches:
         game = {
             'home_team': match['homeTeam']['name'],
-            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
+            'home_team_crest': 'images/teams/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
             'home_team_score_halftime': match['score']['halfTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
@@ -189,7 +189,7 @@ def live_results(request: HttpRequest):
     for match in matches:
         live_matchdays[match['matchday'] - 1]['games'].append({
             'home_team': match['homeTeam']['name'],
-            'home_team_crest': 'images/team_' + str(match['homeTeam']['id']) + ".png",
+            'home_team_crest': 'images/teams/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
             'away_team_crest': 'images/teams/team_' + str(match['awayTeam']['id']) + ".png",
@@ -235,7 +235,7 @@ def prediction(request: HttpRequest):
             'home_team_crest': 'images/teams/team_' + str(match['homeTeam']['id']) + ".png",
             'home_team_score': match['score']['fullTime']['homeTeam'],
             'away_team': match['awayTeam']['name'],
-            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
+            'away_team_crest': 'images/teams/team_' + str(match['awayTeam']['id']) + ".png",
             'away_team_score': match['score']['fullTime']['awayTeam']
         })
 
@@ -263,7 +263,7 @@ def prediction(request: HttpRequest):
             'home_team': match['homeTeam']['name'],
             'home_team_crest': 'images/teams/team_' + str(match['homeTeam']['id']) + ".png",
             'away_team': match['awayTeam']['name'],
-            'away_team_crest': 'images/team_' + str(match['awayTeam']['id']) + ".png",
+            'away_team_crest': 'images/teams/team_' + str(match['awayTeam']['id']) + ".png",
             'datetime': match['utcDate'][:10] + " " + match['utcDate'][11:16] + "h",
             'id': match['id'],
             'prediction': get_prediction(match['id'])
