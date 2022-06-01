@@ -95,12 +95,8 @@ body {
     border: 0 !important;
 }
 
-.content-guest {
-    min-height: calc(100vh - 215px);
-}
-
 .content {
-    min-height: calc(100vh - 222px);
+    min-height: calc(100vh - 215px);
 }
 
 .footer {
