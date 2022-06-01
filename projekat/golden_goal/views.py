@@ -348,7 +348,8 @@ def user_rang_list(request: HttpRequest):
         ranked_users.append({
             'username': user.username,
             'rank': rank,
-            'score': user.score
+            'score': user.score,
+            'image': user.image
         })
 
         rank += 1
