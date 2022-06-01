@@ -1,6 +1,6 @@
 from random import randint
 from django.contrib.auth import logout, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from .config import *
@@ -390,33 +390,42 @@ def user_profile(request: HttpRequest):
 
 @login_required(login_url='sign_in')
 def user_images(request: HttpRequest):
-    users = User.objects.order_by('-score')
-    users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
     user = User.objects.get(username=request.user.get_username())
 
     if user.type == 'user':
-        rank = users.index(user) + 1
+        users = User.objects.order_by('-score')
+        users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
+
+        if user.type == 'user':
+            rank = users.index(user) + 1
+        else:
+            rank = -1
+
+        context = {
+            'rank': rank
+        }
+
+        return render(request, 'golden_goal/user_images.html', context)
     else:
-        rank = -1
-
-    context = {
-        'rank': rank
-    }
-
-    return render(request, 'golden_goal/user_images.html', context)
+        return HttpResponse(status=404)
 
 
 @login_required(login_url='sign_in')
 def user_administration(request: HttpRequest):
-    users = User.objects.filter(type='user')
-    moderators = User.objects.filter(type='moderator')
+    user = User.objects.get(username=request.user.get_username())
 
-    context = {
-        'users': users,
-        'moderators': moderators
-    }
+    if user.type == 'administrator':
+        users = User.objects.filter(type='user')
+        moderators = User.objects.filter(type='moderator')
 
-    return render(request, 'golden_goal/user_administration.html', context)
+        context = {
+            'users': users,
+            'moderators': moderators
+        }
+
+        return render(request, 'golden_goal/user_administration.html', context)
+    else:
+        return HttpResponse(status=404)
 
 
 def sign_up(request: HttpRequest):
@@ -494,6 +503,7 @@ def sign_in(request: HttpRequest):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.add_news', raise_exception=True)
 def add_news(request: HttpRequest):
     news_form = AddNewsForm(request.POST or None)
 
@@ -533,6 +543,7 @@ def news(request: HttpRequest, news_id):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.change_news', raise_exception=True)
 def update_news(request: HttpRequest, news_id):
     try:
         curr_news = News.objects.get(pk=news_id)
@@ -555,10 +566,10 @@ def update_news(request: HttpRequest, news_id):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.delete_news', raise_exception=True)
 def delete_news(request: HttpRequest):
     news_id = request.POST['news_id']
     try:
-        # if request.user.has_perm('delete_news'):
         curr_news = News.objects.get(pk=news_id)
         curr_news.delete()
         return redirect('home')
@@ -594,6 +605,8 @@ def search_news(request: HttpRequest):
     return render(request, 'golden_goal/search_news.html', context)
 
 
+@login_required(login_url='sign_in')
+@permission_required('golden_goal.add_comment', raise_exception=True)
 def comment_news(request: HttpRequest, news_id):
     try:
         curr_news = News.objects.get(pk=news_id)
@@ -621,6 +634,8 @@ def comment_news(request: HttpRequest, news_id):
         raise Http404("News not found!")
 
 
+@login_required(login_url='sign_in')
+@permission_required('golden_goal.add_comment', raise_exception=True)
 def reply_comment(request: HttpRequest, comment_id):
     try:
         curr_comm = Comment.objects.get(pk=comment_id)
@@ -651,6 +666,7 @@ def reply_comment(request: HttpRequest, comment_id):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.change_user', raise_exception=True)
 def make_moderator(request: HttpRequest):
     user_id = request.POST['user_id']
 
@@ -663,6 +679,7 @@ def make_moderator(request: HttpRequest):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.delete_user', raise_exception=True)
 def delete_user(request: HttpRequest):
     user_id = request.POST['user_id']
 
@@ -674,6 +691,7 @@ def delete_user(request: HttpRequest):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.change_user', raise_exception=True)
 def unmake_moderator(request: HttpRequest):
     moderator_id = request.POST['moderator_id']
 
@@ -686,6 +704,7 @@ def unmake_moderator(request: HttpRequest):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.delete_user', raise_exception=True)
 def delete_moderator(request: HttpRequest):
     moderator_id = request.POST['moderator_id']
 
@@ -697,6 +716,7 @@ def delete_moderator(request: HttpRequest):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.delete_comment', raise_exception=True)
 def delete_comment(request: HttpRequest, comment_id):
     try:
         curr_comm = Comment.objects.get(pk=comment_id)
@@ -712,6 +732,7 @@ def delete_comment(request: HttpRequest, comment_id):
 
 
 @login_required(login_url='sign_in')
+@permission_required('golden_goal.add_prediction', raise_exception=True)
 def predict_match(request: HttpRequest):
     buttons = json.loads(str(request.POST['buttons']))
 
@@ -748,5 +769,6 @@ def take_presents(request: HttpRequest):
 
         user.presents -= len(presents)
         user.save()
-
-    return redirect('user_profile')
+        return redirect('user_profile')
+    else:
+        return HttpResponse(status=404)
