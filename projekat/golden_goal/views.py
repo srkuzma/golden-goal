@@ -338,7 +338,7 @@ def scorers(request: HttpRequest):
 
 
 def user_rang_list(request: HttpRequest):
-    users = User.objects.order_by('score')
+    users = User.objects.order_by('-score')
     users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
 
     ranked_users = []
@@ -368,7 +368,7 @@ def log_out(request: HttpRequest):
 
 @login_required(login_url='sign_in')
 def user_profile(request: HttpRequest):
-    users = User.objects.order_by('score')
+    users = User.objects.order_by('-score')
     users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
     user = User.objects.get(username=request.user.get_username())
 
@@ -389,7 +389,7 @@ def user_profile(request: HttpRequest):
 
 @login_required(login_url='sign_in')
 def user_images(request: HttpRequest):
-    users = User.objects.order_by('score')
+    users = User.objects.order_by('-score')
     users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
     user = User.objects.get(username=request.user.get_username())
 
@@ -444,20 +444,19 @@ def sign_in(request: HttpRequest):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            last_login = user.last_login
-            current_datetime = datetime.datetime.now(pytz.timezone('UTC'))
-            difference = current_datetime - last_login
+            last_login = user.last_login.date()
+            current_date = datetime.datetime.now(pytz.timezone('UTC')).date()
 
-            if user.type == 'user' and difference.total_seconds() > 24 * 60 * 60:
-                users = User.objects.order_by('score')
+            if user.type == 'user':
+                users = User.objects.order_by('-score')
                 users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
                 position = users.index(user) + 1
 
-                if position > 3:
+                if position > 20:
                     present_type = 'points'
                     points = randint(1, 5) * 50
                     present = Present(type=present_type, points=points, user=user)
-                elif 1 < position <= 3:
+                elif 10 < position <= 20:
                     present_type = 'points' if randint(0, 1) == 0 else 'image'
 
                     if present_type == 'points':
@@ -726,3 +725,27 @@ def predict_match(request: HttpRequest):
     response = HttpResponse('OK')
     response.status_code = 200
     return response
+
+
+@login_required(login_url='sign_in')
+def take_presents(request: HttpRequest):
+    user = User.objects.get(username=request.user.get_username())
+
+    if user.type == 'user':
+        presents = Present.objects.filter(user=user)
+
+        for present in presents:
+            if present.type == 'points':
+                user.score += present.points
+            elif present.type == 'image':
+                user_image = UserImage(user=user, image=present.image)
+                user_image.save()
+            else:
+                user.double_prediction_counter += 1
+
+            present.delete()
+
+        user.presents -= len(presents)
+        user.save()
+
+    return redirect('user_profile')
