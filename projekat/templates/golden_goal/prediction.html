@@ -84,13 +84,13 @@
                                         <td align="right" class="col-3">{{ game.home_team }}&nbsp;<img src="{% static game.home_team_crest %}" class="crest" alt=""></td>
                                         <td class="col-3 type-{{game.prediction}}">
                                             {% if user.is_authenticated %}
-                                                <input type="radio" name="name-{{ game.id }}" id="id-1-{{ game.id }}"> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
-                                                <input type="radio" name="name-{{ game.id }}" id="id-X-{{ game.id }}"> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
-                                                <input type="radio" name="name-{{ game.id }}" id="id-2-{{ game.id }}"> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
+                                                <input type="checkbox" name="name-{{ game.id }}" id="id-1-{{ game.id }}"> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
+                                                <input type="checkbox" name="name-{{ game.id }}" id="id-X-{{ game.id }}"> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
+                                                <input type="checkbox" name="name-{{ game.id }}" id="id-2-{{ game.id }}"> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
                                             {% else %}
-                                                <input type="radio" name="name-{{ game.id }}" id="id-1-{{ game.id }}" disabled> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
-                                                <input type="radio" name="name-{{ game.id }}" id="id-X-{{ game.id }}" disabled> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
-                                                <input type="radio" name="name-{{ game.id }}" id="id-2-{{ game.id }}" disabled> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
+                                                <input type="checkbox" name="name-{{ game.id }}" id="id-1-{{ game.id }}" disabled> <label for="id-1-{{ game.id }}" class="red-pred">1</label>
+                                                <input type="checkbox" name="name-{{ game.id }}" id="id-X-{{ game.id }}" disabled> <label for="id-X-{{ game.id }}" class="red-pred">X</label>
+                                                <input type="checkbox" name="name-{{ game.id }}" id="id-2-{{ game.id }}" disabled> <label for="id-2-{{ game.id }}" class="red-pred">2</label>
                                             {% endif %}
                                         </td>
                                         <td align="left" class="col-3"><img src="{% static game.away_team_crest %}" class="crest" alt="">&nbsp;{{ game.away_team }}</td>

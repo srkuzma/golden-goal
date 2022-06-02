@@ -53,7 +53,7 @@ class Prediction(models.Model):
 
     class Meta:
         db_table = 'prediction'
-        models.UniqueConstraint(fields=['user', 'game'], name='prediction_primary_key')
+        constraints = [models.UniqueConstraint(fields=['user', 'game'], name='prediction_primary_key')]
 
 
 class UserImage(models.Model):

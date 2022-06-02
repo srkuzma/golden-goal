@@ -86,7 +86,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
         'USER': 'root',
-        'PASSWORD': 'golden_goal/2022'
+        'PASSWORD': 'root'
     }
 }
 

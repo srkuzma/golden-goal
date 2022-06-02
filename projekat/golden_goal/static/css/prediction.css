@@ -1,12 +1,12 @@
-input[type="radio"]:checked + * {
+input[type="checkbox"]:checked + * {
     background-color: #119b15;
 }
 
-input[type="radio"]:not(:checked) + * {
+input[type="checkbox"]:not(:checked) + * {
     background-color: #cf0e0e;
 }
 
-input[type="radio"] {
+input[type="checkbox"] {
     display: none;
 }
 
@@ -21,12 +21,12 @@ label {
     border-radius: 10%;
 }
 
-input[type="radio"]:not(:disabled):checked + *:hover {
+input[type="checkbox"]:not(:disabled):checked + *:hover {
     background-color: #14a519 !important;
     transition: 100ms;
 }
 
-input[type="radio"]:not(:disabled):not(:checked) + *:hover {
+input[type="checkbox"]:not(:disabled):not(:checked) + *:hover {
     background-color: #d3301e !important;
     transition: 100ms;
 }
