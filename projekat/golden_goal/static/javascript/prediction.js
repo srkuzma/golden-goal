@@ -51,7 +51,6 @@ $(document).ready(function() {
                 type: 'GET',
             }).done(function(response) {
                 let live_matchdays = JSON.parse(response)
-
                 let live_matchdays_div = $("#live_matchdays")
                 live_matchdays_div.empty();
 
@@ -68,7 +67,6 @@ $(document).ready(function() {
 
                     tr.append(home).append(result).append(away)
                     thead.append(tr)
-
                     let games = live_matchdays[i]["games"];
                     let tbody = $("<tbody>")
 
@@ -78,14 +76,18 @@ $(document).ready(function() {
                         let home_score = games[j]['home_team_score']
                         let away_score = games[j]['away_team_score']
                         let colorClass = get_color(prediction, home_score, away_score)
+
                         game_tr.append($("<td>").prop('align','right').addClass("col-5").append(games[j]['home_team'] + " ").append($("<img>").addClass("crest").prop('alt', '').prop
                         ('src', '/static/' + games[j]['home_team_crest'])))
+
                         game_tr.append($("<td>").prop('align','center').addClass("col-2").append($("<div>").attr('id', games[j]['id']).addClass(colorClass).text(games[j]['home_team_score'] + " : " + games[j]['away_team_score'])))
+
                         game_tr.append($("<td>").prop('align','left').addClass("col-5").append($("<img>").addClass("crest").prop('alt', '').prop('src', '/static/' + games[j]['away_team_crest'])).append(" " + games[j]['away_team']))
+
                         tbody.append(game_tr)
                     }
-                    tbody.append($("<tr>").addClass("rounded"))
 
+                    tbody.append($("<tr>").addClass("rounded"))
                     table.append(thead)
                     table.append(tbody)
                     live_matchdays_div.append(table)
@@ -164,11 +166,11 @@ $(document).ready(function() {
             return;
         }
 
-        if (num_checked == 1 && label.css('background-color') === 'rgb(20, 165, 25)'){
+        if (num_checked === 1 && label.css('background-color') === 'rgb(20, 165, 25)'){
             used_double--;
         }
 
-        if (num_checked == 2){
+        if (num_checked === 2){
             if(double_prediction_count > used_double){
                 used_double++;
             }
@@ -226,7 +228,6 @@ $(document).ready(function() {
 
     function addForType(type){
         let toColor = [];
-
         let types = type.split('')
 
         for (let t of types){
@@ -244,8 +245,10 @@ $(document).ready(function() {
         }
 
         $(".type-" + type + " label").removeClass('red-pred')
+
         for(let t of toColor)
             $(".type-" + type + " label:nth-of-type(" + t + ")").css({'background-color':'goldenrod'});
+
         $(".type-" + type + " input").prop('disabled', true);
     }
 
