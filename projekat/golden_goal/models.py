@@ -62,4 +62,4 @@ class UserImage(models.Model):
 
     class Meta:
         db_table = 'user_image'
-        models.UniqueConstraint(fields=['user', 'image'], name='user_image_primary_key')
+        constraints = [models.UniqueConstraint(fields=['user', 'image'], name='user_image_primary_key')]
