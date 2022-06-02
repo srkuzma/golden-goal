@@ -3,6 +3,8 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpRequest, Http404, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
+from django.db.models import Q
 from .config import *
 import http.client
 import json
@@ -378,11 +380,6 @@ def user_profile(request: HttpRequest):
     else:
         rank = -1
 
-    if request.method == 'POST':
-        image_id = request.POST['change_button']
-        if image_id != '':
-            user.image = 'images/image_' + image_id + '.png'
-            user.save()
     presents = Present.objects.filter(user=user) if user.type == 'user' else []
 
     context = {
@@ -397,25 +394,24 @@ def user_profile(request: HttpRequest):
 def user_images(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
 
+    users = User.objects.order_by('-score')
+    users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
+
     if user.type == 'user':
-        users = User.objects.order_by('-score')
-        users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
-
-        if user.type == 'user':
-            rank = users.index(user) + 1
-        else:
-            rank = -1
-
-        images = UserImage.objects.filter(user=user)
-
-        context = {
-            'rank': rank,
-            'images': images
-        }
-
-        return render(request, 'golden_goal/user_images.html', context)
+        rank = users.index(user) + 1
     else:
-        return HttpResponse(status=404)
+        rank = -1
+
+    user_image_id = int(user.image[13:-4])
+
+    images = UserImage.objects.filter(user=user).filter(~Q(image=user_image_id))
+
+    context = {
+        'rank': rank,
+        'images': images
+    }
+
+    return render(request, 'golden_goal/user_images.html', context)
 
 
 @login_required(login_url='sign_in')
@@ -443,6 +439,8 @@ def sign_up(request: HttpRequest):
         user = registration_form.save(commit=False)
         user.type = 'user'
         user.save()
+        user_image = UserImage(user=user, image=0)
+        user_image.save()
         login(request, user)
         return redirect('home')
 
@@ -481,7 +479,7 @@ def sign_in(request: HttpRequest):
                         points = randint(1, 5) * 100
                         present = Present(type=present_type, points=points, user=user)
                     else:
-                        image = randint(1, 25)
+                        image = randint(1, 30)
                         present = Present(type=present_type, image=image, user=user)
                 else:
                     r = randint(0, 2)
@@ -491,7 +489,7 @@ def sign_in(request: HttpRequest):
                         points = randint(1, 5) * 200
                         present = Present(type=present_type, points=points, user=user)
                     elif present_type == 'image':
-                        image = randint(21, 40)
+                        image = randint(21, 41)
                         present = Present(type=present_type, image=image, user=user)
                     else:
                         present = Present(type=present_type, user=user)
@@ -682,6 +680,14 @@ def make_moderator(request: HttpRequest):
     if user_id:
         user = User.objects.get(pk=user_id)
         user.type = 'moderator'
+        group_user = Group.objects.get(name='user')
+        group_moderator = Group.objects.get(name='moderator')
+        user.groups.remove(group_user)
+        user.groups.add(group_moderator)
+
+        for i in range(41, 47):
+            image = UserImage(user=user, image=i)
+            image.save()
         user.save()
 
     return redirect('user_administration')
@@ -707,6 +713,18 @@ def unmake_moderator(request: HttpRequest):
     if moderator_id:
         user = User.objects.get(pk=moderator_id)
         user.type = 'user'
+        group_user = Group.objects.get(name='user')
+        group_moderator = Group.objects.get(name='moderator')
+        user.groups.add(group_user)
+        user.groups.remove(group_moderator)
+        for i in range(41, 47):
+            filepath = "images/image_" + str(i) + ".png"
+            if user.image == filepath:
+                user.image = "images/image_0.png"
+            image = UserImage.objects.filter(user=user, image=i)
+            if image:
+                image[0].delete()
+
         user.save()
 
     return redirect('user_administration')
@@ -794,6 +812,7 @@ def take_presents(request: HttpRequest):
     else:
         return HttpResponse(status=404)
 
+
 def double_prediction_count(request: HttpRequest):
     if (not request.user.is_authenticated):
         return JsonResponse(json.dumps(0), safe=False)
@@ -801,3 +820,16 @@ def double_prediction_count(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
     dpc = user.double_prediction_counter
     return JsonResponse(json.dumps(dpc), safe=False)
+
+
+@login_required(login_url='sign_in')
+def change_profile_image(request: HttpRequest):
+    user = User.objects.get(username=request.user.get_username())
+
+    if request.method == 'POST':
+        image_id = request.POST['change_button']
+        if image_id != '':
+            user.image = 'images/image_' + image_id + '.png'
+            user.save()
+
+    return redirect('user_profile')

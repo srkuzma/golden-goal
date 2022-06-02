@@ -31,4 +31,5 @@ urlpatterns = [
     path('live_results', live_results, name='live_results'),
     path('take_presents', take_presents, name='take_presents'),
     path('double_prediction_count', double_prediction_count, name='double_prediction_count'),
+    path('change_profile_image', change_profile_image, name='change_profile_image'),
 ]
