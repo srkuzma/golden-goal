@@ -125,7 +125,7 @@ $(document).ready(function() {
         }
     }
 
-    load_matchdays()
+    load_matchdays();
 
     load_more.click(function() {
         for(let i = 0; i < 5; i++) {
@@ -141,14 +141,45 @@ $(document).ready(function() {
         if(matchday_counter > last_id) {
             $(this).hide()
         }
-
-
     })
 
-    $(":radio").click(function(){
+    let double_prediction_count;
+    let used_double = 0;
+
+    $.ajax({
+            url: '/double_prediction_count',
+            dataType: 'json',
+            type: 'GET',
+        }).done(function(response) {
+            double_prediction_count = JSON.parse(response)
+        })
+
+    $(":checkbox").click(function(){
         let label = $(this).next();
 
-        $(":radio").filter(function(){
+        let num_checked = $("input[name=" + $(this).prop('name') + "]:checked").length;
+
+        if (num_checked > 2){
+            $(this).prop('checked', false)
+            return;
+        }
+
+        if (num_checked == 1 && label.css('background-color') === 'rgb(20, 165, 25)'){
+            used_double--;
+        }
+
+        if (num_checked == 2){
+            if(double_prediction_count > used_double){
+                used_double++;
+            }
+            else {
+                $(this).prop('checked', false)
+                return;
+            }
+        }
+
+
+        $(":checkbox").filter(function(){
             return $(this).prop('checked') === false && $(this).prop('disabled') === false;
         }).next().addClass("red-pred");
 
@@ -194,27 +225,32 @@ $(document).ready(function() {
 
 
     function addForType(type){
-        let n;
+        let toColor = [];
 
-        switch(type){
-            case '1':
-                n = 1;
-                break;
-            case 'X':
-                n = 2;
-                break;
-            case '2':
-                n = 3;
-                break;
+        let types = type.split('')
+
+        for (let t of types){
+            switch(t){
+                case '1':
+                    toColor.push(1);
+                    break;
+                case 'X':
+                    toColor.push(2);
+                    break;
+                case '2':
+                    toColor.push(3);
+                    break;
+            }
         }
 
         $(".type-" + type + " label").removeClass('red-pred')
-        $(".type-" + type + " label:nth-of-type(" + n + ")").css({'background-color':'goldenrod'});
+        for(let t of toColor)
+            $(".type-" + type + " label:nth-of-type(" + t + ")").css({'background-color':'goldenrod'});
         $(".type-" + type + " input").prop('disabled', true);
     }
 
     function addPredictions(){
-        let types = ["1", "X", "2"];
+        let types = ["1", "X", "2", "1X", "12", "2X", "X1", "X2", "21"];
 
         for(let type of types){
             addForType(type);

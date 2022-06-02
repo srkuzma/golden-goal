@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <script src="{% static 'javascript/user_images.js' %}"></script>
+    <link rel = "stylesheet" href="{% static 'css/user_images.css' %}">
+{% endblock %}
+
 {% block content %}
     <div class="container bg-dark rounded" style="margin-top: 50px;">
         <div class="row bg-dark rounded" style="margin-bottom: 50px;">
@@ -35,46 +40,57 @@
                     User images
                 </div>
 
-                <div class="row text-left">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
-                        <button class="btn btn-dark">
-                            <img class="rounded profile_img" src="{% static 'images/image_9.png' %}" alt="">
-                        </button>
-                    </div>
+                <div class="row text-left wrapper">
+                    {% for image in images %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
+                            <button id="{{ image.image }}" class="image">
+                                <img class="rounded profile_img" src="{% static 'images/image_' %}{{ image.image }}.png" alt="">
+                            </button>
+                        </div>
+                    {% endfor %}
 
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
-                        <button class="btn btn-dark">
-                            <img class="rounded profile_img" src="{% static 'images/image_14.png' %}" alt="">
-                        </button>
-                    </div>
-
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
-                        <button class="btn btn-dark">
-                            <img class="rounded profile_img" src="{% static 'images/image_2.png' %}" alt="">
-                        </button>
-                    </div>
-
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
-                        <button class="btn btn-dark">
-                            <img class="rounded profile_img" src="{% static 'images/image_6.png' %}" alt="">
-                        </button>
-                    </div>
-
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
-                        <button class="btn btn-dark">
-                            <img class="rounded profile_img" src="{% static 'images/image_3.png' %}" alt="">
-                        </button>
-                    </div>
-
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">
-                        <button class="btn btn-dark">
-                            <img class="rounded profile_img" src="{% static 'images/image_4.png' %}" alt="">
-                        </button>
-                    </div>
+{#                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">#}
+{#                        <button class="btn btn-dark">#}
+{#                            <img class="rounded profile_img" src="{% static 'images/image_9.png' %}" alt="">#}
+{#                        </button>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">#}
+{#                        <button class="btn btn-dark">#}
+{#                            <img class="rounded profile_img" src="{% static 'images/image_14.png' %}" alt="">#}
+{#                        </button>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">#}
+{#                        <button class="btn btn-dark">#}
+{#                            <img class="rounded profile_img" src="{% static 'images/image_2.png' %}" alt="">#}
+{#                        </button>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">#}
+{#                        <button class="btn btn-dark">#}
+{#                            <img class="rounded profile_img" src="{% static 'images/image_6.png' %}" alt="">#}
+{#                        </button>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">#}
+{#                        <button class="btn btn-dark">#}
+{#                            <img class="rounded profile_img" src="{% static 'images/image_3.png' %}" alt="">#}
+{#                        </button>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 text-center" style="margin-bottom: 50px;">#}
+{#                        <button class="btn btn-dark">#}
+{#                            <img class="rounded profile_img" src="{% static 'images/image_4.png' %}" alt="">#}
+{#                        </button>#}
+{#                    </div>#}
                 </div>
 
                 <div class="text-right" style="margin-bottom: 50px; margin-right: 40px;">
-                    <a class="btn btn-warning" style="font-weight: bold;" href="user_profile.html" role="button">Change profile image</a>
+                    <form method='post' action='{% url 'user_profile' %}'>
+                        {% csrf_token %}
+                        <button class="btn btn-warning" name="change_button" id="change_button" style="font-weight: bold;" value="" %} role="button">Change profile image</button>
+                    </form>
                 </div>
             </div>
         </div>

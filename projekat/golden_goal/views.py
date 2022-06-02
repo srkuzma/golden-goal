@@ -83,7 +83,7 @@ def index(request: HttpRequest):
                 user = curr_prediction.user
                 result = get_result(home_team_score, away_team_score)
 
-                if curr_type == result:
+                if result in curr_type.split(''):
                     user.score += 50
                     user.save()
 
@@ -378,6 +378,11 @@ def user_profile(request: HttpRequest):
     else:
         rank = -1
 
+    if request.method == 'POST':
+        image_id = request.POST['change_button']
+        if image_id != '':
+            user.image = 'images/image_' + image_id + '.png'
+            user.save()
     presents = Present.objects.filter(user=user) if user.type == 'user' else []
 
     context = {
@@ -401,8 +406,11 @@ def user_images(request: HttpRequest):
         else:
             rank = -1
 
+        images = UserImage.objects.filter(user=user)
+
         context = {
-            'rank': rank
+            'rank': rank,
+            'images': images
         }
 
         return render(request, 'golden_goal/user_images.html', context)
@@ -508,9 +516,10 @@ def add_news(request: HttpRequest):
     news_form = AddNewsForm(request.POST or None)
 
     if news_form.is_valid():
-        vest = news_form.save(commit=False)
-        vest.author = User.objects.get(username=request.user.get_username())
-        vest.save()
+        curr_news = news_form.save(commit=False)
+        curr_news.author = User.objects.get(username=request.user.get_username())
+        curr_news.date_time = datetime.datetime.now()
+        curr_news.save()
         return redirect('home')
 
     context = {
@@ -735,18 +744,28 @@ def delete_comment(request: HttpRequest, comment_id):
 @permission_required('golden_goal.add_prediction', raise_exception=True)
 def predict_match(request: HttpRequest):
     buttons = json.loads(str(request.POST['buttons']))
+    double_predictions = 0
 
     for button in buttons:
         info = button.split("-")
         curr_type = info[1]
         game = info[2]
         user_id = request.user.id
-        curr_prediction = Prediction(game=game, type=curr_type, user_id=user_id)
+        predictions = Prediction.objects.filter(game=game, user_id=user_id)
+        if (len(predictions) > 0):
+            double_predictions += 1
+            curr_prediction = predictions[0]
+            curr_prediction.type = curr_type + curr_prediction.type
+        else:
+            curr_prediction = Prediction(game=game, type=curr_type, user_id=user_id)
+
         curr_prediction.save()
 
-    response = HttpResponse('OK')
-    response.status_code = 200
-    return response
+    user = User.objects.get(username=request.user.get_username())
+    user.double_prediction_counter -= double_predictions
+    user.save()
+
+    return HttpResponse(status=200)
 
 
 @login_required(login_url='sign_in')
@@ -760,8 +779,10 @@ def take_presents(request: HttpRequest):
             if present.type == 'points':
                 user.score += present.points
             elif present.type == 'image':
-                user_image = UserImage(user=user, image=present.image)
-                user_image.save()
+                image = UserImage.objects.filter(user=user, image=present.image)
+                if image.count() == 0:
+                    user_image = UserImage(user=user, image=present.image)
+                    user_image.save()
             else:
                 user.double_prediction_counter += 1
 
@@ -772,3 +793,11 @@ def take_presents(request: HttpRequest):
         return redirect('user_profile')
     else:
         return HttpResponse(status=404)
+
+def double_prediction_count(request: HttpRequest):
+    if (not request.user.is_authenticated):
+        return JsonResponse(json.dumps(0), safe=False)
+
+    user = User.objects.get(username=request.user.get_username())
+    dpc = user.double_prediction_counter
+    return JsonResponse(json.dumps(dpc), safe=False)

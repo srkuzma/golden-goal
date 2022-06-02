@@ -29,5 +29,6 @@ urlpatterns = [
     path('delete_comment/<int:comment_id>', delete_comment, name='delete_comment'),
     path('prediction/predict_match/', predict_match, name='predict_match'),
     path('live_results', live_results, name='live_results'),
-    path('take_presents', take_presents, name='take_presents')
+    path('take_presents', take_presents, name='take_presents'),
+    path('double_prediction_count', double_prediction_count, name='double_prediction_count'),
 ]
