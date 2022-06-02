@@ -1,3 +1,9 @@
+# autori:
+# Dejan Kovacevic 0167/2019
+# Srdjan Kuzmanovic 0169/2019
+# Kosta Mladenovic 0283/2019
+# Joze Vodnik 0125/2019
+
 from random import randint
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required, permission_required
@@ -12,6 +18,10 @@ from .forms import *
 import pytz
 
 
+# Funkcija za ucitavanje vesti, utakmica uzivo i sazete tabele timova na glavnu stranicu
+# i dodavanje ili oduzimanje bodova korisnicima za predikcije za zavrsene meceve
+# param request HttpRequest
+# return HttpResponse
 def index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token2}
@@ -97,6 +107,10 @@ def index(request: HttpRequest):
     return render(request, 'golden_goal/index.html', context)
 
 
+# Funkcija koja se koristi u ajax pozivu u index.js kako bi se periodicno na svakih 10 s
+# dobile utakmice uzivo i azurirao rezultat bez osvezavanja glavne stranice
+# param request HttpRequest
+# return JsonResponse
 def live_games_index(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token1}
@@ -115,6 +129,9 @@ def live_games_index(request: HttpRequest):
     return JsonResponse(json.dumps(live_games), safe=False)
 
 
+# Funkcija za ucitavanje rezultata odigranih utakmica na results.html stranici
+# param request HttpRequest
+# return HttpResponse
 def results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token1}
@@ -164,6 +181,10 @@ def results(request: HttpRequest):
     return render(request, 'golden_goal/results.html', context)
 
 
+# Funkcija koja se koristi u ajax pozivu u prediction.js kako bi se periodicno na svakih 10 s
+# dobile utakmice uzivo i azurirao rezultat bez osvezavanja stranice prediction.html
+# param request HttpRequest
+# return JsonResponse
 def live_results(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token2}
@@ -207,6 +228,9 @@ def live_results(request: HttpRequest):
     return JsonResponse(json.dumps(live_matchdays), safe=False)
 
 
+# Funkcija za ucitavanje utakmica uzivo i rasporeda utakmica na prediction.html stranicu
+# param request HttpRequest
+# return HttpResponse
 def prediction(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token2}
@@ -287,6 +311,9 @@ def prediction(request: HttpRequest):
     return render(request, 'golden_goal/prediction.html', context)
 
 
+# Funkcija koja ucitava stanje na tabeli prvenstva na standings.html
+# param request HttpRequest
+# return HttpResponse
 def standings(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token4}
@@ -316,6 +343,9 @@ def standings(request: HttpRequest):
     return render(request, 'golden_goal/standings.html', context)
 
 
+# Funkcija koja ucitava 10 najboljih strelaca prvenstva na scorers.html
+# param request HttpRequest
+# return HttpResponse
 def scorers(request: HttpRequest):
     connection = http.client.HTTPConnection('api.football-data.org')
     headers = {'X-Auth-Token': auth_token4}
@@ -342,6 +372,9 @@ def scorers(request: HttpRequest):
     return render(request, 'golden_goal/scorers.html', context)
 
 
+# Funkcija koja ucitava rang listu registrovanih korisnika po broju poena na user_rang_list.html
+# param request HttpRequest
+# return HttpResponse
 def user_rang_list(request: HttpRequest):
     users = User.objects.order_by('-score')
     users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
@@ -366,12 +399,18 @@ def user_rang_list(request: HttpRequest):
     return render(request, 'golden_goal/user_rang_list.html', context)
 
 
+# Funkcija za odjavljivanje ulogovanog korisnika
+# param request HttpRequest
+# return HttpResponseRedirect
 @login_required(login_url='sign_in')
 def log_out(request: HttpRequest):
     logout(request)
     return redirect('home')
 
 
+# Funkcija koja ucitava podatke o korisniku (rang, broj poena, tip i neotvorene poklone) na user_profile.html
+# param request HttpRequest
+# return HttpResponse
 @login_required(login_url='sign_in')
 def user_profile(request: HttpRequest):
     users = User.objects.order_by('-score')
@@ -393,6 +432,9 @@ def user_profile(request: HttpRequest):
     return render(request, 'golden_goal/user_profile.html', context)
 
 
+# Funkcija koja ucitava podatke o korisniku i  slike trenutno ulogovanog korisnika na user_images.html
+# param request HttpRequest
+# return HttpResponse
 @login_required(login_url='sign_in')
 def user_images(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
@@ -415,6 +457,9 @@ def user_images(request: HttpRequest):
     return render(request, 'golden_goal/user_images.html', context)
 
 
+# Funkcija koja ucitava listu obicnih korisnika i moderatora na user_administration.html
+# param request HttpRequest
+# return HttpResponse
 @login_required(login_url='sign_in')
 def user_administration(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
@@ -433,6 +478,9 @@ def user_administration(request: HttpRequest):
         return HttpResponse(status=404)
 
 
+# Funkcija za registraciju novog korisnika koja koristi korisnicko ime i sifru
+# param request HttpRequest
+# return HttpResponse, HttpResponseRedirect
 def sign_up(request: HttpRequest):
     registration_form = RegistrationForm(data=request.POST or None)
 
@@ -440,6 +488,8 @@ def sign_up(request: HttpRequest):
         user = registration_form.save(commit=False)
         user.type = 'user'
         user.save()
+        group_user = Group.objects.get(name='user')
+        user.groups.add(group_user)
         user_image = UserImage(user=user, image=0)
         user_image.save()
         login(request, user)
@@ -452,6 +502,11 @@ def sign_up(request: HttpRequest):
     return render(request, 'golden_goal/sign_up.html', context)
 
 
+# Funkcija za logovanje registrovanog korisnika koja koristi korisnicko ime i lozinku
+# Takodje,funkcija sluzi i za dodeljivanje nasumicno izabranog poklona korisniku ukoliko
+# mu je ovo prvo logovanje u toku dana
+# param request HttpRequest
+# return HttpResponse, HttpResponseRedirect
 def sign_in(request: HttpRequest):
     sign_in_form = UserSignInForm(data=request.POST or None)
 
@@ -464,7 +519,7 @@ def sign_in(request: HttpRequest):
             last_login = user.last_login.date()
             current_date = datetime.datetime.now(pytz.timezone('UTC')).date()
 
-            if user.type == 'user' and last_login != current_date:
+            if user.type == 'user':
                 users = User.objects.order_by('-score')
                 users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
                 position = users.index(user) + 1
@@ -509,6 +564,9 @@ def sign_in(request: HttpRequest):
     return render(request, 'golden_goal/sign_in.html', context)
 
 
+# Funkcija za dodavanje nove vesti u aplikaciju (unosi se naslov, sazetak i sadrzaj vesti)
+# param request HttpRequest
+# return HttpResponse, HttpResponseRedirect
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.add_news', raise_exception=True)
 def add_news(request: HttpRequest):
@@ -528,6 +586,10 @@ def add_news(request: HttpRequest):
     return render(request, 'golden_goal/add_news.html', context)
 
 
+# Funkcija koja ucitava podatke o vesti (naslov, sadrzaj i komentare na vest) na news.html
+# param request HttpRequest, news_id int
+# return HttpResponse
+# raises Http404
 def news(request: HttpRequest, news_id):
     try:
         curr_news = News.objects.get(pk=news_id)
@@ -550,6 +612,10 @@ def news(request: HttpRequest, news_id):
         raise Http404("News not found!")
 
 
+# Funkcija za azuriranje vesti ciji je id news_id
+# param request HttpRequest, news_id int
+# return HttpResponse, HttpResponseRedirect
+# raises Http404
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.change_news', raise_exception=True)
 def update_news(request: HttpRequest, news_id):
@@ -573,6 +639,10 @@ def update_news(request: HttpRequest, news_id):
         raise Http404("News not found!")
 
 
+# Funkcija za brisanje vesti ciji je id news_id
+# param request HttpRequest
+# return HttpResponseRedirect
+# raises Http404
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.delete_news', raise_exception=True)
 def delete_news(request: HttpRequest):
@@ -586,6 +656,10 @@ def delete_news(request: HttpRequest):
         raise Http404("News not found!")
 
 
+# Funkcija koja ucitava sve vesti na search_news.html i takodje sluzi za pretragu vesti
+# po kljucnoj reci u naslovi vesti
+# param request HttpRequest
+# return HttpResponse
 def search_news(request: HttpRequest):
     all_news = []
     query_news = []
@@ -614,6 +688,10 @@ def search_news(request: HttpRequest):
     return render(request, 'golden_goal/search_news.html', context)
 
 
+# Funkcija za dodavanje komentara na vest ciji je id news_id
+# param request HttpRequest, news_id int
+# return HttpResponse, HttpResponseRedirect
+# raises Http404
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.add_comment', raise_exception=True)
 def comment_news(request: HttpRequest, news_id):
@@ -642,6 +720,10 @@ def comment_news(request: HttpRequest, news_id):
         raise Http404("News not found!")
 
 
+# Funkcija za dodavanje komentara na komentar ciji je id comment_id
+# param request HttpRequest, comment_id int
+# return HttpResponse, HttpResponseRedirect
+# raises Http404
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.add_comment', raise_exception=True)
 def reply_comment(request: HttpRequest, comment_id):
@@ -672,6 +754,9 @@ def reply_comment(request: HttpRequest, comment_id):
         raise Http404("News not found!")
 
 
+# Funkcija za pretvaranje obicnog korisnika u moderatora
+# param request HttpRequest
+# return HttpResponseRedirect
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.change_user', raise_exception=True)
 def make_moderator(request: HttpRequest):
@@ -694,6 +779,9 @@ def make_moderator(request: HttpRequest):
     return redirect('user_administration')
 
 
+# Funkcija za brisanje obicnog korisnika iz baze
+# param request HttpRequest
+# return HttpResponseRedirect
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.delete_user', raise_exception=True)
 def delete_user(request: HttpRequest):
@@ -706,6 +794,9 @@ def delete_user(request: HttpRequest):
     return redirect('user_administration')
 
 
+# Funkcija za pretvaranje moderatora u obicnog korisnika
+# param request HttpRequest
+# return HttpResponseRedirect
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.change_user', raise_exception=True)
 def unmake_moderator(request: HttpRequest):
@@ -735,6 +826,9 @@ def unmake_moderator(request: HttpRequest):
     return redirect('user_administration')
 
 
+# Funkcija za brisanje moderatora iz baze
+# param request HttpRequest
+# return HttpResponseRedirect
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.delete_user', raise_exception=True)
 def delete_moderator(request: HttpRequest):
@@ -747,6 +841,10 @@ def delete_moderator(request: HttpRequest):
     return redirect('user_administration')
 
 
+# Funkcija za brisanje komentara ciji je id comment_id iz baze
+# param request HttpRequest, comment_id int
+# return HttpResponseRedirect
+# raises Http404
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.delete_comment', raise_exception=True)
 def delete_comment(request: HttpRequest, comment_id):
@@ -763,6 +861,9 @@ def delete_comment(request: HttpRequest, comment_id):
         raise Http404("Comment not found!")
 
 
+# Funkcija za predvidjanje ishoda meca
+# param request HttpRequest
+# return HttpResponse
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.add_prediction', raise_exception=True)
 def predict_match(request: HttpRequest):
@@ -791,6 +892,11 @@ def predict_match(request: HttpRequest):
     return HttpResponse(status=200)
 
 
+# Funkcija za preuzimanje otvorenih poklona i ispoljavanje njihovog efekta:
+# poeni - dodavanje na skor korisnika, slika - dodavanje slike u listu slika korisnika,
+# duplo predvidjanje - povecavanje broja mogucih duplih predvidjanja korisnika
+# param request HttpRequest
+# return HttpResponse, HttpresponseRedirect
 @login_required(login_url='sign_in')
 def take_presents(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
@@ -818,6 +924,9 @@ def take_presents(request: HttpRequest):
         return HttpResponse(status=404)
 
 
+# Funkcija za dobijanje mogucih duplih predvidjanja korisnika
+# param request HttpRequest
+# return Jsonresponse
 def double_prediction_count(request: HttpRequest):
     if not request.user.is_authenticated:
         return JsonResponse(json.dumps(0), safe=False)
@@ -827,6 +936,9 @@ def double_prediction_count(request: HttpRequest):
     return JsonResponse(json.dumps(dpc), safe=False)
 
 
+# Funkcija za izmenu profilne slike korisnika
+# param request HttpRequest
+# return HttpResponseRedirect
 @login_required(login_url='sign_in')
 def change_profile_image(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())

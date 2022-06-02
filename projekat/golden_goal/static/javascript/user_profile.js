@@ -1,3 +1,7 @@
+// autori:
+// Dejan Kovacevic 0167/2019
+// sluzi za animaciju otvaranja poklona
+
 $(document).ready(function() {
     $(".opened").hide();
     $(".take-presents").hide();

@@ -1,3 +1,7 @@
+// autori:
+// Dejan Kovacevic 0167/2019
+// sluzi za ucitavanja dodatnih vesti iz liste svih vesti
+
 let news_counter = 0
 
 $(document).ready(function() {
