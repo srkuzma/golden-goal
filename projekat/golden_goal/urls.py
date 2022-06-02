@@ -1,3 +1,10 @@
+# autori:
+# Dejan Kovacevic 0167/2019
+# Srdjan Kuzmanovic 0169/2019
+# Kosta Mladenovic 0283/2019
+# Joze Vodnik 0125/2019
+# definisanje ruta aplikacije
+
 from django.urls import path
 from .views import *
 

@@ -1,3 +1,9 @@
+// autori:
+// Dejan Kovacevic 0167/2019
+// Srdjan Kuzmanovic 0169/2019
+// sluzi za azuriranje rezultata utakmica uzivo bez osvezavanja prediction.html stranice,
+// za predvidjanje ishoda utakmica i ucitavanja dodatnih kola iz rasporeda utakmica
+
 let matchday_counter = 0
 
 $(document).ready(function() {

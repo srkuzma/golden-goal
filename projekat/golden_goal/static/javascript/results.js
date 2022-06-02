@@ -1,3 +1,7 @@
+// autori:
+// Dejan Kovacevic 0167/2019
+// sluzi za ucitavanja dodatnih kola iz liste odigranih utakmica
+
 let matchday_counter = 0
 
 $(document).ready(function() {
