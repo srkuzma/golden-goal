@@ -84,11 +84,14 @@ def index(request: HttpRequest):
                 curr_type = curr_prediction.type
                 user = curr_prediction.user
                 result = get_result(home_team_score, away_team_score)
+                prediction_list = list(curr_type)
 
-                if result in curr_type.split(''):
+                if result in prediction_list:
                     user.score += 50
-                    user.save()
+                else:
+                    user.score -= 50
 
+                user.save()
                 curr_prediction.delete()
 
     return render(request, 'golden_goal/index.html', context)
@@ -393,7 +396,6 @@ def user_profile(request: HttpRequest):
 @login_required(login_url='sign_in')
 def user_images(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
-
     users = User.objects.order_by('-score')
     users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
 
@@ -403,7 +405,6 @@ def user_images(request: HttpRequest):
         rank = -1
 
     user_image_id = int(user.image[13:-4])
-
     images = UserImage.objects.filter(user=user).filter(~Q(image=user_image_id))
 
     context = {
@@ -576,6 +577,7 @@ def update_news(request: HttpRequest, news_id):
 @permission_required('golden_goal.delete_news', raise_exception=True)
 def delete_news(request: HttpRequest):
     news_id = request.POST['news_id']
+
     try:
         curr_news = News.objects.get(pk=news_id)
         curr_news.delete()
@@ -618,7 +620,6 @@ def comment_news(request: HttpRequest, news_id):
     try:
         curr_news = News.objects.get(pk=news_id)
         author = User.objects.get(username=request.user.get_username())
-
         form = CommentNews(data=request.POST or None)
 
         if form.is_valid():
@@ -648,7 +649,6 @@ def reply_comment(request: HttpRequest, comment_id):
         curr_comm = Comment.objects.get(pk=comment_id)
         curr_news = News.objects.get(pk=curr_comm.news_id)
         author = User.objects.get(username=request.user.get_username())
-
         form = CommentNews(data=request.POST or None)
 
         if form.is_valid():
@@ -688,6 +688,7 @@ def make_moderator(request: HttpRequest):
         for i in range(41, 47):
             image = UserImage(user=user, image=i)
             image.save()
+
         user.save()
 
     return redirect('user_administration')
@@ -717,11 +718,15 @@ def unmake_moderator(request: HttpRequest):
         group_moderator = Group.objects.get(name='moderator')
         user.groups.add(group_user)
         user.groups.remove(group_moderator)
+
         for i in range(41, 47):
             filepath = "images/image_" + str(i) + ".png"
+
             if user.image == filepath:
                 user.image = "images/image_0.png"
+
             image = UserImage.objects.filter(user=user, image=i)
+
             if image:
                 image[0].delete()
 
@@ -770,7 +775,8 @@ def predict_match(request: HttpRequest):
         game = info[2]
         user_id = request.user.id
         predictions = Prediction.objects.filter(game=game, user_id=user_id)
-        if (len(predictions) > 0):
+
+        if len(predictions) > 0:
             double_predictions += 1
             curr_prediction = predictions[0]
             curr_prediction.type = curr_type + curr_prediction.type
@@ -782,7 +788,6 @@ def predict_match(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
     user.double_prediction_counter -= double_predictions
     user.save()
-
     return HttpResponse(status=200)
 
 
@@ -814,7 +819,7 @@ def take_presents(request: HttpRequest):
 
 
 def double_prediction_count(request: HttpRequest):
-    if (not request.user.is_authenticated):
+    if not request.user.is_authenticated:
         return JsonResponse(json.dumps(0), safe=False)
 
     user = User.objects.get(username=request.user.get_username())
@@ -827,7 +832,8 @@ def change_profile_image(request: HttpRequest):
     user = User.objects.get(username=request.user.get_username())
 
     if request.method == 'POST':
-        image_id = request.POST['change_button']
+        image_id = str(request.POST['change_button'])
+
         if image_id != '':
             user.image = 'images/image_' + image_id + '.png'
             user.save()

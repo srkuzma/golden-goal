@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container bg-dark rounded" style="margin-top: 50px;">
-        <div class="row bg-dark rounded" style="margin-bottom: 50px;">
-            {% if images %}
+    {% if images %}
+        <div class="container bg-dark rounded" style="margin-top: 50px;">
+            <div class="row bg-dark rounded" style="margin-bottom: 50px;">
                 <div class="col-4 bg-dark rounded">
                     <div class="text-center" style="margin-top: 50px;">
                         <img class="rounded profile_img" src="{% static user.image %}" alt="">
@@ -52,17 +52,21 @@
                     <div class="text-right" style="margin-bottom: 50px; margin-right: 40px;">
                         <form method='post' action='{% url 'change_profile_image' %}'>
                             {% csrf_token %}
-                            <button class="btn btn-warning" name="change_button" id="change_button" style="font-weight: bold;" value="" %} role="button">Change profile image</button>
+                            <button class="btn btn-warning" name="change_button" id="change_button" style="font-weight: bold;" value="" role="button">Change profile image</button>
                         </form>
                     </div>
                 </div>
-            {% else %}
-                <div class="col-8 offset-2 bg-dark rounded">
+            </div>
+        </div>
+    {% else %}
+        <div class="container rounded" style="margin-top: 50px;">
+            <div class="row rounded" style="margin-bottom: 50px;">
+                <div class="col-lg-8 col-lg-8 offset-2 bg-dark rounded-top">
                     <div class="text-center text-warning" style="font-size: 50px; margin-top: 40px; margin-bottom: 30px;">
                         User images
                     </div>
                 </div>
-                <div class="col-8 offset-2 bg-dark rounded">
+                <div class="col-8 offset-2 bg-dark rounded-bottom">
 
                     <div class="text-center" style="margin-top: 50px;">
                         <img class="rounded profile_img" src="{% static user.image %}" alt="">
@@ -86,8 +90,7 @@
                         <a class="btn btn-warning" style="font-weight: bold;" href="{% url 'user_profile' %}" role="button">User profile</a>
                     </div>
                 </div>
-            {% endif %}
-
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
