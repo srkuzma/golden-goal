@@ -524,7 +524,7 @@ def sign_in(request: HttpRequest):
                 users = [user for user in users if user.type != 'administrator' and user.type != 'moderator']
                 position = users.index(user) + 1
 
-                if position > 20:
+                if position > 20 and last_login != current_date:
                     present_type = 'points'
                     points = randint(1, 5) * 50
                     present = Present(type=present_type, points=points, user=user)
