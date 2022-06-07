@@ -475,7 +475,7 @@ def user_administration(request: HttpRequest):
 
         return render(request, 'golden_goal/user_administration.html', context)
     else:
-        return HttpResponse(status=404)
+        return HttpResponse(status=403)
 
 
 # Funkcija za registraciju novog korisnika koja koristi korisnicko ime i sifru
@@ -509,6 +509,9 @@ def sign_up(request: HttpRequest):
 # return HttpResponse, HttpResponseRedirect
 def sign_in(request: HttpRequest):
     sign_in_form = UserSignInForm(data=request.POST or None)
+
+    if request.user.is_authenticated:
+        return HttpResponse(status=404)
 
     if sign_in_form.is_valid():
         username = sign_in_form.cleaned_data['username']
@@ -621,7 +624,11 @@ def news(request: HttpRequest, news_id):
 def update_news(request: HttpRequest, news_id):
     try:
         curr_news = News.objects.get(pk=news_id)
+        user = User.objects.get(username=request.user.get_username())
         news_form = UpdateNewsForm(instance=curr_news, data=request.POST or None)
+
+        if curr_news.author != user:
+            return HttpResponse(status=403)
 
         if news_form.is_valid():
             curr_news.title = news_form.cleaned_data['title']
