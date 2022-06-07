@@ -61,6 +61,7 @@ $(document).ready(function() {
                 live_matchdays_div.empty();
 
                 for(let i = 0; i < live_matchdays.length; i++){
+                    let title = $("<h1>").addClass("text-center").addClass("matchday").append("Matchday " + live_matchdays[i]['matchday']);
                     let table = $("<table>").addClass("table").addClass("table-striped").addClass("table-dark")
                         .addClass("rounded").addClass("text-center");
                     let thead = $("<thead>")
@@ -96,6 +97,7 @@ $(document).ready(function() {
                     tbody.append($("<tr>").addClass("rounded"))
                     table.append(thead)
                     table.append(tbody)
+                    live_matchdays_div.append(title)
                     live_matchdays_div.append(table)
                 }
 
