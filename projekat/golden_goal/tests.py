@@ -355,12 +355,9 @@ class PredictionTest(TestCase):
         user.groups.add(group_user)
         self.client.login(username='user', password='user123')
 
-        response = self.client.post('/prediction/predict_match', follow=False, data={
-            'buttons': ["id-X-390305", "id-1-390310", "id-2-390302"]
+        self.client.post('/prediction/predict_match/', follow=True, data={
+            'buttons': '["id-X-390305", "id-1-390310", "id-2-390302"]'
         })
-
-        print(response.status_code)
-        print(Prediction.objects.all())
 
         if not Prediction.objects.filter(user=user, game=390305, type='X').exists():
             raise Exception
@@ -384,15 +381,9 @@ class PredictionTest(TestCase):
         user.groups.add(group_user)
         self.client.login(username='user', password='user123')
 
-        response = self.client.post('/prediction/predict_match', follow=False, data={
-            'buttons': ["id-X-390305", "id-1-390305"]
+        self.client.post('/prediction/predict_match/', follow=True, data={
+            'buttons': '["id-X-390305", "id-1-390305"]'
         })
 
-        print(response.status_code)
-        print(Prediction.objects.all())
-
-        if not Prediction.objects.filter(user=user, game=390305, type='X').exists():
-            raise Exception
-
-        if not Prediction.objects.filter(user=user, game=390305, type='1').exists():
+        if not Prediction.objects.filter(user=user, game=390305, type='1X').exists():
             raise Exception

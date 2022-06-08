@@ -881,8 +881,6 @@ def predict_match(request: HttpRequest):
     buttons = json.loads(str(request.POST['buttons']))
     double_predictions = 0
 
-    print(buttons)
-
     for button in buttons:
         info = button.split("-")
         curr_type = info[1]
