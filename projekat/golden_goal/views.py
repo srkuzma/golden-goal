@@ -653,10 +653,14 @@ def update_news(request: HttpRequest, news_id):
 @login_required(login_url='sign_in')
 @permission_required('golden_goal.delete_news', raise_exception=True)
 def delete_news(request: HttpRequest):
-    news_id = request.POST['news_id']
-
     try:
+        news_id = request.POST['news_id']
         curr_news = News.objects.get(pk=news_id)
+        user = User.objects.get(username=request.user.get_username())
+
+        if curr_news.author != user:
+            return HttpResponse(status=403)
+
         curr_news.delete()
         return redirect('home')
     except News.DoesNotExist:
@@ -876,6 +880,8 @@ def delete_comment(request: HttpRequest, comment_id):
 def predict_match(request: HttpRequest):
     buttons = json.loads(str(request.POST['buttons']))
     double_predictions = 0
+
+    print(buttons)
 
     for button in buttons:
         info = button.split("-")
