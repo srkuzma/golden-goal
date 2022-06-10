@@ -786,3 +786,188 @@ class PredictionTest(TestCase):
 
         if not Prediction.objects.filter(user=user, game=390305, type='1X').exists():
             raise Exception
+
+
+def create_groups():
+    Group.objects.create(name='administrator')
+    Group.objects.create(name='moderator')
+    Group.objects.create(name='user')
+
+def create_admin():
+    admin = User.objects.create_superuser(
+        username='admin',
+        type='administrator',
+        password='golden_goal')
+
+    permission = Permission.objects.get(codename='change_user')
+    group_admin = Group.objects.get(name='administrator')
+    group_admin.permissions.add(permission)
+    admin.save()
+    admin.groups.add(group_admin)
+    return admin
+
+def create_user():
+    user = User(username='peraperic', type="user")
+    user.set_password('pera123')
+    group_user = Group.objects.get(name='user')
+    user.last_login = datetime.date.today()
+    user.save()
+    user.groups.add(group_user)
+    return user
+
+def create_moderator():
+    moderator = User(username='peraperic', type='moderator')
+    moderator.set_password('pera123')
+    group_moderator = Group.objects.get(name='moderator')
+
+    moderator.last_login = datetime.datetime.now()
+    moderator.save()
+    moderator.groups.add(group_moderator)
+    return moderator
+
+from bs4 import BeautifulSoup as Soup
+
+
+class AdministrationTest(TestCase):
+    def test_make_moderator(self):
+        create_groups()
+        admin = create_admin()
+        self.client.force_login(user=admin)
+        user = create_user()
+        id = user.id
+
+        response = self.client.post('/make_moderator', follow=True, data={
+            'user_id': id
+        })
+
+        soup = Soup(response.content)
+        self.assertIn('peraperic', soup.select('#moderator-list')[0].text)
+
+    def test_unmake_moderator(self):
+        create_groups()
+        admin = create_admin()
+        self.client.force_login(user=admin)
+        user = create_user()
+        id = user.id
+
+        response = self.client.post('/make_moderator', follow=True, data={
+            'user_id': id
+        })
+
+        response = self.client.post('/unmake_moderator', follow=True, data={
+            'moderator_id': id
+        })
+        soup = Soup(response.content)
+
+        self.assertNotIn('peraperic', soup.select('#moderator-list')[0].text)
+
+    def test_delete_user(self):
+        create_groups()
+        admin = create_admin()
+        self.client.force_login(user=admin)
+        user = create_user()
+        id = user.id
+        response = self.client.post('/delete_user', follow=True, data={
+            'user_id': id
+        })
+        self.assertNotContains(response, 'peraperic', html=True)
+
+    def test_delete_moderator(self):
+        create_groups()
+        admin = create_admin()
+        self.client.force_login(user=admin)
+        moderator = create_moderator()
+        id = moderator.id
+        response = self.client.post('/delete_moderator', follow=True, data={
+            'moderator_id': id
+        })
+        self.assertNotContains(response, 'peraperic', html=True)
+
+def create_news(author, title, content):
+    News.objects.create(author=author, title=title, content=content)
+
+class SearchTest(TestCase):
+    def test_search_news_by_keyword_success(self):
+        create_groups()
+        user = create_user()
+        create_news(user, "Vest1", "Sadrzaj Vest1")
+        response = self.client.post("/search_news", data= {
+            "keyword": "Vest1"
+        })
+        self.assertContains(response, "Vest1")
+
+    def test_search_news_by_keyword_fail(self):
+        create_groups()
+        user = create_user()
+        create_news(user, "Vest1", "Sadrzaj Vest1")
+        create_news(user, "Vest2", "Sadrzaj Vest2")
+        response = self.client.post("/search_news", data= {
+            "keyword": "Vest1"
+        })
+        self.assertNotContains(response, "Vest2")
+
+    def test_search_news(self):
+        create_groups()
+        user = create_user()
+        create_news(user, "Vest1", "Sadrzaj Vest1")
+        response = self.client.get("/", data={
+
+        })
+        self.assertContains(response, "Vest1")
+
+    def test_search_news_load_more(self):
+        create_groups()
+        user = create_user()
+        for i in range(1, 5):
+            create_news(user, "Vest" + str(i), "Sadrzaj Vest" + str(i))
+        response = self.client.get("/", data={
+
+        })
+        self.assertNotContains(response, "Vest4")
+        response = self.client.get("/search_news", data={
+
+        })
+        self.assertContains(response, "Vest4")
+
+class PresentsTest(TestCase):
+    def test_check_presents(self):
+        create_groups()
+        user = create_user()
+        user.last_login = datetime.date.today() - datetime.timedelta(days=2)
+        user.save()
+        response = self.client.post("/sign_in/", follow=True, data={
+            "username": "peraperic",
+            "password": "pera123"
+        })
+
+        response = self.client.get("/", data={})
+        soup = Soup(response.content)
+        self.assertTrue(len(soup.select('.bg-danger')) > 0)
+
+    def test_see_presents(self):
+        create_groups()
+        user = create_user()
+        user.last_login = datetime.date.today() - datetime.timedelta(days=2)
+        user.save()
+        response = self.client.post("/sign_in/", follow=True, data={
+            "username": "peraperic",
+            "password": "pera123"
+        })
+        response = self.client.get("/user_profile/", data={})
+        soup = Soup(response.content)
+        self.assertTrue(len(soup.select('.unopened')) > 0)
+
+    def test_open_presents(self):
+        create_groups()
+        user = create_user()
+        user.last_login = datetime.date.today() - datetime.timedelta(days=2)
+        user.save()
+        response = self.client.post("/sign_in/", follow=True, data={
+            "username": "peraperic",
+            "password": "pera123"
+        })
+        response = self.client.post("/take_presents", data={})
+
+        response = self.client.get("/", data={})
+        soup = Soup(response.content)
+        self.assertTrue(len(soup.select('.bg-success')) > 0)

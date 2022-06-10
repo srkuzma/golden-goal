@@ -1,0 +1,540 @@
+{
+  "id": "8807eb6d-3cfa-4b32-914d-096aaa09ffb8",
+  "version": "2.0",
+  "name": "Tester3ks190169",
+  "url": "http://127.0.0.1:8000",
+  "tests": [{
+    "id": "9551a87a-acce-4011-bb29-3885b05aa92b",
+    "name": "unmake_moderator",
+    "commands": [{
+      "id": "4dda5a5a-13ef-47be-b894-86b52540c58b",
+      "comment": "",
+      "command": "open",
+      "target": "/user_administration/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f8ea20ed-7bd1-4aaf-9d46-838142b86d29",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1552x840",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "88bfb489-9d00-42a2-9e10-9c6dcfbbcbc1",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(3) > .col-3:nth-child(3) .btn",
+      "targets": [
+        ["css=tr:nth-child(3) > .col-3:nth-child(3) .btn", "css:finder"],
+        ["xpath=(//button[@name='moderator_id'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='moderator-list']/table/tbody/tr[3]/td[3]/form/button", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[3]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "259e371c-eabc-46d4-9beb-065fd2b719c7",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.container:nth-child(3) tr:nth-child(2) > .col-3:nth-child(2)",
+      "targets": [
+        ["css=.container:nth-child(3) tr:nth-child(2) > .col-3:nth-child(2)", "css:finder"],
+        ["xpath=//div[3]/div[2]/table/tbody/tr[2]/td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'jovan')]", "xpath:innerText"]
+      ],
+      "value": "jovan"
+    }]
+  }, {
+    "id": "0bdf8d80-6ea6-4383-bbba-9617d97f658e",
+    "name": "make_moderator",
+    "commands": [{
+      "id": "cafd8da3-e8af-4299-b447-b85822d8a8b5",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "79b9309b-f806-40c3-9221-ec3e8f1901b5",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1552x840",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1f4b822f-6f36-4712-8e98-d39b5373bd1a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=kovacd",
+      "targets": [
+        ["linkText=kovacd", "linkText"],
+        ["css=.col-xl-3 > .btn-outline-warning", "css:finder"],
+        ["xpath=//a[contains(@href, '/user_profile/')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' kovacd')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a776768e-674e-4924-b4d5-e6a3f341560e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=User administration",
+      "targets": [
+        ["linkText=User administration", "linkText"],
+        ["css=.text-center:nth-child(4) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'User administration')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user_administration/')]", "xpath:href"],
+        ["xpath=//div/div/div[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'User administration')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c835127d-18e1-4191-8963-58c65ee5ecb1",
+      "comment": "",
+      "command": "click",
+      "target": "name=user_id",
+      "targets": [
+        ["name=user_id", "name"],
+        ["css=.container:nth-child(3) .col-3:nth-child(3) .btn", "css:finder"],
+        ["xpath=//button[@name='user_id']", "xpath:attributes"],
+        ["xpath=//div[3]/div[2]/table/tbody/tr[2]/td[3]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Make moderator')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "df5b989d-1e27-412e-89d3-c04726db13d3",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=tr:nth-child(3) > .col-3:nth-child(2)",
+      "targets": [
+        ["css=tr:nth-child(3) > .col-3:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='moderator-list']/table/tbody/tr[3]/td[2]", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'jovan')]", "xpath:innerText"]
+      ],
+      "value": "jovan"
+    }]
+  }, {
+    "id": "398850a1-f879-49f4-b610-d1c146497a62",
+    "name": "delete_moderator",
+    "commands": [{
+      "id": "bd920a7c-2fa1-49a3-96c2-d8290bb2a238",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7a700d86-2a7f-451e-8674-1cff44448062",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1552x840",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c8afc597-b69c-4041-9e72-e505a6fba8f5",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=kovacd",
+      "targets": [
+        ["linkText=kovacd", "linkText"],
+        ["css=.col-xl-3 > .btn-outline-warning", "css:finder"],
+        ["xpath=//a[contains(@href, '/user_profile/')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,' kovacd')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f36afa14-4f5f-49f5-a87d-9fc9859e9c60",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=User administration",
+      "targets": [
+        ["linkText=User administration", "linkText"],
+        ["css=.text-center:nth-child(4) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'User administration')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user_administration/')]", "xpath:href"],
+        ["xpath=//div/div/div[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'User administration')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b727ffe5-ec9d-4bda-a610-eb09f33f0ffe",
+      "comment": "",
+      "command": "click",
+      "target": "css=#moderator-list .col-3:nth-child(4) .btn",
+      "targets": [
+        ["css=#moderator-list .col-3:nth-child(4) .btn", "css:finder"],
+        ["xpath=(//button[@name='moderator_id'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='moderator-list']/table/tbody/tr[2]/td[4]/form/button", "xpath:idRelative"],
+        ["xpath=//td[4]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Delete moderator')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "848962e2-a35f-43f9-8749-c0d218755e5d",
+      "comment": "",
+      "command": "verifyNotText",
+      "target": "css=body",
+      "targets": [],
+      "value": "marko"
+    }]
+  }, {
+    "id": "0ce0e376-319a-4a31-86c3-b83bb4314588",
+    "name": "delete_user",
+    "commands": [{
+      "id": "93aca5dd-9734-496a-b1da-124d3320cf99",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e361e724-c29b-4884-b0b7-3d618e8e8a8c",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "520x654",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7b2867a1-0333-49d8-968f-6bbf94ff66aa",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=kovacd",
+      "targets": [
+        ["linkText=kovacd", "linkText"],
+        ["css=.col-lg-6 > .btn-outline-warning", "css:finder"],
+        ["xpath=(//a[contains(@href, '/user_profile/')])[2]", "xpath:href"],
+        ["xpath=//div[4]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d8deabbd-6cb4-4645-8a6d-ba813e5753a7",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=User administration",
+      "targets": [
+        ["linkText=User administration", "linkText"],
+        ["css=.text-center:nth-child(4) > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'User administration')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user_administration/')]", "xpath:href"],
+        ["xpath=//div/div/div[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'User administration')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c5db02a1-a13a-4503-9386-c27e611645cc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-3:nth-child(4) .btn",
+      "targets": [
+        ["css=.col-3:nth-child(4) .btn", "css:finder"],
+        ["xpath=(//button[@name='user_id'])[2]", "xpath:attributes"],
+        ["xpath=//td[4]/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Delete user')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "96c2c242-fc9b-4448-be8c-c7b9066baec4",
+      "comment": "",
+      "command": "verifyNotText",
+      "target": "css=body",
+      "targets": [],
+      "value": "jovan"
+    }]
+  }, {
+    "id": "7726e57f-45ef-46a5-b392-7d5e0ecda630",
+    "name": "see_news",
+    "commands": [{
+      "id": "0c90a61f-75be-4a2a-a401-fa72cd924ff3",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2138bc5a-7f50-4b03-a66a-819b88fd08e6",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1552x840",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9d21fc44-2d6b-4324-bebb-f087e46ed08d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Add news",
+      "targets": [
+        ["linkText=Add news", "linkText"],
+        ["css=.btn-dark:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'Add news')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/add_news/')]", "xpath:href"],
+        ["xpath=//body/span/div/div[2]/div/div/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Add news')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7e9b030d-e443-4bee-a64f-2884beb4b397",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_title",
+      "targets": [
+        ["id=id_title", "id"],
+        ["name=title", "name"],
+        ["css=#id_title", "css:finder"],
+        ["xpath=//input[@id='id_title']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_title']/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "76cdbe57-7b71-4c37-9dae-10f08fdb7be1",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_title",
+      "targets": [
+        ["id=id_title", "id"],
+        ["name=title", "name"],
+        ["css=#id_title", "css:finder"],
+        ["xpath=//input[@id='id_title']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_title']/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "vest"
+    }, {
+      "id": "1e3539ab-5240-4fe2-88f1-a133aa34f97b",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_summary",
+      "targets": [
+        ["id=id_summary", "id"],
+        ["name=summary", "name"],
+        ["css=#id_summary", "css:finder"],
+        ["xpath=//textarea[@id='id_summary']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_summary']/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6ed42541-317a-4e87-9e50-35334d5fd875",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_summary",
+      "targets": [
+        ["id=id_summary", "id"],
+        ["name=summary", "name"],
+        ["css=#id_summary", "css:finder"],
+        ["xpath=//textarea[@id='id_summary']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_summary']/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "vest rezime"
+    }, {
+      "id": "89b10bef-0360-4c89-9d05-109d900c1481",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_content",
+      "targets": [
+        ["id=id_content", "id"],
+        ["name=content", "name"],
+        ["css=#id_content", "css:finder"],
+        ["xpath=//textarea[@id='id_content']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_content']/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/textarea", "xpath:position"]
+      ],
+      "value": "vest sadrzaj"
+    }, {
+      "id": "3d4e7dd0-c8f3-4166-86b2-51dbf3c81330",
+      "comment": "",
+      "command": "click",
+      "target": "css=.text-right:nth-child(5) > .btn",
+      "targets": [
+        ["css=.text-right:nth-child(5) > .btn", "css:finder"],
+        ["xpath=//input[@value='Add']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "91381843-7fe6-473b-9c35-9559e57b1cb2",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.text-warning > .col-12",
+      "targets": [
+        ["css=.text-warning > .col-12", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'vest')]", "xpath:innerText"]
+      ],
+      "value": "vest"
+    }]
+  }, {
+    "id": "ed558686-2930-49a9-960f-c263a184bd76",
+    "name": "search_news_success",
+    "commands": [{
+      "id": "a32cde82-6591-490e-8799-21f9d6043024",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8fa601ad-1aba-43cc-9e25-b55bfc2c1ba0",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1552x840",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "98721dc8-2ac1-47ea-99a3-5fc3854cb3fc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=More news",
+      "targets": [
+        ["linkText=More news", "linkText"],
+        ["css=.btn-dark:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'More news')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/search_news')]", "xpath:href"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'More news')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ea88ab9e-43a1-42fe-bfc4-c7e6904bc6ac",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_keyword",
+      "targets": [
+        ["id=id_keyword", "id"],
+        ["name=keyword", "name"],
+        ["css=#id_keyword", "css:finder"],
+        ["xpath=//input[@id='id_keyword']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9f43bbf8-9c30-449d-884f-0a812da95fb5",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_keyword",
+      "targets": [
+        ["id=id_keyword", "id"],
+        ["name=keyword", "name"],
+        ["css=#id_keyword", "css:finder"],
+        ["xpath=//input[@id='id_keyword']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "ve"
+    }, {
+      "id": "c38d7d95-1785-4890-9d3b-d87b081949e7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.search-button",
+      "targets": [
+        ["css=.search-button", "css:finder"],
+        ["xpath=//input[@value='Search']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4ba6d9e2-78e3-4032-adba-a9fe1e5c4a64",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.text-warning > .col-12",
+      "targets": [
+        ["css=.text-warning > .col-12", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'vest')]", "xpath:innerText"]
+      ],
+      "value": "vest"
+    }]
+  }, {
+    "id": "0ad15a45-83fe-4d08-8855-256fef01d5c4",
+    "name": "search_news_fail",
+    "commands": [{
+      "id": "fc0be832-2166-4b83-9f3c-f796db39be8a",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f5938fd9-3e45-4dac-adef-cee05526311e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "516x649",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9e0432ac-5701-4daa-a92b-2b6db5400714",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=More news",
+      "targets": [
+        ["linkText=More news", "linkText"],
+        ["css=.btn-dark:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'More news')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/search_news')]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'More news')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "eb4db23d-88e6-491e-a4b0-71633a702787",
+      "comment": "",
+      "command": "click",
+      "target": "id=id_keyword",
+      "targets": [
+        ["id=id_keyword", "id"],
+        ["name=keyword", "name"],
+        ["css=#id_keyword", "css:finder"],
+        ["xpath=//input[@id='id_keyword']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "65d66e75-07dc-4dcf-859c-a999241b035e",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_keyword",
+      "targets": [
+        ["id=id_keyword", "id"],
+        ["name=keyword", "name"],
+        ["css=#id_keyword", "css:finder"],
+        ["xpath=//input[@id='id_keyword']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "ver"
+    }, {
+      "id": "fc98dc8d-5e2f-45ea-a923-db03797be1bd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.search-button",
+      "targets": [
+        ["css=.search-button", "css:finder"],
+        ["xpath=//input[@value='Search']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "78bec4e1-408b-417a-8dd2-89f22562de2c",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.col-8 > .text-warning",
+      "targets": [
+        ["css=.col-8 > .text-warning", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'No news found for given keyword')]", "xpath:innerText"]
+      ],
+      "value": "No news found for given keyword"
+    }]
+  }],
+  "suites": [{
+    "id": "6e9b7181-e8e6-496a-a618-896f08d02c65",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://127.0.0.1:8000/"],
+  "plugins": []
+}
