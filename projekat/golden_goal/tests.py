@@ -1,3 +1,4 @@
+from django.template.defaulttags import comment
 from django.test import TestCase
 from .models import *
 from django.contrib.auth.models import Group, Permission
@@ -51,6 +52,404 @@ class SigninTest(TestCase):
         })
 
         self.assertContains(response, 'Fail login', html=True)
+
+class SignUpTest(TestCase):
+
+    def test_sign_up_success(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic',
+            'password1': 'sadilinikad123',
+            'password2': 'sadilinikad123'
+        })
+
+        self.assertContains(response, 'Logout', html=True)
+
+    def test_sign_up_fail_username_exists(self):
+        user = User(username="dekam")
+        user.set_password('sadilinikad123')
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+        user.last_login = datetime.date.today()
+        user.save()
+        user.groups.add(group_user)
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'dekam',
+            'password1': 'sadilinikad123',
+            'password2': 'sadilinikad123'
+        })
+
+        self.assertContains(response, 'A user with that username already exists.', html=True)
+
+    def test_sign_up_fail_pass_short(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic',
+            'password1': 'sad',
+            'password2': 'sad'
+        })
+
+        self.assertContains(response, 'This password is too short. It must contain at least 8 characters.', html=True)
+
+    def test_sign_up_fail_pass_too_common(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic',
+            'password1': '12345678',
+            'password2': '12345678'
+        })
+
+        self.assertContains(response, 'This password is too common.', html=True)
+
+
+    def test_sign_up_fail_pass_too_similar(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic',
+            'password1': 'peraperic123',
+            'password2': 'peraperic123'
+        })
+
+        self.assertContains(response, 'The password is too similar to the username.', html=True)
+
+
+    def test_sign_up_fail_pass_all_numeric(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic',
+            'password1': '12345678',
+            'password2': '12345678'
+        })
+
+        self.assertContains(response, 'This password is entirely numeric.', html=True)
+
+
+    def test_sign_up_fail_pass_dont_match(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic',
+            'password1': 'peraperic123',
+            'password2': 'peraperic124'
+        })
+
+        self.assertContains(response, 'The two password fields didn’t match.', html=True)
+
+
+    def test_sign_up_fail_pass_not_filled(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic$',
+            'password1': '',
+            'password2': '12345678'
+        })
+
+        self.assertContains(response, 'Registration', html=True)
+
+    def test_sign_up_fail_pass_confirmation_not_filled(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic$',
+            'password1': '12345678',
+            'password2': ''
+        })
+
+        self.assertContains(response, 'Registration', html=True)
+
+    def test_sign_up_fail_username_not_filled(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': '',
+            'password1': '12345678',
+            'password2': '12345678'
+        })
+
+        self.assertContains(response, 'Registration', html=True)
+
+
+
+    def test_sign_up_fail_username_not_valid_char(self):
+        Group.objects.create(name="user")
+        group_user = Group.objects.get(name='user')
+
+        response = self.client.post('/sign_up/', follow=True, data={
+            'username': 'peraperic$',
+            'password1': '12345678',
+            'password2': '12345678'
+        })
+
+        self.assertContains(response, 'Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.', html=True)
+
+
+
+class DeleteCommentTest(TestCase):
+
+    def test_delete_comment_success(self):
+        admin = User(username='kostam', type='administrator')
+        admin.set_password('sadilinikad123')
+        Group.objects.create(name='administrator')
+        permission = Permission.objects.get(codename='delete_comment')
+        group_admin = Group.objects.get(name='administrator')
+        group_admin.permissions.add(permission)
+        admin.last_login = datetime.datetime.now()
+        admin.save()
+        admin.groups.add(group_admin)
+
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('moderator123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        news = News.objects.create(author=moderator, title="Test news", summary="Test news summary",
+                                   content='This news will be deleted.')
+
+
+        user = User(username="peraperic")
+        user.set_password('sadilinikad123')
+        user.type = "user"
+        Group.objects.create(name="user")
+        perm = Permission.objects.get(codename='add_comment')
+        group_user = Group.objects.get(name='user')
+        group_user.permissions.add(perm)
+        user.last_login = datetime.date.today()
+        user.save()
+        user.groups.add(group_user)
+
+        comment1 = Comment.objects.create(author=user, text="kom", news=news)
+        self.client.login(username='kostam', password='sadilinikad123')
+
+        uri = '/delete_comment/' + str(comment1.id)
+        response = self.client.post(uri, follow=True, data={
+            'comment_id': comment1.id
+        })
+
+        self.assertNotContains(response, 'kom', html=True)
+
+    def test_delete_reply_comment_success(self):
+        admin = User(username='kostam', type='administrator')
+        admin.set_password('sadilinikad123')
+        Group.objects.create(name='administrator')
+        permission = Permission.objects.get(codename='delete_comment')
+        group_admin = Group.objects.get(name='administrator')
+        group_admin.permissions.add(permission)
+        admin.last_login = datetime.datetime.now()
+        admin.save()
+        admin.groups.add(group_admin)
+
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('moderator123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        news = News.objects.create(author=moderator, title="Test news", summary="Test news summary",
+                                   content='This news will be deleted.')
+
+
+        user = User(username="peraperic")
+        user.set_password('sadilinikad123')
+        user.type = "user"
+        Group.objects.create(name="user")
+        perm = Permission.objects.get(codename='add_comment')
+        group_user = Group.objects.get(name='user')
+        group_user.permissions.add(perm)
+        user.last_login = datetime.date.today()
+        user.save()
+        user.groups.add(group_user)
+
+        comment2 = Comment.objects.create(author=user, text="kom", news=news)
+        comment1 = Comment.objects.create(author=user, text="reply", news=news, comment_reply=comment2)
+        self.client.login(username='kostam', password='sadilinikad123')
+
+        uri = '/delete_comment/' + str(comment1.id)
+        response = self.client.post(uri, follow=True, data={
+            'comment_id': comment1.id
+        })
+
+        self.assertNotContains(response, 'reply', html=True)
+
+    def test_delete_comment_fail_user(self):
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('moderator123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        news = News.objects.create(author=moderator, title="Test news", summary="Test news summary",
+                                   content='This news will be deleted.')
+
+        user = User(username="peraperic")
+        user.set_password('sadilinikad123')
+        user.type = "user"
+        Group.objects.create(name="user")
+        perm = Permission.objects.get(codename='add_comment')
+        group_user = Group.objects.get(name='user')
+        group_user.permissions.add(perm)
+        user.last_login = datetime.date.today()
+        user.save()
+        user.groups.add(group_user)
+
+        comment2 = Comment.objects.create(author=user, text="kom", news=news)
+        comment1 = Comment.objects.create(author=user, text="reply", news=news, comment_reply=comment2)
+        self.client.login(username='peraperic', password='sadilinikad123')
+
+        uri = '/delete_comment/' + str(comment1.id)
+        response = self.client.post(uri, follow=True, data={
+            'comment_id': comment1.id
+        })
+
+
+        if response.status_code != 403:
+            raise Exception
+
+    def test_delete_comment_fail_moderator(self):
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('sadilinikad123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        news = News.objects.create(author=moderator, title="Test news", summary="Test news summary",
+                                   content='This news will be deleted.')
+
+        user = User(username="peraperic")
+        user.set_password('sadilinikad123')
+        user.type = "user"
+        Group.objects.create(name="user")
+        perm = Permission.objects.get(codename='add_comment')
+        group_user = Group.objects.get(name='user')
+        group_user.permissions.add(perm)
+        user.last_login = datetime.date.today()
+        user.save()
+        user.groups.add(group_user)
+
+        comment2 = Comment.objects.create(author=user, text="kom", news=news)
+        comment1 = Comment.objects.create(author=user, text="reply", news=news, comment_reply=comment2)
+        self.client.login(username='moderator', password='sadilinikad123')
+
+        uri = '/delete_comment/' + str(comment1.id)
+        response = self.client.post(uri, follow=True, data={
+            'comment_id': comment1.id
+        })
+
+
+        if response.status_code != 403:
+            raise Exception
+
+class AddNewsTest(TestCase):
+
+    def test_add_news_success(self):
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('sadilinikad123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        self.client.login(username='moderator', password='sadilinikad123')
+
+        response = self.client.post('/add_news/', follow=True, data={
+            'title': 'velika vest',
+            'summary': 'vest',
+            'content': 'velika velika vest'
+        })
+
+        self.assertContains(response, 'Logout', html=True)
+
+    def test_add_news_fail_title(self):
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('sadilinikad123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        self.client.login(username='moderator', password='sadilinikad123')
+
+        response = self.client.post('/add_news/', follow=True, data={
+            'title': '',
+            'summary': 'vest',
+            'content': 'velika velika vest'
+        })
+
+        self.assertContains(response, 'Create news', html=True)
+
+
+    def test_add_news_fail_summary(self):
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('sadilinikad123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        self.client.login(username='moderator', password='sadilinikad123')
+
+        response = self.client.post('/add_news/', follow=True, data={
+            'title': 'velika vest',
+            'summary': '',
+            'content': 'velika velika vest'
+        })
+
+        self.assertContains(response, 'Create news', html=True)
+
+
+    def test_add_news_fail_content(self):
+        moderator = User(username='moderator', type='moderator')
+        moderator.set_password('sadilinikad123')
+        Group.objects.create(name='moderator')
+        permission = Permission.objects.get(codename='add_news')
+        group_moderator = Group.objects.get(name='moderator')
+        group_moderator.permissions.add(permission)
+        moderator.last_login = datetime.datetime.now()
+        moderator.save()
+        moderator.groups.add(group_moderator)
+        self.client.login(username='moderator', password='sadilinikad123')
+
+        response = self.client.post('/add_news/', follow=True, data={
+            'title': 'velika vest',
+            'summary': 'vest',
+            'content': ''
+        })
+
+        self.assertContains(response, 'Create news', html=True)
 
 
 class NewsEditTest(TestCase):
