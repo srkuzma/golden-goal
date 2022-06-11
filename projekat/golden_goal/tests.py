@@ -1,7 +1,47 @@
-from django.template.defaulttags import comment
 from django.test import TestCase
 from .models import *
 from django.contrib.auth.models import Group, Permission
+from bs4 import BeautifulSoup as Soup
+
+
+def create_groups():
+    Group.objects.create(name='administrator')
+    Group.objects.create(name='moderator')
+    Group.objects.create(name='user')
+
+
+def create_admin():
+    admin = User.objects.create_superuser(username='admin', type='administrator', password='golden_goal')
+    permission = Permission.objects.get(codename='change_user')
+    group_admin = Group.objects.get(name='administrator')
+    group_admin.permissions.add(permission)
+    admin.save()
+    admin.groups.add(group_admin)
+    return admin
+
+
+def create_user():
+    user = User(username='peraperic', type="user")
+    user.set_password('pera123')
+    group_user = Group.objects.get(name='user')
+    user.last_login = datetime.date.today()
+    user.save()
+    user.groups.add(group_user)
+    return user
+
+
+def create_moderator():
+    moderator = User(username='peraperic', type='moderator')
+    moderator.set_password('pera123')
+    group_moderator = Group.objects.get(name='moderator')
+    moderator.last_login = datetime.datetime.now()
+    moderator.save()
+    moderator.groups.add(group_moderator)
+    return moderator
+
+
+def create_news(author, title, content):
+    News.objects.create(author=author, title=title, content=content)
 
 
 class SigninTest(TestCase):
@@ -53,11 +93,11 @@ class SigninTest(TestCase):
 
         self.assertContains(response, 'Fail login', html=True)
 
-class SignUpTest(TestCase):
 
+class SignUpTest(TestCase):
     def test_sign_up_success(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic',
@@ -86,7 +126,7 @@ class SignUpTest(TestCase):
 
     def test_sign_up_fail_pass_short(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic',
@@ -98,7 +138,7 @@ class SignUpTest(TestCase):
 
     def test_sign_up_fail_pass_too_common(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic',
@@ -108,10 +148,9 @@ class SignUpTest(TestCase):
 
         self.assertContains(response, 'This password is too common.', html=True)
 
-
     def test_sign_up_fail_pass_too_similar(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic',
@@ -121,10 +160,9 @@ class SignUpTest(TestCase):
 
         self.assertContains(response, 'The password is too similar to the username.', html=True)
 
-
     def test_sign_up_fail_pass_all_numeric(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic',
@@ -134,10 +172,9 @@ class SignUpTest(TestCase):
 
         self.assertContains(response, 'This password is entirely numeric.', html=True)
 
-
     def test_sign_up_fail_pass_dont_match(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic',
@@ -147,10 +184,9 @@ class SignUpTest(TestCase):
 
         self.assertContains(response, 'The two password fields didn’t match.', html=True)
 
-
     def test_sign_up_fail_pass_not_filled(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic$',
@@ -162,7 +198,7 @@ class SignUpTest(TestCase):
 
     def test_sign_up_fail_pass_confirmation_not_filled(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic$',
@@ -174,7 +210,7 @@ class SignUpTest(TestCase):
 
     def test_sign_up_fail_username_not_filled(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': '',
@@ -184,11 +220,9 @@ class SignUpTest(TestCase):
 
         self.assertContains(response, 'Registration', html=True)
 
-
-
     def test_sign_up_fail_username_not_valid_char(self):
         Group.objects.create(name="user")
-        group_user = Group.objects.get(name='user')
+        Group.objects.get(name='user')
 
         response = self.client.post('/sign_up/', follow=True, data={
             'username': 'peraperic$',
@@ -199,9 +233,7 @@ class SignUpTest(TestCase):
         self.assertContains(response, 'Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.', html=True)
 
 
-
 class DeleteCommentTest(TestCase):
-
     def test_delete_comment_success(self):
         admin = User(username='kostam', type='administrator')
         admin.set_password('sadilinikad123')
@@ -224,7 +256,6 @@ class DeleteCommentTest(TestCase):
         moderator.groups.add(group_moderator)
         news = News.objects.create(author=moderator, title="Test news", summary="Test news summary",
                                    content='This news will be deleted.')
-
 
         user = User(username="peraperic")
         user.set_password('sadilinikad123')
@@ -269,7 +300,6 @@ class DeleteCommentTest(TestCase):
         moderator.groups.add(group_moderator)
         news = News.objects.create(author=moderator, title="Test news", summary="Test news summary",
                                    content='This news will be deleted.')
-
 
         user = User(username="peraperic")
         user.set_password('sadilinikad123')
@@ -326,7 +356,6 @@ class DeleteCommentTest(TestCase):
             'comment_id': comment1.id
         })
 
-
         if response.status_code != 403:
             raise Exception
 
@@ -363,12 +392,11 @@ class DeleteCommentTest(TestCase):
             'comment_id': comment1.id
         })
 
-
         if response.status_code != 403:
             raise Exception
 
-class AddNewsTest(TestCase):
 
+class AddNewsTest(TestCase):
     def test_add_news_success(self):
         moderator = User(username='moderator', type='moderator')
         moderator.set_password('sadilinikad123')
@@ -409,7 +437,6 @@ class AddNewsTest(TestCase):
 
         self.assertContains(response, 'Create news', html=True)
 
-
     def test_add_news_fail_summary(self):
         moderator = User(username='moderator', type='moderator')
         moderator.set_password('sadilinikad123')
@@ -429,7 +456,6 @@ class AddNewsTest(TestCase):
         })
 
         self.assertContains(response, 'Create news', html=True)
-
 
     def test_add_news_fail_content(self):
         moderator = User(username='moderator', type='moderator')
@@ -788,56 +814,16 @@ class PredictionTest(TestCase):
             raise Exception
 
 
-def create_groups():
-    Group.objects.create(name='administrator')
-    Group.objects.create(name='moderator')
-    Group.objects.create(name='user')
-
-def create_admin():
-    admin = User.objects.create_superuser(
-        username='admin',
-        type='administrator',
-        password='golden_goal')
-
-    permission = Permission.objects.get(codename='change_user')
-    group_admin = Group.objects.get(name='administrator')
-    group_admin.permissions.add(permission)
-    admin.save()
-    admin.groups.add(group_admin)
-    return admin
-
-def create_user():
-    user = User(username='peraperic', type="user")
-    user.set_password('pera123')
-    group_user = Group.objects.get(name='user')
-    user.last_login = datetime.date.today()
-    user.save()
-    user.groups.add(group_user)
-    return user
-
-def create_moderator():
-    moderator = User(username='peraperic', type='moderator')
-    moderator.set_password('pera123')
-    group_moderator = Group.objects.get(name='moderator')
-
-    moderator.last_login = datetime.datetime.now()
-    moderator.save()
-    moderator.groups.add(group_moderator)
-    return moderator
-
-from bs4 import BeautifulSoup as Soup
-
-
 class AdministrationTest(TestCase):
     def test_make_moderator(self):
         create_groups()
         admin = create_admin()
         self.client.force_login(user=admin)
         user = create_user()
-        id = user.id
+        user_id = user.id
 
         response = self.client.post('/make_moderator', follow=True, data={
-            'user_id': id
+            'user_id': user_id
         })
 
         soup = Soup(response.content)
@@ -848,17 +834,17 @@ class AdministrationTest(TestCase):
         admin = create_admin()
         self.client.force_login(user=admin)
         user = create_user()
-        id = user.id
+        user_id = user.id
 
-        response = self.client.post('/make_moderator', follow=True, data={
-            'user_id': id
+        self.client.post('/make_moderator', follow=True, data={
+            'user_id': user_id
         })
 
         response = self.client.post('/unmake_moderator', follow=True, data={
-            'moderator_id': id
+            'moderator_id': user_id
         })
-        soup = Soup(response.content)
 
+        soup = Soup(response.content)
         self.assertNotIn('peraperic', soup.select('#moderator-list')[0].text)
 
     def test_delete_user(self):
@@ -866,10 +852,12 @@ class AdministrationTest(TestCase):
         admin = create_admin()
         self.client.force_login(user=admin)
         user = create_user()
-        id = user.id
+        user_id = user.id
+
         response = self.client.post('/delete_user', follow=True, data={
-            'user_id': id
+            'user_id': user_id
         })
+
         self.assertNotContains(response, 'peraperic', html=True)
 
     def test_delete_moderator(self):
@@ -877,23 +865,25 @@ class AdministrationTest(TestCase):
         admin = create_admin()
         self.client.force_login(user=admin)
         moderator = create_moderator()
-        id = moderator.id
+        user_id = moderator.id
+
         response = self.client.post('/delete_moderator', follow=True, data={
-            'moderator_id': id
+            'moderator_id': user_id
         })
+
         self.assertNotContains(response, 'peraperic', html=True)
 
-def create_news(author, title, content):
-    News.objects.create(author=author, title=title, content=content)
 
 class SearchTest(TestCase):
     def test_search_news_by_keyword_success(self):
         create_groups()
         user = create_user()
         create_news(user, "Vest1", "Sadrzaj Vest1")
-        response = self.client.post("/search_news", data= {
+
+        response = self.client.post("/search_news", data={
             "keyword": "Vest1"
         })
+
         self.assertContains(response, "Vest1")
 
     def test_search_news_by_keyword_fail(self):
@@ -901,33 +891,32 @@ class SearchTest(TestCase):
         user = create_user()
         create_news(user, "Vest1", "Sadrzaj Vest1")
         create_news(user, "Vest2", "Sadrzaj Vest2")
-        response = self.client.post("/search_news", data= {
+
+        response = self.client.post("/search_news", data={
             "keyword": "Vest1"
         })
+
         self.assertNotContains(response, "Vest2")
 
     def test_search_news(self):
         create_groups()
         user = create_user()
         create_news(user, "Vest1", "Sadrzaj Vest1")
-        response = self.client.get("/", data={
-
-        })
+        response = self.client.get("/")
         self.assertContains(response, "Vest1")
 
     def test_search_news_load_more(self):
         create_groups()
         user = create_user()
+
         for i in range(1, 5):
             create_news(user, "Vest" + str(i), "Sadrzaj Vest" + str(i))
-        response = self.client.get("/", data={
 
-        })
+        response = self.client.get("/")
         self.assertNotContains(response, "Vest4")
-        response = self.client.get("/search_news", data={
-
-        })
+        response = self.client.get("/search_news")
         self.assertContains(response, "Vest4")
+
 
 class PresentsTest(TestCase):
     def test_check_presents(self):
@@ -935,12 +924,13 @@ class PresentsTest(TestCase):
         user = create_user()
         user.last_login = datetime.date.today() - datetime.timedelta(days=2)
         user.save()
-        response = self.client.post("/sign_in/", follow=True, data={
+
+        self.client.post("/sign_in/", follow=True, data={
             "username": "peraperic",
             "password": "pera123"
         })
 
-        response = self.client.get("/", data={})
+        response = self.client.get("/")
         soup = Soup(response.content)
         self.assertTrue(len(soup.select('.bg-danger')) > 0)
 
@@ -949,11 +939,13 @@ class PresentsTest(TestCase):
         user = create_user()
         user.last_login = datetime.date.today() - datetime.timedelta(days=2)
         user.save()
-        response = self.client.post("/sign_in/", follow=True, data={
+
+        self.client.post("/sign_in/", follow=True, data={
             "username": "peraperic",
             "password": "pera123"
         })
-        response = self.client.get("/user_profile/", data={})
+
+        response = self.client.get("/user_profile/")
         soup = Soup(response.content)
         self.assertTrue(len(soup.select('.unopened')) > 0)
 
@@ -962,12 +954,13 @@ class PresentsTest(TestCase):
         user = create_user()
         user.last_login = datetime.date.today() - datetime.timedelta(days=2)
         user.save()
-        response = self.client.post("/sign_in/", follow=True, data={
+
+        self.client.post("/sign_in/", follow=True, data={
             "username": "peraperic",
             "password": "pera123"
         })
-        response = self.client.post("/take_presents", data={})
 
-        response = self.client.get("/", data={})
+        self.client.post("/take_presents")
+        response = self.client.get("/")
         soup = Soup(response.content)
         self.assertTrue(len(soup.select('.bg-success')) > 0)

@@ -7,72 +7,74 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container search-news-container">
-        <div class="row search-news-row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 search-form">
-                <form method="post">
-                    {% csrf_token %}
+    <div class="content">
+        <div class="container search-news-container">
+            <div class="row search-news-row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 search-form">
+                    <form method="post">
+                        {% csrf_token %}
 
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 col-md-8 col-sm-9 col-9 offset-xl-3 offset-lg-2 offset-md-1 offset-sm-0">
-                            <div class="active-gold-4 mb-4">
-                                {{ search_form.keyword }}
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-7 col-md-8 col-sm-9 col-9 offset-xl-3 offset-lg-2 offset-md-1 offset-sm-0">
+                                <div class="active-gold-4 mb-4">
+                                    {{ search_form.keyword }}
+                                </div>
+                            </div>
+
+                            <div class="text-center col-xl-1 col-lg-1 col-md-2 col-sm-3 col-3 justify-content-center">
+                                <input type="submit" class="btn btn-warning search-button" value="Search">
                             </div>
                         </div>
-
-                        <div class="text-center col-xl-1 col-lg-1 col-md-2 col-sm-3 col-3 justify-content-center">
-                            <input type="submit" class="btn btn-warning search-button" value="Search">
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 justify-content-center">
-                {% if all_news %}
-                    {% for news in all_news %}
-                        <div class="row bg-dark rounded news id-{{ news.id }}">
-                            <div class="row bg-dark text-warning rounded-top news-title">
-                                <h1 class="col-12">{{ news.news.title }}</h1>
-                            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 justify-content-center">
+                    {% if all_news %}
+                        {% for news in all_news %}
+                            <div class="row bg-dark rounded news id-{{ news.id }}">
+                                <div class="row bg-dark text-warning rounded-top news-title">
+                                    <h1 class="col-12">{{ news.news.title }}</h1>
+                                </div>
 
-                            <div class="row bg-dark text-white rounded-bottom news-shortly">
-                                <p class="col-12">{{ news.news.summary }}</p>
-                                <div class="col-12 justify-content-end text-right">
-                                    <div class="row justify-content-end">
-                                        <a class="btn btn-warning news-button" href="{% url 'news' news.news.id %}" role="button">Read more</a>
-                                        {% if user.is_authenticated %}
-                                            {% if user.type == 'moderator' and news.news.author == user %}
-                                                <a class="btn btn-warning news-button" href="{% url 'update_news' news.id %}" role="button">Update</a>
-                                                <form method='post' action='{% url 'delete_news' %}'>
-                                                    {% csrf_token %}
-                                                    <button class="btn btn-warning news-button" type="submit" value='{{ news.news.id }}' name='news_id'>Delete</button>
-                                                </form>
-                                            {% elif user.type == 'administrator' %}
-                                                <form method='post' action='{% url 'delete_news' %}'>
-                                                    {% csrf_token %}
-                                                    <button class="btn btn-warning news-button" type="submit" value='{{ news.news.id }}' name='news_id'>Delete</button>
-                                                </form>
-                                             {% endif %}
-                                        {% endif %}
+                                <div class="row bg-dark text-white rounded-bottom news-shortly">
+                                    <p class="col-12">{{ news.news.summary }}</p>
+                                    <div class="col-12 justify-content-end text-right">
+                                        <div class="row justify-content-end">
+                                            <a class="btn btn-warning news-button" href="{% url 'news' news.news.id %}" role="button">Read more</a>
+                                            {% if user.is_authenticated %}
+                                                {% if user.type == 'moderator' and news.news.author == user %}
+                                                    <a class="btn btn-warning news-button" href="{% url 'update_news' news.id %}" role="button">Update</a>
+                                                    <form method='post' action='{% url 'delete_news' %}'>
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-warning news-button" type="submit" value='{{ news.news.id }}' name='news_id'>Delete</button>
+                                                    </form>
+                                                {% elif user.type == 'administrator' %}
+                                                    <form method='post' action='{% url 'delete_news' %}'>
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-warning news-button" type="submit" value='{{ news.news.id }}' name='news_id'>Delete</button>
+                                                    </form>
+                                                 {% endif %}
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br>
-                    {% endfor %}
+                            <br>
+                        {% endfor %}
 
-                    <div class="row load-more-row">
-                        <div class="col text-center load-more-div">
-                            <a class="btn btn-dark text-warning view" id="load-more" role="button">Load more</a>
+                        <div class="row load-more-row">
+                            <div class="col text-center load-more-div">
+                                <a class="btn btn-dark text-warning view" id="load-more" role="button">Load more</a>
+                            </div>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="col-8 offset-2 text-center bg-dark rounded" style="margin-bottom: 13%; padding: 20px;">
-                        <h1 class="text-warning">No news found for given keyword</h1>
-                    </div>
-                {% endif %}
+                    {% else %}
+                        <div class="col-8 offset-2 text-center bg-dark rounded" style="margin-bottom: 13%; padding: 20px;">
+                            <h1 class="text-warning">No news found for given keyword</h1>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
