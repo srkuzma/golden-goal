@@ -484,6 +484,9 @@ def user_administration(request: HttpRequest):
 def sign_up(request: HttpRequest):
     registration_form = RegistrationForm(data=request.POST or None)
 
+    if request.user.is_authenticated:
+        return HttpResponse(status=404)
+
     if registration_form.is_valid():
         user = registration_form.save(commit=False)
         user.type = 'user'
